@@ -300,6 +300,7 @@ class RandomBlock(BaseModule):
         # # print("Noise norm:", noise.abs().mean())
         # # assert False
         out = self.non_linear(x + noise)
+        out = (out - out.mean()) / (out.std() + 1e-9)
         # out = x+noise
         # x-=x.mean()*0.1
         # out = self.non_linear(x)
