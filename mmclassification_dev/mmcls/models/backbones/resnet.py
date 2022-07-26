@@ -281,9 +281,13 @@ class Bottleneck(BaseModule):
 
 class RandomBlock(BaseModule):
 
-    def __init__(self, k):
+    def __init__(self, k, non_linear='identity'):
         super(RandomBlock, self).__init__()
         self.k = k
+        if non_linear == 'identity':
+            self.non_linear = torch.nn.Identity()
+        elif non_linear == 'relu':
+            self.non_linear = torch.nn.functional.relu
 
     def forward(self, x):
         # (torch.rand_like(x) - 0.5) ~ U[-0.5, 0.5)
@@ -292,7 +296,8 @@ class RandomBlock(BaseModule):
         # noise = torch.randn_like(x) / self.k
         # print("Noise norm:", noise.abs().mean())
         # assert False
-        out = torch.nn.functional.relu(x + noise)
+        out = self.non_linear(x + noise)
+        # out = x+noise
         return out
 
 
