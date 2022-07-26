@@ -282,7 +282,7 @@ class Bottleneck(BaseModule):
 
 class RandomBlock(BaseModule):
 
-    def __init__(self, k, non_linear='l_relu'):
+    def __init__(self, k, non_linear='relu'):
         super(RandomBlock, self).__init__()
         self.k = k
         if non_linear == 'identity':
