@@ -290,7 +290,7 @@ class RandomBlock(BaseModule):
         elif non_linear == 'relu':
             self.non_linear = torch.nn.functional.relu
         elif non_linear == 'l_relu':
-            self.non_linear = partial(torch.nn.functional.leaky_relu, negative_slope=0.01)
+            self.non_linear = partial(torch.nn.functional.leaky_relu, negative_slope=0.3)
 
     def forward(self, x):
         # (torch.rand_like(x) - 0.5) ~ U[-0.5, 0.5)
