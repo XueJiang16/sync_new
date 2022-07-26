@@ -298,7 +298,7 @@ class RandomBlock(BaseModule):
         # # assert False
         # out = self.non_linear(x + noise)
         # # out = x+noise
-        x-=x.mean()
+        x-=x.mean()*0.1
         out = self.non_linear(x)
         return out
 
