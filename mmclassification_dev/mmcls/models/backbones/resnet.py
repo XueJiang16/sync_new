@@ -645,8 +645,9 @@ class ResNet(BaseBackbone):
                  dilations=(1, 1, 1, 1),
                  out_indices=(3, ),
                  style='pytorch',
-                 random_block=0,
-                 random_block_k=2.5,
+                 random_block=[0],
+                 random_block_k=[2.5],
+                 random_block_location=[2],
                  deep_stem=False,
                  avg_down=False,
                  frozen_stages=-1,
@@ -689,8 +690,16 @@ class ResNet(BaseBackbone):
         self.block, stage_blocks = self.arch_settings[depth]
         self.stage_blocks = stage_blocks[:num_stages]
         self.expansion = get_expansion(self.block, expansion)
+        if isinstance(random_block, int):
+            random_block = [random_block]
+        if isinstance(random_block_k, (int, float)):
+            random_block_k = [random_block_k]
+        if isinstance(random_block_location, int):
+            random_block_location = [random_block_location]
+        assert len(random_block) == len(random_block_k) == len(random_block_location)
         self.num_random_block = random_block
         self.random_block_k = random_block_k
+        self.random_block_location = random_block_location
 
         self._make_stem_layer(in_channels, stem_channels)
 
@@ -717,27 +726,13 @@ class ResNet(BaseBackbone):
             layer_name = f'layer{i + 1}'
             self.add_module(layer_name, res_layer)
             self.res_layers.append(layer_name)
-            # add random block in C4
-            if i == 2:
-                if self.num_random_block > 0:
-                    # random_layer = self.make_res_layer(
-                    #     block=RandomBlock,
-                    #     num_blocks=self.num_random_block,
-                    #     in_channels=_out_channels,
-                    #     out_channels=_out_channels,
-                    #     expansion=4,
-                    #     stride=1,
-                    #     dilation=1,
-                    #     style=self.style,
-                    #     avg_down=self.avg_down,
-                    #     with_cp=with_cp,
-                    #     conv_cfg=conv_cfg,
-                    #     with_bn=False,
-                    #     norm_cfg=norm_cfg,
-                    #     drop_path_rate=drop_path_rate)
-                    for j in range(self.num_random_block):
-                        random_layer = RandomBlock(k=self.random_block_k)
-                        layer_name = f'random_block{j+1}'
+            # add random block
+            if i in self.random_block_location:
+                idx = self.random_block_location.index(i)
+                if self.num_random_block[idx] > 0:
+                    for j in range(self.num_random_block[idx]):
+                        random_layer = RandomBlock(k=self.random_block_k[idx])
+                        layer_name = f'random_block{i}_{j+1}'
                         self.add_module(layer_name, random_layer)
             _in_channels = _out_channels
             _out_channels *= 2
@@ -843,12 +838,13 @@ class ResNet(BaseBackbone):
         for i, layer_name in enumerate(self.res_layers):
             res_layer = getattr(self, layer_name)
             x = res_layer(x)
-            if self.num_random_block !=0:
-                if i == 2:
+            if i in self.random_block_location:
+                idx = self.random_block_location.index(i)
+                if self.num_random_block[idx] != 0:
                     # print("Before Random Block:", x.mean())
-                    if self.num_random_block > 0:
-                        for j in range(self.num_random_block):
-                            random_layer = getattr(self, f'random_block{j+1}')
+                    if self.num_random_block[idx] > 0:
+                        for j in range(self.num_random_block[idx]):
+                            random_layer = getattr(self, f'random_block{i}_{j+1}')
                             x = random_layer(x)
                             # print(f"After Random Block {j+1}:", x.mean())
                     else:
