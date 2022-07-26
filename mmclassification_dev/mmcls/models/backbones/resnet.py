@@ -299,9 +299,9 @@ class RandomBlock(BaseModule):
         # # noise = torch.randn_like(x) / self.k
         # # print("Noise norm:", noise.abs().mean())
         # # assert False
-        x = (x - x.mean()) / (x.std() + 1e-9)
-        out = self.non_linear(x + noise)
-        # out = x+noise
+        out = x+noise
+        out = (out - out.mean()) / (out.std() + 1e-9)
+        out = self.non_linear(out)
         # x-=x.mean()*0.1
         # out = self.non_linear(x)
         return out
