@@ -292,14 +292,14 @@ class RandomBlock(BaseModule):
     def forward(self, x):
         # (torch.rand_like(x) - 0.5) ~ U[-0.5, 0.5)
         # print("Signal norm:", x.abs().mean())
-        # noise = (torch.rand_like(x) - 0.5) / self.k
+        noise = (torch.rand_like(x) - 0.5) / self.k
         # # noise = torch.randn_like(x) / self.k
         # # print("Noise norm:", noise.abs().mean())
         # # assert False
         # out = self.non_linear(x + noise)
-        # # out = x+noise
-        x-=x.mean()*0.1
-        out = self.non_linear(x)
+        out = x+noise
+        # x-=x.mean()*0.1
+        # out = self.non_linear(x)
         return out
 
 
