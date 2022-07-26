@@ -11,6 +11,7 @@ from mmcv.utils.parrots_wrapper import _BatchNorm
 
 from ..builder import BACKBONES
 from .base_backbone import BaseBackbone
+from functools import partial
 
 eps = 1.0e-5
 
@@ -288,6 +289,8 @@ class RandomBlock(BaseModule):
             self.non_linear = torch.nn.Identity()
         elif non_linear == 'relu':
             self.non_linear = torch.nn.functional.relu
+        elif non_linear == 'l_relu':
+            self.non_linear = partial(torch.nn.functional.leaky_relu, negative_slope=0.1)
 
     def forward(self, x):
         # (torch.rand_like(x) - 0.5) ~ U[-0.5, 0.5)
@@ -296,8 +299,8 @@ class RandomBlock(BaseModule):
         # # noise = torch.randn_like(x) / self.k
         # # print("Noise norm:", noise.abs().mean())
         # # assert False
-        # out = self.non_linear(x + noise)
-        out = x+noise
+        out = self.non_linear(x + noise)
+        # out = x+noise
         # x-=x.mean()*0.1
         # out = self.non_linear(x)
         return out
