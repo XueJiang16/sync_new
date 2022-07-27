@@ -5,18 +5,23 @@ import numpy as np
 
 from .base_dataset import BaseDataset
 from .builder import DATASETS
+from .cifar import CIFAR10
 
 @DATASETS.register_module()
-class IMBALANCECIFAR10(torchvision.datasets.CIFAR10):
+class IMBALANCECIFAR10(CIFAR10):
     cls_num = 10
 
-    def __init__(self, root, imb_type='exp', imb_factor=0.01, rand_number=0, train=True,
-                 transform=None, target_transform=None,
-                 download=False):
-        super(IMBALANCECIFAR10, self).__init__(root, train, transform, target_transform, download)
+    def __init__(self, data_prefix, pipeline, test_mode=True, imb_type='exp', imb_factor=0.01, rand_number=0):
+        super(IMBALANCECIFAR10, self).__init__(data_prefix=data_prefix, test_mode=test_mode, pipeline=pipeline)
         np.random.seed(rand_number)
         img_num_list = self.get_img_num_per_cls(self.cls_num, imb_type, imb_factor)
         self.gen_imbalanced_data(img_num_list)
+        self.data_infos = []
+        for img, gt_label in zip(self.data, self.targets):
+            gt_label = np.array(gt_label, dtype=np.int64)
+            info = {'img': img, 'gt_label': gt_label}
+            self.data_infos.append(info)
+        # return data_infos
 
     def get_img_num_per_cls(self, cls_num, imb_type, imb_factor):
         img_max = len(self.data) / cls_num
@@ -80,16 +85,3 @@ class IMBALANCECIFAR100(IMBALANCECIFAR10):
         'md5': '7973b15100ade9c7d40fb424638fde48',
     }
     cls_num = 100
-
-
-if __name__ == '__main__':
-    transform = transforms.Compose(
-        [transforms.ToTensor(),
-         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
-    trainset = IMBALANCECIFAR100(root='./data', train=True,
-                                 download=True, transform=transform)
-    trainloader = iter(trainset)
-    data, label = next(trainloader)
-    import pdb;
-
-    pdb.set_trace()
