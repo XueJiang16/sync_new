@@ -5,3 +5,5 @@ dataset/ood_data/*
 checkpoints
 *.pth
 *.pdf
+*.pkl
+*.tar.gz
