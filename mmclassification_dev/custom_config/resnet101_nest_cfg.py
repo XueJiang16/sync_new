@@ -1,4 +1,4 @@
-method_name = 'GradNorm'
+method_name = 'KLDiv'
 model_name = 'resnet101'
 pipline = [dict(type='Collect', keys=['img', 'type'])]
 
@@ -8,6 +8,7 @@ checkpoint_list = ['/data/csxjiang/ood_ckpt/ood_ckpt_other/LT_a{}/epoch_100.pth'
                    for x in range(2, 9)]
 multi_cfg_list = [train_dataset_list, target_file_list, checkpoint_list]
 len_var_cfg = None
+quick_test = False
 for item in multi_cfg_list:
     if len_var_cfg is None:
         len_var_cfg = len(item)
@@ -47,13 +48,14 @@ for train_data, target_file, ckpt in zip(*multi_cfg_list):
             )
         ),
         data = dict(
-            samples_per_gpu=1,
-            workers_per_gpu=1,
+            samples_per_gpu=256,
+            workers_per_gpu=4,
             id_data=dict(
                 name='ImageNet',
                 type='TxtDataset',
                 path='/data/csxjiang/val',
                 data_ann='/data/csxjiang/meta/val_labeled.txt',
+                len_limit=5000 if quick_test else -1,
                 pipeline=pipline),
             # id_data=dict(
             #     type='JsonDataset',
@@ -75,21 +77,25 @@ for train_data, target_file, ckpt in zip(*multi_cfg_list):
                     name='iNaturalist',
                     type='FolderDataset',
                     path='/data/csxjiang/ood_data/iNaturalist/images',
+                    len_limit=1000 if quick_test else -1,
                     pipeline=pipline),
                 dict(
                     name='SUN',
                     type='FolderDataset',
                     path='/data/csxjiang/ood_data/SUN/images',
+                    len_limit=1000 if quick_test else -1,
                     pipeline=pipline),
                 dict(
                     name='Places',
                     type='FolderDataset',
                     path='/data/csxjiang/ood_data/Places/images',
+                    len_limit=1000 if quick_test else -1,
                     pipeline=pipline),
                 dict(
                     name='Textures',
                     type='FolderDataset',
                     path='/data/csxjiang/ood_data/Textures/dtd/images_collate',
+                    len_limit=1000 if quick_test else -1,
                     pipeline=pipline),
             ],
 

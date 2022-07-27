@@ -124,6 +124,8 @@ def tune_mahalanobis_hyperparams(args, model, num_classes, train_loader, val_loa
 
         model.zero_grad()
         inputs = data.clone().requires_grad_(True)
+
+        # print(inputs.shape)
         output, _ = model(inputs)
         loss = criterion(output, target)
         loss.backward()

@@ -37,8 +37,8 @@ class DatasetWithMeta(Dataset):
         try:
             img = pil_loader(filename)
         except:
-            print(filename)
-            return self.__getitem__(random.randint(0, self.__len__() - 1))
+            raise RuntimeError("Failed to get file {}".format(filename))
+            # return self.__getitem__(random.randint(0, self.__len__() - 1))
 
         # transform
         if self.transform is not None:
