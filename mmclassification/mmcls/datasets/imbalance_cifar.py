@@ -11,7 +11,7 @@ from .cifar import CIFAR10
 class IMBALANCECIFAR10(CIFAR10):
     cls_num = 10
 
-    def __init__(self, data_prefix, pipeline, test_mode=True, imb_type='exp', imb_factor=0.01, rand_number=0):
+    def __init__(self, data_prefix, pipeline, test_mode=False, imb_type='exp', imb_factor=0.01, rand_number=0):
         super(IMBALANCECIFAR10, self).__init__(data_prefix=data_prefix, test_mode=test_mode, pipeline=pipeline)
         np.random.seed(rand_number)
         img_num_list = self.get_img_num_per_cls(self.cls_num, imb_type, imb_factor)
