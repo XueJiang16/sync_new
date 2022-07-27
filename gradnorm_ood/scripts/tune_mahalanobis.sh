@@ -7,7 +7,7 @@ python3 tune_mahalanobis_hyperparameter.py \
 --name tune_mahalanobis \
 --model_path ${CKPT} \
 --logdir ${OUT_DIR} \
---datadir /mapai/haowenguo/ILSVRC/Data/CLS-LOC/train \
+--datadir /data/csxjiang/ILSVRC/Data/CLS-LOC/train \
 --train_list ${ID_FILE} \
---val_list /mapai/haowenguo/ILSVRC/Data/CLS-LOC/meta/val_labeled.txt \
+--val_list /data/csxjiang/meta/val_labeled.txt \
 --batch 32

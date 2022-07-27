@@ -29,7 +29,7 @@ def mktrainval(args, logger):
         tv.transforms.ToTensor(),
         tv.transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
     ])
-    val_datafolder = '/mapai/haowenguo/ILSVRC/Data/CLS-LOC/val'
+    val_datafolder = '/data/csxjiang/val'
     train_set = DatasetWithMeta(args.datadir, args.train_list, val_tx)
     valid_set = DatasetWithMeta(val_datafolder, args.val_list, val_tx)
 

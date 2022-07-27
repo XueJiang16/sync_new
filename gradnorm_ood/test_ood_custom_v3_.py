@@ -98,8 +98,8 @@ class IDDataset2(torch.utils.data.Dataset):
 
 def make_id_ood(args, logger):
     """Returns train and validation datasets."""
-    # crop = 480
-    crop = 224
+    crop = 480
+    # crop = 224
     val_tx = tv.transforms.Compose([
         tv.transforms.Resize((crop, crop)),
         tv.transforms.ToTensor(),
