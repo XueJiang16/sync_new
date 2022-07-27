@@ -289,8 +289,10 @@ def main(args):
     model = model.cuda()
 
     logger.info('Tuning hyper-parameters...')
+    # sample_mean, precision, best_regressor, best_magnitude \
+    #     = tune_mahalanobis_hyperparams(args, model, len(val_set.classes), train_loader, val_loader, logger)
     sample_mean, precision, best_regressor, best_magnitude \
-        = tune_mahalanobis_hyperparams(args, model, len(val_set.classes), train_loader, val_loader, logger)
+        = tune_mahalanobis_hyperparams(args, model, 1000, train_loader, val_loader, logger)
 
     logger.info('saving results...')
     save_dir = os.path.join(args.logdir, args.name)
