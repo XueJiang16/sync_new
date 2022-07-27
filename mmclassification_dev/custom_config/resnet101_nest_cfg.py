@@ -1,4 +1,4 @@
-method_name = 'KLDiv'
+method_name = 'GradNorm'
 model_name = 'resnet101'
 pipline = [dict(type='Collect', keys=['img', 'type'])]
 
@@ -47,8 +47,8 @@ for train_data, target_file, ckpt in zip(*multi_cfg_list):
             )
         ),
         data = dict(
-            samples_per_gpu=128,
-            workers_per_gpu=4,
+            samples_per_gpu=1,
+            workers_per_gpu=1,
             id_data=dict(
                 name='ImageNet',
                 type='TxtDataset',
