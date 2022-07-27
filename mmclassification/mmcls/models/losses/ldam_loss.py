@@ -22,7 +22,7 @@ class LDAMLoss(nn.Module):
         for i in range(num_classes):
             cat_num = int(label_stat[i])
             cls_num_list[i] = cat_num
-
+        cls_num_list = [1]*num_classes
         m_list = 1.0 / np.sqrt(np.sqrt(cls_num_list))
         m_list = m_list * (max_m / np.max(m_list))
         m_list = torch.cuda.FloatTensor(m_list)
