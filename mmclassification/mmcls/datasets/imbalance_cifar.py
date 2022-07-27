@@ -3,7 +3,10 @@ import torchvision
 import torchvision.transforms as transforms
 import numpy as np
 
+from .base_dataset import BaseDataset
+from .builder import DATASETS
 
+@DATASETS.register_module()
 class IMBALANCECIFAR10(torchvision.datasets.CIFAR10):
     cls_num = 10
 
