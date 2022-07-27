@@ -22,7 +22,7 @@ class LDAMLoss(nn.Module):
         for i in range(num_classes):
             cat_num = int(label_stat[i])
             cls_num_list[i] = cat_num
-        cls_num_list = [1]*num_classes
+
         m_list = 1.0 / np.sqrt(np.sqrt(cls_num_list))
         m_list = m_list * (max_m / np.max(m_list))
         m_list = torch.cuda.FloatTensor(m_list)
@@ -41,6 +41,7 @@ class LDAMLoss(nn.Module):
         x_m = x - batch_m
 
         output = torch.where(index, x_m, x)
-        loss = F.cross_entropy(self.s * output, target, weight=self.weight, reduction='none')
+        # loss = F.cross_entropy(self.s * output, target, weight=self.weight, reduction='none')
+        loss = F.cross_entropy(self.s * output, target, weight=None, reduction='none')
         loss = loss.sum() / avg_factor
         return loss
