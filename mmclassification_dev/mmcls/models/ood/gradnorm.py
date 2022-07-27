@@ -185,10 +185,11 @@ class KLDiv(GradNorm):
         if "type" in input:
             type = input['type']
             del input['type']
-        self.classifier.zero_grad()
-        outputs = self.classifier(return_loss=False, softmax=False, post_process=False, **input)
-        targets = self.target
-        outputs = outputs / self.temperature
-        kl_score = torch.sum(torch.mean(-targets * self.logsoftmax(outputs), dim=-1))
+        with torch.no_grad():
+            self.classifier.zero_grad()
+            outputs = self.classifier(return_loss=False, softmax=False, post_process=False, **input)
+            targets = self.target
+            outputs = outputs / self.temperature
+            kl_score = torch.sum(torch.mean(-targets * self.logsoftmax(outputs), dim=-1))
         return kl_score, type
 
