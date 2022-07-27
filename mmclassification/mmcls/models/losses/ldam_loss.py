@@ -31,7 +31,7 @@ class LDAMLoss(nn.Module):
         self.s = s
         self.weight = weight
 
-    def forward(self, x, target):
+    def forward(self, x, target, **kwargs):
         index = torch.zeros_like(x, dtype=torch.uint8)
         index.scatter_(1, target.data.view(-1, 1), 1)
 
@@ -41,4 +41,6 @@ class LDAMLoss(nn.Module):
         x_m = x - batch_m
 
         output = torch.where(index, x_m, x)
-        return F.cross_entropy(self.s * output, target, weight=self.weight)
+        loss = F.cross_entropy(self.s * output, target, weight=self.weight)
+        print(loss.shape)
+        return loss
