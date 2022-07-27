@@ -9,5 +9,5 @@ python3 tune_mahalanobis_hyperparameter.py \
 --logdir ${OUT_DIR} \
 --datadir /data/csxjiang/ILSVRC/Data/CLS-LOC/train \
 --train_list ${ID_FILE} \
---val_list /data/csxjiang/meta/val_labeled.txt \
+--val_list /data/csxjiang/meta/val_labeled_5k.txt \
 --batch 32
