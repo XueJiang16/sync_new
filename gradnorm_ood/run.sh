@@ -4,14 +4,14 @@ list_method=('MSP')
 list_dataset=('SUN' 'Places' 'Textures' 'iNaturalist')
 # list_dataset=('Textures')
 # # list_ckpt=('mobile_LT_a8/epoch_600' 'resnet152_LT_a8/epoch_100' 'resnet50_LT_a8/epoch_100')
-for method in ${list_method[*]}
-do
-for dataset in ${list_dataset[*]}
-do
+#for method in ${list_method[*]}
+#do
+#for dataset in ${list_dataset[*]}
+#do
 # for i in {1,2,3,4,5,6,7,8,9,10}
 # do
-bash ./custom_test_v3.sh $method $dataset /data/csxjiang/ood_ckpt/ood_ckpt_other/resnet101_batch256_imagenet.pth \
-    checkpoint_balanced/resnet101/ /data/csxjiang/meta/train_labeled.txt 0
+#bash ./custom_test_v3.sh $method $dataset /data/csxjiang/ood_ckpt/ood_ckpt_other/resnet101_batch256_imagenet.pth \
+#    checkpoint_balanced/resnet101/ /data/csxjiang/meta/train_labeled.txt 0
 # ./custom_test_v4.sh $method $dataset /mapai/haowenguo/ckpt/ood_ckpt/ckpt/inat/epoch_90.pth \
 #     checkpoint0524/inat_res101_90/$method /mapai/haowenguo/data/ood_data/inat/train2018.json 0 
 # ./custom_test_v4.sh $method $dataset /mapai/haowenguo/ckpt/ood_ckpt/ckpt/inat/epoch_95.pth \
@@ -27,8 +27,10 @@ bash ./custom_test_v3.sh $method $dataset /data/csxjiang/ood_ckpt/ood_ckpt_other
 # # ./custom_test_v3.sh $method $dataset /mapai/haowenguo/ckpt/ood_ckpt/ckpt/resnet101_imagnet10%_100e.pth \
 # #     checkpoint0516/resnet101_balanced/$method /mapai/haowenguo/ILSVRC/Data/CLS-LOC/meta/train_labeled_10percent.txt 0 \
 # done
-done
-done
+#done
+#done
+bash ./scripts/tune_mahalanobis.sh ./ood_ckpt/mmcls_offical/resnet101_8xb32_in1k_20210831-539c63f8.pth \
+    ./maha_ckpts /data/csxjiang/meta/train_labeled.txt
 
 # for method in ${list_method[*]}
 # do
