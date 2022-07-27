@@ -262,6 +262,8 @@ def tune_mahalanobis_hyperparams(args, model, num_classes, train_loader, val_loa
 
     logger.info('Best Logistic Regressor params: {} {}'.format(best_regressor.coef_, best_regressor.intercept_))
     logger.info('Best magnitude: {}'.format(best_magnitude))
+    sample_mean = [s.cpu() for s in sample_mean]
+    precision = [s.cpu() for s in precision]
 
     return sample_mean, precision, best_regressor, best_magnitude
 
@@ -301,6 +303,8 @@ def main(args):
 
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
+
+
 
     np.save(os.path.join(save_dir, 'results'),
             np.array([sample_mean, precision, best_regressor.coef_, best_regressor.intercept_, best_magnitude]))
