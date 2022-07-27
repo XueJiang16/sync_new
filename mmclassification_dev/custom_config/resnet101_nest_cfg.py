@@ -1,4 +1,4 @@
-method_name = 'GradNorm'
+method_name = 'KLDiv'
 model_name = 'resnet101'
 pipline = [dict(type='Collect', keys=['img', 'type'])]
 
