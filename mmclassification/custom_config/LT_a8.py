@@ -2,7 +2,7 @@ model = dict(
     type='ImageClassifier',
     backbone=dict(
         type='ResNet',
-        depth=101,
+        depth=50,
         num_stages=4,
         out_indices=(3, ),
         style='pytorch'),
@@ -11,17 +11,17 @@ model = dict(
         type='LinearClsHead',
         num_classes=1000,
         in_channels=2048,
-        loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        loss=dict(type='LDAMLoss', meta_file='/data/csxjiang/meta/train_LT_a8.txt'),
         topk=(1, 5)))
 
 data = dict(
     samples_per_gpu=32,
-    workers_per_gpu=2,
+    workers_per_gpu=4,
     train=dict(
         type='ImageNet',
-        data_prefix='/mapai/haowenguo/ILSVRC/Data/CLS-LOC/train',
+        data_prefix='/data/csxjiang/ILSVRC/Data/CLS-LOC/train',
         ann_file=
-        '/mapai/haowenguo/ILSVRC/Data/CLS-LOC/meta/train_LT_a8.txt',
+        '/data/csxjiang/meta/train_LT_a8.txt',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(type='RandomResizedCrop', size=224),
@@ -37,9 +37,9 @@ data = dict(
         ]),
     val=dict(
         type='ImageNet',
-        data_prefix='/mapai/haowenguo/ILSVRC/Data/CLS-LOC/val',
+        data_prefix='/data/csxjiang/ILSVRC/Data/CLS-LOC/val',
         ann_file=
-        '/mapai/haowenguo/ILSVRC/Data/CLS-LOC/meta/val_labeled.txt',
+        '/data/csxjiang/meta/val_labeled.txt',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(type='Resize', size=(256, -1)),
@@ -54,9 +54,9 @@ data = dict(
         ]),
     test=dict(
         type='ImageNet',
-        data_prefix='/mapai/haowenguo/ILSVRC/Data/CLS-LOC/val',
+        data_prefix='/data/csxjiang/ILSVRC/Data/CLS-LOC/val',
         ann_file=
-        '/mapai/haowenguo/ILSVRC/Data/CLS-LOC/meta/val_labeled.txt',
+        '/data/csxjiang/meta/val_labeled.txt',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(type='Resize', size=(256, -1)),
@@ -74,12 +74,12 @@ optimizer = dict(type='SGD', lr=0.1, momentum=0.9, weight_decay=0.0001)
 optimizer_config = dict(grad_clip=None)
 lr_config = dict(policy='step', step=[30, 60, 90])
 runner = dict(type='EpochBasedRunner', max_epochs=100)
-checkpoint_config = dict(interval=100)
+checkpoint_config = dict(interval=10)
 log_config = dict(interval=100, hooks=[dict(type='TextLoggerHook')])
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
-work_dir = './ckpt/LT_a8/'
+work_dir = './ckpt/res50_LDAM/'
 
