@@ -71,6 +71,8 @@ def tune_mahalanobis_hyperparams(args, model, num_classes, train_loader, val_loa
 
     if not os.path.exists(filename):
         sample_mean, precision = sample_estimator(model, num_classes, feature_list, train_loader)
+        sample_mean = sample_mean.cpu().numpy()
+        precision = precision.cpu().numpy()
         np.save(filename, np.array([sample_mean, precision]))
 
     sample_mean, precision = np.load(filename, allow_pickle=True)
