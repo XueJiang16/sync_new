@@ -1,4 +1,4 @@
-from .gradnorm import GradNorm, GradNormBatch, GradNormBatchScore, GradNormCos
+from .gradnorm import GradNorm, GradNormBatch, GradNormBatchScore, GradNormCos, KLDiv
 from .msp import MSP, MSPCustom
 from .odin import ODIN, ODINCustom
 from .energy import Energy, EnergyCustom
@@ -8,6 +8,6 @@ from .feature_level import PatchSim, FeatureMapSim
 from .aug_contrast import AugContrast
 
 __all__ = [
-    'GradNorm', 'GradNormBatch', 'GradNormBatchScore', 'MSP', 'MSPCustom', 'PatchSim', 'FeatureMapSim',
+    'GradNorm', 'GradNormBatch', 'GradNormBatchScore', 'MSP', 'MSPCustom', 'PatchSim', 'FeatureMapSim', 'KLDiv',
     'GradNormCos', 'ODIN', 'ODINCustom', 'Energy', 'EnergyCustom', 'Cosine', 'MeanStdDetector', 'AugContrast'
 ]

@@ -179,4 +179,21 @@ class GradNormCos(GradNorm):
         layer_grad_norm = torch.sum(torch.abs(layer_grad))
         return layer_grad_norm, type
 
+@OOD.register_module()
+class KLDiv(GradNorm):
+    def forward(self, **input):
+        if "type" in input:
+            type = input['type']
+            del input['type']
+        self.classifier.zero_grad()
+        img = input['img']
+        assert img.shape[0] == 1, "GradNorm backward implementation only supports batch = 1."
+        outputs = self.classifier(return_loss=False, softmax=False, post_process=False, **input)
+        # print("Self rank: {}, output device = {}".format(self.local_rank, outputs.device))
+        # assert False
+        # outputs, _ = self.classifier.simple_test(softmax=False, **input)
+        targets = self.target
+        outputs = outputs / self.temperature
+        kl_score = torch.sum(torch.mean(-targets * self.logsoftmax(outputs), dim=-1))
+        return kl_score, type
 

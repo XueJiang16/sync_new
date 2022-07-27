@@ -1,4 +1,4 @@
-method_name = 'MSPCustom'
+method_name = 'KLDiv'
 model_name = 'resnet101'
 pipline = [dict(type='Collect', keys=['img'])]
 
@@ -97,6 +97,6 @@ for train_data, target_file, ckpt in zip(*multi_cfg_list):
         dist_params = dict(backend='nccl'),
         log_level = 'CRITICAL',
         # log_level = 'INFO'
-        work_dir = './results/'
+        work_dir = './results/rebuttal'
     )
     multi_cfg.append(temp_cfg)
