@@ -186,7 +186,6 @@ class KLDiv(GradNorm):
             type = input['type']
             del input['type']
         with torch.no_grad():
-            self.classifier.zero_grad()
             outputs = self.classifier(return_loss=False, softmax=False, post_process=False, **input)
             targets = self.target
             outputs = outputs / self.temperature
