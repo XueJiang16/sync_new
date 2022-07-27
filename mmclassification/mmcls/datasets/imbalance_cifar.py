@@ -14,6 +14,8 @@ class IMBALANCECIFAR10(CIFAR10):
     def __init__(self, data_prefix, pipeline, test_mode=False, imb_type='exp', imb_factor=0.01, rand_number=0):
         super(IMBALANCECIFAR10, self).__init__(data_prefix=data_prefix, test_mode=test_mode, pipeline=pipeline)
         np.random.seed(rand_number)
+        self.data = self.imgs
+        self.targets = self.gt_labels
         img_num_list = self.get_img_num_per_cls(self.cls_num, imb_type, imb_factor)
         self.gen_imbalanced_data(img_num_list)
         self.data_infos = []
