@@ -29,8 +29,11 @@ list_dataset=('SUN' 'Places' 'Textures' 'iNaturalist')
 # done
 #done
 #done
-bash ./scripts/tune_mahalanobis.sh ./ood_ckpt/mmcls_offical/resnet101_8xb32_in1k_20210831-539c63f8.pth \
-    ./maha_ckpts /data/csxjiang/meta/train_labeled.txt
+#bash ./scripts/tune_mahalanobis.sh ./ood_ckpt/mmcls_offical/resnet101_8xb32_in1k_20210831-539c63f8.pth \
+#    ./maha_ckpts /data/csxjiang/meta/train_labeled.txt
+bash ./scripts/tune_mahalanobis.sh ./ood_ckpt/ood_ckpt_other/LT_a8/epoch_100.pth \
+    ./maha_ckpts/LT_a8 /data/csxjiang/meta/train_LT_a8.txt
+
 
 # for method in ${list_method[*]}
 # do
