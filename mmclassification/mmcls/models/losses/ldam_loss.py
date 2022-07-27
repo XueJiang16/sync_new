@@ -9,7 +9,7 @@ from collections import Counter
 
 @LOSSES.register_module()
 class LDAMLoss(nn.Module):
-    def __init__(self, meta_file, num_classes=1000, max_m=0.5, weight=None, s=30, **kwargs):
+    def __init__(self, meta_file, num_classes=1000, max_m=0.5, weight=None, s=1, **kwargs):
         super(LDAMLoss, self).__init__()
         cls_idx = []
         with open(meta_file, 'r') as f:
@@ -41,7 +41,7 @@ class LDAMLoss(nn.Module):
         x_m = x - batch_m
 
         output = torch.where(index, x_m, x)
-        # loss = F.cross_entropy(self.s * output, target, weight=self.weight, reduction='none')
-        loss = F.cross_entropy(self.s * output, target, weight=None, reduction='none')
+        loss = F.cross_entropy(self.s * output, target, weight=self.weight, reduction='none')
+        # loss = F.cross_entropy(self.s * output, target, weight=None, reduction='none')
         loss = loss.sum() / avg_factor
         return loss
