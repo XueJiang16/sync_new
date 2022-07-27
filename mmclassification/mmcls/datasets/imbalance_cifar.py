@@ -63,7 +63,7 @@ class IMBALANCECIFAR10(CIFAR10):
             cls_num_list.append(self.num_per_cls_dict[i])
         return cls_num_list
 
-
+@DATASETS.register_module()
 class IMBALANCECIFAR100(IMBALANCECIFAR10):
     """`CIFAR100 <https://www.cs.toronto.edu/~kriz/cifar.html>`_ Dataset.
     This is a subclass of the `CIFAR10` Dataset.
