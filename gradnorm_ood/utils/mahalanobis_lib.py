@@ -85,8 +85,7 @@ def sample_estimator(model, num_classes, feature_list, train_loader):
         # find inverse
         group_lasso.fit(X.cpu().numpy())
         temp_precision = group_lasso.precision_
-        # temp_precision = torch.from_numpy(temp_precision).float().cuda()
-        temp_precision = torch.from_numpy(temp_precision).float().cpu()
+        temp_precision = torch.from_numpy(temp_precision).float().cuda()
         precision.append(temp_precision)
 
     print('\n Training Accuracy:({:.2f}%)\n'.format(100. * correct / total))
