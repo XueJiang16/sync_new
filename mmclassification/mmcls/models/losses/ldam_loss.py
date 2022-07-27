@@ -9,7 +9,7 @@ from collections import Counter
 
 @LOSSES.register_module()
 class LDAMLoss(nn.Module):
-    def __init__(self, meta_file, num_classes=1000, max_m=0.5, weight=None, s=30):
+    def __init__(self, meta_file, num_classes=1000, max_m=0.5, weight=None, s=30, **kwargs):
         super(LDAMLoss, self).__init__()
         cls_idx = []
         with open(meta_file, 'r') as f:
