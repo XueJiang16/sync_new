@@ -85,6 +85,7 @@ def sample_estimator(model, num_classes, feature_list, train_loader):
         # find inverse
         group_lasso.fit(X.cpu().numpy())
         temp_precision = group_lasso.precision_
+        assert False
         # temp_precision = torch.from_numpy(temp_precision).float().cuda()
         temp_precision = torch.from_numpy(temp_precision).float().cpu()
         precision.append(temp_precision)

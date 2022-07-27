@@ -72,7 +72,6 @@ def tune_mahalanobis_hyperparams(args, model, num_classes, train_loader, val_loa
     if not os.path.exists(filename):
         sample_mean, precision = sample_estimator(model, num_classes, feature_list, train_loader)
         np.save(filename, np.array([sample_mean, precision]))
-    assert False
 
     sample_mean, precision = np.load(filename, allow_pickle=True)
     sample_mean = [s.cuda() for s in sample_mean]
