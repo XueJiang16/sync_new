@@ -1,4 +1,4 @@
-method_name = 'EnergyCustom'
+method_name = 'GradNormBatch'
 model_name = 'resnet50'
 train_dataset = 'LT_a8_LDAM'
 custom_name = None
@@ -6,9 +6,9 @@ if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
 else:
     readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
-quick_test = True
-# training_file = None
-training_file = '/data/csxjiang/meta/train_LT_a8.txt'
+quick_test = False
+training_file = None
+# training_file = '/data/csxjiang/meta/train_LT_a8.txt'
 model = dict(
     type=method_name,
     debug_mode=False,
@@ -36,7 +36,6 @@ model = dict(
             num_classes=1000,
             in_channels=2048,
             loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-            # loss=dict(type='LDAMLoss', meta_file=training_file),
             topk=(1, 5))
     )
 )
