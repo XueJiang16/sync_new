@@ -1,14 +1,14 @@
 method_name = 'Energy'
 model_name = 'resnet50'
-train_dataset = 'Balance'
+train_dataset = 'LT_a8_LDAM'
 custom_name = None
 if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
 else:
     readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
 quick_test = True
-training_file = None
-# training_file = '/data/csxjiang/meta/train_LT_a8.txt'
+# training_file = None
+training_file = '/data/csxjiang/meta/train_LT_a8.txt'
 model = dict(
     type=method_name,
     debug_mode=False,
@@ -17,7 +17,8 @@ model = dict(
     target_file=training_file,
     classifier=dict(
         type='ImageClassifier',
-        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
+        init_cfg=dict(type='Pretrained', checkpoint='../mmclassification/ckpt/res50_LDAM/epoch100.pth'),
+        # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
         # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ckpt/resnet50_LT_a8/epoch_100.pth'),
         backbone=dict(
             type='ResNet',
@@ -25,16 +26,17 @@ model = dict(
             num_stages=4,
             out_indices=(3,),
             style='pytorch',
-            random_block=[1],
-            random_block_k=[2.5],
-            random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
+            # random_block=[1],
+            # random_block_k=[2.5],
+            # random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
         ),
         neck=dict(type='GlobalAveragePooling'),
         head=dict(
             type='LinearClsHead',
             num_classes=1000,
             in_channels=2048,
-            loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+            # loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+            loss=dict(type='LDAMLoss', meta_file=training_file),
             topk=(1, 5))
     )
 )
@@ -102,4 +104,4 @@ data = dict(
 dist_params = dict(backend='nccl')
 log_level = 'CRITICAL'
 # log_level = 'INFO'
-work_dir = './results/'
+work_dir = './results/resnet50_LDAM'
