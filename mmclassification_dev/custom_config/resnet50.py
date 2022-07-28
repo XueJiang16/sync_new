@@ -1,4 +1,4 @@
-method_name = 'MSP'
+method_name = 'MSPCustom'
 model_name = 'resnet50'
 train_dataset = 'LT_a8_LDAM'
 custom_name = None
