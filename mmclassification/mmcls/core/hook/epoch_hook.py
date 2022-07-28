@@ -13,6 +13,4 @@ class EpochHook(Hook):
             runner (obj:`EpochBasedRunner`): Epoch based Runner.
         """
         curr_epoch = runner.epoch
-        print(runner.model)
-        assert False
-        runner.model.head.loss.set_drw_epoch(curr_epoch)
+        runner.model.module.head.loss.set_drw_epoch(curr_epoch)
