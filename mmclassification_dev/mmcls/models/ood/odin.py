@@ -6,6 +6,7 @@ from collections import Counter
 
 from ..builder import OOD
 from mmcls.models import build_classifier
+from .utils import add_noise
 
 
 @OOD.register_module()
@@ -55,7 +56,7 @@ class ODIN(BaseModule):
 
 @OOD.register_module()
 class ODINCustom(BaseModule):
-    def __init__(self, classifier, num_classes, temperature=1000, epsilon=0, target_file=None,**kwargs):
+    def __init__(self, classifier, num_classes, temperature=1000, epsilon=0, target_file=None, target_noise=0,**kwargs):
         super(ODINCustom, self).__init__()
         self.local_rank = os.environ['LOCAL_RANK']
         self.classifier = build_classifier(classifier)
@@ -80,6 +81,8 @@ class ODINCustom(BaseModule):
             self.target = torch.tensor(target).to("cuda:{}".format(self.local_rank)).unsqueeze(0)
         else:
             self.target = torch.ones((1, self.num_classes)).to("cuda:{}".format(self.local_rank)) / self.num_classes
+        if target_noise != 0:
+            self.target = add_noise(self.target, target_noise)
 
     def forward(self, **input):
         if "type" in input:
