@@ -6,6 +6,7 @@ from collections import Counter
 
 from ..builder import OOD
 from mmcls.models import build_classifier
+from .utils import add_noise
 
 
 @OOD.register_module()
