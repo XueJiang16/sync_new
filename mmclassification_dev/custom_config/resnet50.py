@@ -17,7 +17,7 @@ model = dict(
     target_file=training_file,
     classifier=dict(
         type='ImageClassifier',
-        init_cfg=dict(type='Pretrained', checkpoint='../mmclassification/ckpt/res50_LDAM/epoch100.pth'),
+        init_cfg=dict(type='Pretrained', checkpoint='.~/sync/mmclassification/ckpt/res50_LDAM/epoch100.pth'),
         # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
         # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ckpt/resnet50_LT_a8/epoch_100.pth'),
         backbone=dict(
