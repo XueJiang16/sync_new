@@ -1,7 +1,7 @@
 model = dict(
     type='ImageClassifier',
     backbone=dict(
-        type='ResNet',
+        type='ResNet_CIFAR',
         depth=18,
         num_stages=4,
         out_indices=(3, ),
