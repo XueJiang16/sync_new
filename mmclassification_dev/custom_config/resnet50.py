@@ -1,6 +1,6 @@
 method_name = 'GradNormBatch'
 model_name = 'resnet50'
-train_dataset = 'LT_a8_LDAM'
+train_dataset = 'LT_a8'
 custom_name = None
 if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
@@ -18,9 +18,9 @@ model = dict(
     target_noise=0.1,
     classifier=dict(
         type='ImageClassifier',
-        init_cfg=dict(type='Pretrained', checkpoint='~/sync/mmclassification/ckpt/res50_LDAM/epoch_100.pth'),
+        # init_cfg=dict(type='Pretrained', checkpoint='~/sync/mmclassification/ckpt/res50_LDAM/epoch_100.pth'),
         # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
-        # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ckpt/resnet50_LT_a8/epoch_100.pth'),
+        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ckpt/resnet50_LT_a8/epoch_100.pth'),
         backbone=dict(
             type='ResNet',
             depth=50,
