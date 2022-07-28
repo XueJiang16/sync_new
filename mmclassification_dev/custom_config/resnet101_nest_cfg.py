@@ -4,7 +4,7 @@ pipline = [dict(type='Collect', keys=['img', 'type'])]
 
 train_dataset_list = ['LT_a{}'.format(x) for x in range(2, 9)]
 # target_file_list = ['/data/csxjiang/meta/train_LT_a{}.txt'.format(x) for x in range(2, 9)]
-train_dataset_list = [None]*8
+target_file_list = [None]*8
 checkpoint_list = ['/data/csxjiang/ood_ckpt/ood_ckpt_other/LT_a{}/epoch_100.pth'.format(x)
                    for x in range(2, 9)]
 multi_cfg_list = [train_dataset_list, target_file_list, checkpoint_list]
