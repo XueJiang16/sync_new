@@ -59,7 +59,7 @@ optimizer_config = dict(grad_clip=None)
 lr_config = dict(policy='step', step=[100, 150])
 runner = dict(type='EpochBasedRunner', max_epochs=200)
 checkpoint_config = dict(interval=20)
-log_config = dict(interval=200, hooks=[dict(type='TextLoggerHook')])
+log_config = dict(interval=30, hooks=[dict(type='TextLoggerHook')])
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
 load_from = None
