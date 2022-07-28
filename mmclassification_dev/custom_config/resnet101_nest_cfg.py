@@ -104,6 +104,6 @@ for train_data, target_file, ckpt in zip(*multi_cfg_list):
         dist_params = dict(backend='nccl'),
         log_level = 'CRITICAL',
         # log_level = 'INFO'
-        work_dir = './results/rebuttal0727'
+        work_dir = './results/rebuttal0728'
     )
     multi_cfg.append(temp_cfg)
