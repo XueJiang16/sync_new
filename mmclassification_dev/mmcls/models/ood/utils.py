@@ -25,7 +25,7 @@ def add_noise(target, std_ratio):
     std_target = target.std()
     std_noise = std_ratio * std_target
     noise = torch.randn_like(target) * std_noise
-    target = noise
+    target += noise
     target[target < 0] = 0
     target = target / target.sum()
     return target
