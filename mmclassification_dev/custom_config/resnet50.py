@@ -15,6 +15,7 @@ model = dict(
     num_classes=1000,
     # temperature=1,
     target_file=training_file,
+    target_noise=0.1,
     classifier=dict(
         type='ImageClassifier',
         init_cfg=dict(type='Pretrained', checkpoint='~/sync/mmclassification/ckpt/res50_LDAM/epoch_100.pth'),
