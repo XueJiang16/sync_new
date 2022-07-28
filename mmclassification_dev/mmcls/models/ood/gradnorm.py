@@ -59,7 +59,7 @@ class GradNorm(BaseModule):
 
 @OOD.register_module()
 class GradNormBatch(BaseModule):
-    def __init__(self, classifier, num_classes, temperature=1, target_file=None, debug_mode=False,**kwargs):
+    def __init__(self, classifier, num_classes, temperature=1, target_file=None, debug_mode=False, target_noise=0, **kwargs):
         super(GradNormBatch, self).__init__()
         self.local_rank = os.environ['LOCAL_RANK']
         classifier['head']['require_features'] = True
@@ -87,6 +87,14 @@ class GradNormBatch(BaseModule):
             self.target = torch.tensor(target).to("cuda:{}".format(self.local_rank)).unsqueeze(0)
         else:
             self.target = torch.ones((1, self.num_classes)).to("cuda:{}".format(self.local_rank)) / self.num_classes
+        if target_noise != 0:
+            std_target = self.target.std()
+            std_noise = target_noise * std_target
+            noise = torch.randn_like(self.target) * std_noise
+            self.target += noise
+            self.target[self.target < 0] = 0
+            self.target = self.target / self.target.sum()
+
 
     def forward(self, **input):
         with torch.no_grad():
