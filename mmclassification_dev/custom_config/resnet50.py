@@ -51,7 +51,7 @@ data = dict(
         data_ann='/data/csxjiang/meta/val_labeled.txt',
         pipeline=pipline,
         len_limit=5000 if quick_test else -1,
-        train_label=training_file,
+        train_label=None,
     ),
     # id_data=dict(
     #     type='JsonDataset',
