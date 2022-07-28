@@ -3,9 +3,11 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
+import os
+from collections import Counter
 
 from ..builder import LOSSES
-from collections import Counter
+
 
 @LOSSES.register_module()
 class LDAMLoss(nn.Module):
@@ -30,6 +32,16 @@ class LDAMLoss(nn.Module):
         assert s > 0
         self.s = s
         self.weight = weight
+        self.cls_num_list = cls_num_list
+        self.local_rank = os.environ['LOCAL_RANK']
+
+    def set_drw_epoch(self, epoch):
+        idx = epoch // 80
+        betas = [0, 0.9999]
+        effective_num = 1.0 - np.power(betas[idx], self.cls_num_list)
+        per_cls_weights = (1.0 - betas[idx]) / np.array(effective_num)
+        per_cls_weights = per_cls_weights / np.sum(per_cls_weights) * len(self.cls_num_list)
+        self.weight = torch.FloatTensor(per_cls_weights).to("cuda:{}".format(self.local_rank))
 
     def forward(self, x, target, avg_factor):
         index = torch.zeros_like(x, dtype=torch.uint8)
