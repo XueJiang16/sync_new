@@ -14,3 +14,4 @@ class EpochHook(Hook):
         """
         curr_epoch = runner.epoch
         runner.model.head.loss.set_drw_epoch(curr_epoch)
+        assert False
