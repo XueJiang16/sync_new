@@ -6,7 +6,7 @@ from collections import Counter
 
 from ..builder import OOD
 from mmcls.models import build_classifier
-from .utils import print_category, print_topk
+from .utils import print_category, print_topk, add_noise
 
 
 @OOD.register_module()
@@ -88,13 +88,7 @@ class GradNormBatch(BaseModule):
         else:
             self.target = torch.ones((1, self.num_classes)).to("cuda:{}".format(self.local_rank)) / self.num_classes
         if target_noise != 0:
-            std_target = self.target.std()
-            std_noise = target_noise * std_target
-            noise = torch.randn_like(self.target) * std_noise
-            self.target += noise
-            self.target[self.target < 0] = 0
-            self.target = self.target / self.target.sum()
-
+            self.target = add_noise(self.target, target_noise)
 
     def forward(self, **input):
         with torch.no_grad():
