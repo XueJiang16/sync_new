@@ -1,4 +1,4 @@
-method_name = 'Energy'
+method_name = 'MSP'
 model_name = 'resnet50'
 train_dataset = 'LT_a8_LDAM'
 custom_name = None
