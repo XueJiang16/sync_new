@@ -104,4 +104,4 @@ data = dict(
 dist_params = dict(backend='nccl')
 log_level = 'CRITICAL'
 # log_level = 'INFO'
-work_dir = './results/resnet50_LDAM'
+work_dir = './results/resnet50_LDAM_DRW'
