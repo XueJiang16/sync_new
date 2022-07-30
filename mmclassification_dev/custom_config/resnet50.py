@@ -1,4 +1,4 @@
-method_name = 'EnergyCustom'
+method_name = 'MSPCustom'
 model_name = 'resnet50'
 train_dataset = 'LT_a8'
 custom_name = None
