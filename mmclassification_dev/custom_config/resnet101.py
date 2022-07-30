@@ -14,7 +14,7 @@ model = dict(
     num_classes=1000,
     # temperature=1,
     target_file=training_file,
-    target_noise=0.2,
+    target_noise=0.1,
     classifier=dict(
         type='ImageClassifier',
         init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ood_ckpt_other/LT_a8/epoch_100.pth'),
