@@ -1,4 +1,4 @@
-method_name = 'MSPCustom'
+method_name = 'ODINCustom'
 model_name = 'resnet101'
 train_dataset = 'LT_a8'
 custom_name = None
