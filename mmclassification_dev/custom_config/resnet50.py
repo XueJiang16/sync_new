@@ -1,4 +1,4 @@
-method_name = 'MSPCustom'
+method_name = 'ODINCustom'
 model_name = 'resnet50'
 train_dataset = 'LT_a8'
 custom_name = None
@@ -43,7 +43,7 @@ model = dict(
 # pipline =[dict(type='Collect', keys=['img'])]
 pipline =[dict(type='Collect', keys=['img', 'type'])]
 data = dict(
-    samples_per_gpu=128,
+    samples_per_gpu=32,
     workers_per_gpu=4,
     id_data=dict(
         name='ImageNet',
