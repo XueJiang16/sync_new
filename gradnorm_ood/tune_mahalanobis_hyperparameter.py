@@ -60,8 +60,6 @@ def tune_mahalanobis_hyperparams(args, model, num_classes, train_loader, val_loa
     temp_x = Variable(temp_x).cuda()
     temp_list = model(x=temp_x, layer_index='all')[1]
     num_output = len(temp_list)
-    print(num_output)
-    assert False
     feature_list = np.empty(num_output)
     count = 0
     for out in temp_list:
