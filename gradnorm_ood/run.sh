@@ -37,7 +37,7 @@ list_dataset=('SUN' 'Places' 'Textures' 'iNaturalist')
 for dataset in ${list_dataset[*]}
 do
 bash  ./custom_test_v3_.sh Mahalanobis $dataset ./ood_ckpt/ood_ckpt_other/LT_a8/epoch_100.pth \
-      checkpoint0801/test_maha /mapai/haowenguo/ILSVRC/Data/CLS-LOC/meta/train_LT_a8.txt 0 \
+      checkpoint0801/test_maha /data/csxjiang/meta/train_LT_a8.txt 0 \
       --mahalanobis_param_path ./maha_ckpts/test/tune_mahalanobis/
 done
 # for method in ${list_method[*]}
