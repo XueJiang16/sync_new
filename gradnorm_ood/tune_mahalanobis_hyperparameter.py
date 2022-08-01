@@ -78,7 +78,8 @@ def tune_mahalanobis_hyperparams(args, model, num_classes, train_loader, val_loa
     precision = [p.cuda() for p in precision]
 
     logger.info('train logistic regression model')
-    m = 500
+    # m = 500
+    m = 32
 
     train_in = []
     train_in_label = []
