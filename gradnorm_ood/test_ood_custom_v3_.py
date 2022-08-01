@@ -186,8 +186,8 @@ def run_eval_custom(model, in_loader, out_loader, logger, args, num_classes):
         sample_mean = [s.cuda() for s in sample_mean]
         precision = [p.cuda() for p in precision]
 
-        regressor = LogisticRegressionCV(cv=2).fit([[0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1], [1, 1, 1, 1]],
-                                                   [0, 0, 1, 1])
+        regressor = LogisticRegressionCV(cv=2).fit([[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [1, 1, 1, 1, 1], [1, 1, 1, 1, 1]],
+                                                   [0, 0, 1, 1, 1])
 
         regressor.coef_ = lr_weights
         regressor.intercept_ = lr_bias
@@ -195,6 +195,8 @@ def run_eval_custom(model, in_loader, out_loader, logger, args, num_classes):
         temp_x = torch.rand(2, 3, 480, 480)
         temp_x = Variable(temp_x).cuda()
         temp_list = model(x=temp_x, layer_index='all')[1]
+        num_output = len(temp_list)
+
         logger.info("Processing in-distribution data...")
         in_scores, id_labels = iterate_data_mahalanobis(in_loader, model, num_classes, sample_mean, precision,
                                                         num_output, magnitude, regressor)
