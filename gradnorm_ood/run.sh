@@ -32,13 +32,13 @@ list_method=('MSP')
 #export CUDA_VISIBLE_DEVICES=1
 #bash ./scripts/tune_mahalanobis.sh ./ood_ckpt/mmcls_offical/resnet101_8xb32_in1k_20210831-539c63f8.pth \
 #    ./maha_ckpts /data/csxjiang/meta/train_labeled.txt
-#bash ./scripts/tune_mahalanobis.sh ./ood_ckpt/ood_ckpt_other/LT_a8/epoch_100.pth \
-#    ./maha_ckpts/test /data/csxjiang/meta/train_labeled_1percent.txt
+bash ./scripts/tune_mahalanobis.sh ./ood_ckpt/ood_ckpt_other/LT_a8/epoch_100.pth \
+    ./maha_ckpts/a8 /data/csxjiang/meta/train_LT_a8.txt
 for dataset in ${list_dataset[*]}
 do
 bash  ./custom_test_v3_.sh Mahalanobis $dataset ./ood_ckpt/ood_ckpt_other/LT_a8/epoch_100.pth \
-      checkpoint0801/test_maha /data/csxjiang/meta/train_LT_a8.txt 0 \
-      --mahalanobis_param_path ./maha_ckpts/test/tune_mahalanobis/
+      checkpoint0801/maha_a8 /data/csxjiang/meta/train_LT_a8.txt 0 \
+      --mahalanobis_param_path ./maha_ckpts/a8/tune_mahalanobis/
 done
 # for method in ${list_method[*]}
 # do

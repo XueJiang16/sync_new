@@ -186,14 +186,11 @@ def run_eval_custom(model, in_loader, out_loader, logger, args, num_classes):
         precision = [p.cuda() for p in precision]
 
         regressor = LogisticRegressionCV(cv=2).fit([[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [1, 1, 1, 1, 1], [1, 1, 1, 1, 1]],
-                                                   [0, 0,  1, 1])
+                                                   [0, 0, 1, 1])
 
         regressor.coef_ = lr_weights
         regressor.intercept_ = lr_bias
 
-        print(lr_weights.shape)
-        print(lr_bias.shape)
-        assert False
         temp_x = torch.rand(2, 3, 480, 480)
         temp_x = Variable(temp_x).cuda()
         temp_list = model(x=temp_x, layer_index='all')[1]
