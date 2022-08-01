@@ -1,8 +1,8 @@
 # list_method=( 'MSP' 'ODIN' 'Energy' 'new' 'GradNorm')
 list_method=('MSP')
 
-#list_dataset=('SUN' 'Places' 'Textures' 'iNaturalist')
- list_dataset=('Textures')
+list_dataset=('SUN' 'Places' 'Textures' 'iNaturalist')
+# list_dataset=('Textures')
 # # list_ckpt=('mobile_LT_a8/epoch_600' 'resnet152_LT_a8/epoch_100' 'resnet50_LT_a8/epoch_100')
 #for method in ${list_method[*]}
 #do
