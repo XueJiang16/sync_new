@@ -192,7 +192,7 @@ def run_eval_custom(model, in_loader, out_loader, logger, args, num_classes):
         regressor.intercept_ = lr_bias
 
         print(lr_weights.shape)
-        print(lr_bias)
+        print(lr_bias.shape)
         assert False
         temp_x = torch.rand(2, 3, 480, 480)
         temp_x = Variable(temp_x).cuda()
