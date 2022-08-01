@@ -43,8 +43,7 @@ class IDDataset(torch.utils.data.Dataset):
         self.file_list.sort()
 
     def __len__(self):
-        # return len(self.file_list)
-        return 100
+        return len(self.file_list)
 
     def __getitem__(self, item):
         path = self.file_list[item]
