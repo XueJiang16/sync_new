@@ -401,8 +401,8 @@ def main(args):
         args.batch = 1
     # if args.score == 'ODIN':
     #     args.batch = 16
-    # if args.score == 'Mahalanobis':
-    #     args.batch = 8
+    if args.score == 'Mahalanobis':
+        args.batch = 8
     torch.set_default_tensor_type(torch.FloatTensor)
     torch.cuda.set_device(args.local_rank)
     assert torch.cuda.is_available()
