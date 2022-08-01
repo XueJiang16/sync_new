@@ -10,4 +10,4 @@ python3 tune_mahalanobis_hyperparameter.py \
 --datadir /data/csxjiang/ILSVRC/Data/CLS-LOC/train \
 --train_list ${ID_FILE} \
 --val_list /data/csxjiang/meta/val_labeled_tiny.txt \
---batch 2
+--batch 32
