@@ -202,6 +202,7 @@ def iterate_data_mahalanobis(data_loader, model, num_classes, sample_mean, preci
         #     break
         x = x.cuda()
         Mahalanobis_scores = get_Mahalanobis_score(x, model, num_classes, sample_mean, precision, num_output, magnitude)
+        print(Mahalanobis_scores.shape)
         scores = -regressor.predict_proba(Mahalanobis_scores)[:, 1]
         confs.extend(scores)
         cls.extend(y)
