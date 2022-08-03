@@ -81,7 +81,7 @@ log_config = dict(interval=10, hooks=[dict(type='TextLoggerHook')])
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
 load_from = None
-resume_from = None
+resume_from = './ckpt/res50_LDAM_0803/epoch_20.pth'
 workflow = [('train', 1)]
 work_dir = './ckpt/res50_LDAM_0803/'
 
