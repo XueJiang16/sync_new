@@ -83,5 +83,5 @@ log_level = 'INFO'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
-work_dir = './ckpt/res50_LDAM/'
+work_dir = './ckpt/res50_LDAM_0803/'
 
