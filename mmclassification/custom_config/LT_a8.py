@@ -71,7 +71,7 @@ data = dict(
             dict(type='Collect', keys=['img'])
         ]))
 # custom_hooks = [dict(type='EpochHook')]
-evaluation = dict(interval=50, metric='accuracy')
+evaluation = dict(interval=100, metric='accuracy')
 optimizer = dict(type='SGD', lr=0.1, momentum=0.9, weight_decay=0.0001)
 optimizer_config = dict(grad_clip=None)
 lr_config = dict(policy='step', step=[30, 60, 90])
@@ -81,7 +81,7 @@ log_config = dict(interval=10, hooks=[dict(type='TextLoggerHook')])
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
 load_from = None
-resume_from = './ckpt/res50_LDAM_0803/epoch_20.pth'
+resume_from = './ckpt/res50_LDAM_0803/epoch_50.pth'
 workflow = [('train', 1)]
 work_dir = './ckpt/res50_LDAM_0803/'
 
