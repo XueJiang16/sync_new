@@ -71,7 +71,7 @@ data = dict(
             dict(type='Collect', keys=['img'])
         ]))
 # custom_hooks = [dict(type='EpochHook')]
-evaluation = dict(interval=10, metric='accuracy')
+evaluation = dict(interval=50, metric='accuracy')
 optimizer = dict(type='SGD', lr=0.1, momentum=0.9, weight_decay=0.0001)
 optimizer_config = dict(grad_clip=None)
 lr_config = dict(policy='step', step=[30, 60, 90])
