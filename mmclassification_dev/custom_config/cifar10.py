@@ -1,4 +1,4 @@
-method_name = 'GradNormBatch'
+method_name = 'MSP'
 model_name = 'resnet18'
 train_dataset = 'cifar10'
 custom_name = None
