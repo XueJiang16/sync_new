@@ -48,7 +48,7 @@ train_pipeline = [
 test_pipeline = [
     dict(type='Normalize', **img_norm_cfg),
     dict(type='ImageToTensor', keys=['img']),
-    dict(type='Collect', keys=['img'])
+    dict(type='Collect', keys=['img', 'type'])
 ]
 
 data = dict(
