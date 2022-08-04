@@ -89,6 +89,7 @@ class BaseDataset(Dataset, metaclass=ABCMeta):
 
     def prepare_data(self, idx):
         results = copy.deepcopy(self.data_infos[idx])
+        results['type'] = 3
         return self.pipeline(results)
 
     def __len__(self):
