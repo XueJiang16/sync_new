@@ -216,12 +216,15 @@ def single_gpu_test_ood_score(model,
     if world_size > 1:
         dist.barrier()
     if rank == 0:
-        x = np.arange(1, 101, 1)
-        cat_scores = torch.cat(cat_scores).mean(dim=0).cpu().numpy()
+        x = np.arange(1, 11, 1)
+        # cat_scores = torch.cat(cat_scores).mean(dim=0).cpu().numpy()
         plt.figure(figsize=(8, 8))
-        plt.plot(x, cat_scores)
-        plt.ylim([0, 0.1])
-        plt.savefig("{}_score_.jpg".format(name))
+        cat_scores = torch.cat(cat_scores).permute(1, 0).cpu().numpy()
+        plt.boxplot(cat_scores)
+
+        # plt.plot(x, cat_scores)
+        plt.ylim([0, 0.3])
+        plt.savefig("{}_score.jpg".format(name))
         plt.close()
     results = torch.cat(results).cpu().numpy()
     return results, results
