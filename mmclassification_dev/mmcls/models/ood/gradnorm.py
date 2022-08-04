@@ -84,7 +84,6 @@ class GradNormBatch(BaseModule):
             #     cat_num = int(label_stat[i])
             #     cls_num[i] = cat_num
             cls_num = [5000, 2997, 1796, 1077, 645, 387, 232, 139, 83, 50]
-            cls_num = cls_num[::-1]
             target = cls_num / np.sum(cls_num)
             self.target = torch.tensor(target).to("cuda:{}".format(self.local_rank)).unsqueeze(0)
         else:
