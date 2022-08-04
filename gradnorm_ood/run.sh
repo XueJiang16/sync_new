@@ -39,7 +39,7 @@ do
 for dataset in ${list_dataset[*]}
 do
 bash  ./custom_test_v3_.sh Mahalanobis $dataset ./ood_ckpt/ood_ckpt_other/LT_a${i}/epoch_100.pth \
-      checkpoint0801/maha_a${i} /data/csxjiang/meta/train_LT_a${i}.txt 0 \
+      checkpoint0804/maha_a${i} /data/csxjiang/meta/train_LT_a${i}.txt 0 \
       --mahalanobis_param_path ./maha_ckpts/a${i}/tune_mahalanobis/
 done
 done
