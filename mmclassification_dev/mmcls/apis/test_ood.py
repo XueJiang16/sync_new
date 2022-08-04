@@ -220,10 +220,10 @@ def single_gpu_test_ood_score(model,
         x = np.arange(1, 11, 1)
         # cat_scores = torch.cat(cat_scores).mean(dim=0).cpu().numpy()
         plt.figure(figsize=(8, 8))
-        cat_scores = torch.cat(cat_scores).permute(1, 0).cpu().numpy().tolist()
-        cat_scores = [np.array(x) for x in cat_scores]
-        plt.boxplot(cat_scores)
-
+        cat_scores = torch.cat(cat_scores).cpu().numpy()
+        mean = cat_scores.mean(axis=0)
+        std = cat_scores.std(axis=0)
+        plt.errorbar(x, mean, yerr=std, fmt='o')
         # plt.plot(x, cat_scores)
         # plt.ylim([0, 0.3])
         plt.savefig("{}_score.jpg".format(name))
