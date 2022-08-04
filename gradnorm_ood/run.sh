@@ -34,8 +34,8 @@ list_dataset=('SUN' 'Places' 'Textures' 'iNaturalist')
 #    ./maha_ckpts /data/csxjiang/meta/train_labeled.txt
 for i in {2,3,4,5,6,7}
 do
-bash ./scripts/tune_mahalanobis.sh ./ood_ckpt/ood_ckpt_other/LT_a${i}/epoch_100.pth \
-    ./maha_ckpts/a${i} /data/csxjiang/meta/train_LT_a${i}.txt
+#bash ./scripts/tune_mahalanobis.sh ./ood_ckpt/ood_ckpt_other/LT_a${i}/epoch_100.pth \
+#    ./maha_ckpts/a${i} /data/csxjiang/meta/train_LT_a${i}.txt
 for dataset in ${list_dataset[*]}
 do
 bash  ./custom_test_v3_.sh Mahalanobis $dataset ./ood_ckpt/ood_ckpt_other/LT_a${i}/epoch_100.pth \
