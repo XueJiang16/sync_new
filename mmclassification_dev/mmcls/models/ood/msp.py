@@ -63,6 +63,10 @@ class MSPCustom(BaseModule):
             out_softmax = torch.nn.functional.softmax(outputs, dim=1)
             targets = self.target
             confs = out_softmax - targets
+            cos_sim = -out_softmax * targets
+            cos_sim = cos_sim.sum(1) / (torch.norm(out_softmax, dim=1) * torch.norm(targets, dim=1))
+            cos_sim = cos_sim.unsqueeze(1)
+            confs = confs * cos_sim
             confs, _ = torch.max(confs, dim=-1)
         return confs, type
 
