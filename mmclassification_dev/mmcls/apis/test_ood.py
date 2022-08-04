@@ -223,4 +223,4 @@ def single_gpu_test_ood_score(model,
         plt.savefig("{}_score.pdf".format(name))
         plt.close()
     results = torch.cat(results).cpu().numpy()
-    return results
+    return results, results
