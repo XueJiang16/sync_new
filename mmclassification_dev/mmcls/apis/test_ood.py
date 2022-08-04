@@ -225,7 +225,7 @@ def single_gpu_test_ood_score(model,
         plt.boxplot(cat_scores)
 
         # plt.plot(x, cat_scores)
-        plt.ylim([0, 0.3])
+        # plt.ylim([0, 0.3])
         plt.savefig("{}_score.jpg".format(name))
         plt.close()
     results = torch.cat(results).cpu().numpy()
