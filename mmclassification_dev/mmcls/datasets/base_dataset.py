@@ -41,7 +41,8 @@ class BaseDataset(Dataset, metaclass=ABCMeta):
                  pipeline,
                  classes=None,
                  ann_file=None,
-                 test_mode=False):
+                 test_mode=False,
+                 name=None):
         super(BaseDataset, self).__init__()
         self.data_prefix = expanduser(data_prefix)
         self.pipeline = Compose(pipeline)
