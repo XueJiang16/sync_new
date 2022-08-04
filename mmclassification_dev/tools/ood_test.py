@@ -154,7 +154,8 @@ def main():
         if os.environ['LOCAL_RANK'] == '0':
             print()
             print("Processing in-distribution data...")
-        outputs_id, type_id = single_gpu_test_ood(model, data_loader_id, 'ID')
+        outputs_id, type_id = single_gpu_test_ood_score(model, data_loader_id, 'ID')
+        # outputs_id, type_id = single_gpu_test_ood(model, data_loader_id, 'ID')
         in_scores = gather_tensors(outputs_id)
         in_scores = np.concatenate(in_scores, axis=0)
         # np.save('patchsim_imagenet.npy', in_scores)
@@ -168,7 +169,8 @@ def main():
             if os.environ['LOCAL_RANK'] == '0':
                 print()
                 print("Processing out-of-distribution data ({})...".format(ood_name))
-            outputs_ood, _ = single_gpu_test_ood(model, ood_set, ood_name)
+            outputs_ood, _ = single_gpu_test_ood_score(model, ood_set, ood_name)
+            # outputs_ood, _ = single_gpu_test_ood(model, ood_set, ood_name)
             out_scores = gather_tensors(outputs_ood)
             out_scores = np.concatenate(out_scores, axis=0)
             # np.save('patchsim_{}.npy'.format(ood_name), out_scores)

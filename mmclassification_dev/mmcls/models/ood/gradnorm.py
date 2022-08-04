@@ -151,6 +151,9 @@ class GradNormBatchScore(BaseModule):
 
     def forward(self, **input):
         with torch.no_grad():
+            if "type" in input:
+                type = input['type']
+                del input['type']
             outputs, features = self.classifier(return_loss=False, softmax=False, post_process=False, **input)
             U = torch.norm(features, p=1, dim=1)
             out_softmax = torch.nn.functional.softmax(outputs, dim=1)
