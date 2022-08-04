@@ -6,6 +6,7 @@ import tempfile
 import time
 
 import mmcv
+import numpy
 import numpy as np
 import torch
 import torch.distributed as dist
@@ -219,9 +220,8 @@ def single_gpu_test_ood_score(model,
         x = np.arange(1, 11, 1)
         # cat_scores = torch.cat(cat_scores).mean(dim=0).cpu().numpy()
         plt.figure(figsize=(8, 8))
-        cat_scores = torch.cat(cat_scores).permute(1, 0).cpu().numpy()
-        print(cat_scores.shape)
-        assert False
+        cat_scores = torch.cat(cat_scores).permute(1, 0).cpu().numpy().tolist()
+        cat_scores = [np.array(x) for x in cat_scores]
         plt.boxplot(cat_scores)
 
         # plt.plot(x, cat_scores)
