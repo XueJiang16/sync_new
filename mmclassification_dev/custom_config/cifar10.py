@@ -1,4 +1,4 @@
-method_name = 'EnergyCustom'
+method_name = 'Energy'
 model_name = 'resnet18'
 train_dataset = 'cifar10'
 custom_name = None
