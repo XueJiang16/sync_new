@@ -1,4 +1,4 @@
-method_name = 'ODIN'
+method_name = 'MSPCustom'
 model_name = 'resnet18'
 train_dataset = 'cifar10'
 custom_name = None
