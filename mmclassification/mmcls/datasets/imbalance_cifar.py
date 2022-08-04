@@ -25,7 +25,6 @@ class IMBALANCECIFAR10(CIFAR10):
             self.data_infos.append(info)
         print(img_num_list)
         assert False
-        # return data_infos
 
     def get_img_num_per_cls(self, cls_num, imb_type, imb_factor):
         img_max = len(self.data) / cls_num
