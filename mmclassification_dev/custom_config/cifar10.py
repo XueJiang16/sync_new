@@ -58,11 +58,11 @@ data = dict(
         type='CIFAR10',
         data_prefix='/data/csxjiang/cifar10',
         pipeline=test_pipeline),
-    ood_data=dict(
+    ood_data=[dict(
         type='CIFAR100',
         data_prefix='/data/csxjiang/cifar100',
         pipeline=test_pipeline,
-        test_mode=True))
+        test_mode=True)])
 
 
 dist_params = dict(backend='nccl')
