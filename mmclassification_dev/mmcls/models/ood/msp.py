@@ -36,17 +36,18 @@ class MSPCustom(BaseModule):
         self.classifier.eval()
         self.num_classes = num_classes
         if target_file is not None:
-            cls_idx = []
-            with open(target_file, 'r') as f:
-                for line in f.readlines():
-                    segs = line.strip().split(' ')
-                    cls_idx.append(int(segs[-1]))
-            cls_idx = np.array(cls_idx, dtype='int')
-            label_stat = Counter(cls_idx)
-            cls_num = [-1 for _ in range(num_classes)]
-            for i in range(num_classes):
-                cat_num = int(label_stat[i])
-                cls_num[i] = cat_num
+            # cls_idx = []
+            # with open(target_file, 'r') as f:
+            #     for line in f.readlines():
+            #         segs = line.strip().split(' ')
+            #         cls_idx.append(int(segs[-1]))
+            # cls_idx = np.array(cls_idx, dtype='int')
+            # label_stat = Counter(cls_idx)
+            # cls_num = [-1 for _ in range(num_classes)]
+            # for i in range(num_classes):
+            #     cat_num = int(label_stat[i])
+            #     cls_num[i] = cat_num
+            cls_num = [5000, 2997, 1796, 1077, 645, 387, 232, 139, 83, 50]
             target = cls_num / np.sum(cls_num)
             self.target = torch.tensor(target).to("cuda:{}".format(self.local_rank)).unsqueeze(0)
         else:
@@ -63,11 +64,11 @@ class MSPCustom(BaseModule):
             out_softmax = torch.nn.functional.softmax(outputs, dim=1)
             targets = self.target
             confs = out_softmax - targets
-            cos_sim = -out_softmax * targets
-            cos_sim = cos_sim.sum(1) / (torch.norm(out_softmax, dim=1) * torch.norm(targets, dim=1))
-            cos_sim = (1 + cos_sim) / 2
-            cos_sim = cos_sim.unsqueeze(1)
-            confs = confs * cos_sim
+            # cos_sim = -out_softmax * targets
+            # cos_sim = cos_sim.sum(1) / (torch.norm(out_softmax, dim=1) * torch.norm(targets, dim=1))
+            # cos_sim = (1 + cos_sim) / 2
+            # cos_sim = cos_sim.unsqueeze(1)
+            # confs = confs * cos_sim
             confs, _ = torch.max(confs, dim=-1)
         return confs, type
 
