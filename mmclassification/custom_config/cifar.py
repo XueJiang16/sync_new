@@ -1,16 +1,19 @@
 model = dict(
     type='ImageClassifier',
+    init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/resnet50_3rdparty'
+                                                '-mill_in21k_20220331-faac000b.pth'),
     backbone=dict(
         type='ResNet_CIFAR',
-        depth=18,
+        depth=50,
         num_stages=4,
         out_indices=(3, ),
-        style='pytorch'),
+        style='pytorch',
+        ),
     neck=dict(type='GlobalAveragePooling'),
     head=dict(
         type='LinearClsHead',
         num_classes=100,
-        in_channels=512,
+        in_channels=2048,
         loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
         topk=(1, 5)))
 
@@ -65,5 +68,5 @@ log_level = 'INFO'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
-work_dir = './ckpt/res18_cifar100/'
+work_dir = './ckpt/res50_pretrain21k_cifar100/'
 
