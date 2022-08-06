@@ -23,8 +23,7 @@ class IMBALANCECIFAR10(CIFAR10):
             gt_label = np.array(gt_label, dtype=np.int64)
             info = {'img': img, 'gt_label': gt_label}
             self.data_infos.append(info)
-        print(img_num_list)
-        assert False
+
 
     def get_img_num_per_cls(self, cls_num, imb_type, imb_factor):
         img_max = len(self.data) / cls_num
