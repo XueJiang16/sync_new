@@ -1,4 +1,4 @@
-method_name = 'EnergyCustom'
+method_name = 'ODINCustom'
 model_name = 'resnet50'
 train_dataset = 'cifar10'
 custom_name = None
