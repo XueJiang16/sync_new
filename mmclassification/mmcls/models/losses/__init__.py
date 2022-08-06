@@ -9,10 +9,11 @@ from .seesaw_loss import SeesawLoss
 from .utils import (convert_to_one_hot, reduce_loss, weight_reduce_loss,
                     weighted_loss)
 from .ldam_loss import LDAMLoss
+from .cb_loss import CBLoss
 
 __all__ = [
     'accuracy', 'Accuracy', 'asymmetric_loss', 'AsymmetricLoss',
     'cross_entropy', 'binary_cross_entropy', 'CrossEntropyLoss', 'reduce_loss',
     'weight_reduce_loss', 'LabelSmoothLoss', 'weighted_loss', 'FocalLoss',
-    'sigmoid_focal_loss', 'convert_to_one_hot', 'SeesawLoss', 'LDAMLoss'
+    'sigmoid_focal_loss', 'convert_to_one_hot', 'SeesawLoss', 'LDAMLoss', 'CBLoss'
 ]
