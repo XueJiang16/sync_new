@@ -12,7 +12,7 @@ model = dict(
     neck=dict(type='GlobalAveragePooling'),
     head=dict(
         type='LinearClsHead',
-        num_classes=100,
+        num_classes=10,
         in_channels=2048,
         loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
         topk=(1, 5)))
@@ -39,17 +39,17 @@ data = dict(
     samples_per_gpu=64,
     workers_per_gpu=4,
     train=dict(
-        type='IMBALANCECIFAR100',
-        data_prefix='/data/csxjiang/cifar100',
+        type='IMBALANCECIFAR10',
+        data_prefix='/data/csxjiang/cifar10',
         pipeline=train_pipeline),
     val=dict(
-        type='CIFAR100',
-        data_prefix='/data/csxjiang/cifar100',
+        type='CIFAR10',
+        data_prefix='/data/csxjiang/cifar10',
         pipeline=test_pipeline,
         test_mode=True),
     test=dict(
-        type='CIFAR100',
-        data_prefix='/data/csxjiang/cifar100',
+        type='CIFAR10',
+        data_prefix='/data/csxjiang/cifar10',
         pipeline=test_pipeline,
         test_mode=True))
 
@@ -68,5 +68,5 @@ log_level = 'INFO'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
-work_dir = './ckpt/res50_pretrain21k_cifar100/'
+work_dir = './ckpt/res50_pretrain21k_cifar10/'
 
