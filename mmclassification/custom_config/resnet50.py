@@ -96,11 +96,11 @@ data = dict(
             dict(type='ImageToTensor', keys=['img']),
             dict(type='Collect', keys=['img'])
         ]))
-evaluation = dict(interval=20, metric='accuracy')
-optimizer = dict(type='SGD', lr=0.1, momentum=0.9, weight_decay=0.0001)
+evaluation = dict(interval=100, metric='accuracy')
+optimizer = dict(type='SGD', lr=0.1, momentum=0.9, weight_decay=5e-3)
 optimizer_config = dict(grad_clip=None)
-lr_config = dict(policy='step', step=[30, 60, 90])
-runner = dict(type='EpochBasedRunner', max_epochs=100)
+lr_config = dict(policy='step', step=[60, 120, 180])
+runner = dict(type='EpochBasedRunner', max_epochs=200)
 checkpoint_config = dict(interval=50)
 log_config = dict(interval=10, hooks=[dict(type='TextLoggerHook')])
 dist_params = dict(backend='nccl')
@@ -108,4 +108,4 @@ log_level = 'INFO'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
-work_dir = './ckpt/resnet50_LT_a8/'
+work_dir = './ckpt/resnet50_LT_a8_LTR1/'
