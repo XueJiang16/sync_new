@@ -1,5 +1,5 @@
 method_name = 'GradNormBatch'
-model_name = 'resnet18'
+model_name = 'resnet50'
 train_dataset = 'cifar100'
 custom_name = None
 if custom_name is not None:
@@ -7,8 +7,8 @@ if custom_name is not None:
 else:
     readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
 quick_test = False
-# training_file = None
-training_file = '/data/csxjiang/meta/train_LT_a8.txt'
+training_file = None
+# training_file = '/data/csxjiang/meta/train_LT_a8.txt'
 model = dict(
     type=method_name,
     debug_mode=False,
@@ -18,10 +18,10 @@ model = dict(
     # target_noise=0.1,
     classifier=dict(
         type='ImageClassifier',
-        init_cfg=dict(type='Pretrained', checkpoint='~/sync/mmclassification/ckpt/res18_cifar100/epoch_200.pth'),
+        init_cfg=dict(type='Pretrained', checkpoint='~/sync/mmclassification/ckpt/res50_pretrain21k_cifar100/epoch_200.pth'),
         backbone=dict(
             type='ResNet_CIFAR',
-            depth=18,
+            depth=50,
             num_stages=4,
             out_indices=(3, ),
             style='pytorch'),
@@ -29,7 +29,7 @@ model = dict(
         head=dict(
             type='LinearClsHead',
             num_classes=100,
-            in_channels=512,
+            in_channels=2048,
             loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
             topk=(1, 5))))
 
@@ -71,5 +71,5 @@ data = dict(
 dist_params = dict(backend='nccl')
 log_level = 'CRITICAL'
 # log_level = 'INFO'
-work_dir = './results/resnet18_cifar100'
+work_dir = './results/resnet50_cifar100'
 
