@@ -1,4 +1,4 @@
-method_name = 'MSP'
+method_name = 'ODIN'
 model_name = 'resnet50'
 train_dataset = 'cifar100'
 custom_name = None
