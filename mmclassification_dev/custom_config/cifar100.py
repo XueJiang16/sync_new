@@ -1,4 +1,4 @@
-method_name = 'EnergyCustom'
+method_name = 'GradNormBatch'
 model_name = 'resnet50'
 train_dataset = 'cifar100'
 custom_name = None
