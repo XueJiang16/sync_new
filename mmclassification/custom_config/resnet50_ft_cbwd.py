@@ -100,7 +100,7 @@ data = dict(
 evaluation = dict(interval=1, metric='accuracy')
 optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.1)
 optimizer_config = dict(grad_clip=None)
-# lr_config = dict(policy='step', step=[60, 120, 180])
+lr_config = dict(policy='step', step=[11])
 runner = dict(type='EpochBasedRunner', max_epochs=10)
 checkpoint_config = dict(interval=10)
 log_config = dict(interval=10, hooks=[dict(type='TextLoggerHook')])
