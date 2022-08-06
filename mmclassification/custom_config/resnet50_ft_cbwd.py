@@ -106,7 +106,7 @@ checkpoint_config = dict(interval=10)
 log_config = dict(interval=10, hooks=[dict(type='TextLoggerHook')])
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-load_from = '/data/csxjiang/ood_ckpt/ckpt/resnet50_LT_a8/epoch_100.pth'
+load_from = './ckpt/resnet50_LT_a8_LTR1//epoch_200.pth'
 resume_from = None
 workflow = [('train', 1)]
 work_dir = './ckpt/resnet50_LT_a8_LTR2/'
