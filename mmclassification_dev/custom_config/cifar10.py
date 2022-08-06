@@ -1,4 +1,4 @@
-method_name = 'GradNormBatch'
+method_name = 'Cosine'
 model_name = 'resnet50'
 train_dataset = 'cifar10'
 custom_name = None
