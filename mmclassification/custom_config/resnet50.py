@@ -42,13 +42,13 @@ test_pipeline = [
     dict(type='Collect', keys=['img'])
 ]
 data = dict(
-    samples_per_gpu=32,
-    workers_per_gpu=2,
+    samples_per_gpu=32*4,
+    workers_per_gpu=2*2,
     train=dict(
         type='ImageNet',
-        data_prefix='/mapai/haowenguo/ILSVRC/Data/CLS-LOC/train',
+        data_prefix='/data/csxjiang/ILSVRC/Data/CLS-LOC/train',
         ann_file=
-        '/mapai/haowenguo/ILSVRC/Data/CLS-LOC/meta/train_LT_a8.txt',
+        '/data/csxjiang/meta/train_LT_a8.txt',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(type='RandomResizedCrop', size=224),
@@ -64,9 +64,9 @@ data = dict(
         ]),
     val=dict(
         type='ImageNet',
-        data_prefix='/mapai/haowenguo/ILSVRC/Data/CLS-LOC/val',
+        data_prefix='/data/csxjiang/ILSVRC/Data/CLS-LOC/val',
         ann_file=
-        '/mapai/haowenguo/ILSVRC/Data/CLS-LOC/meta/val_labeled.txt',
+        '/data/csxjiang/meta/val_labeled.txt',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(type='Resize', size=(256, -1)),
@@ -81,9 +81,9 @@ data = dict(
         ]),
     test=dict(
         type='ImageNet',
-        data_prefix='/mapai/haowenguo/ILSVRC/Data/CLS-LOC/val',
+        data_prefix='/data/csxjiang/ILSVRC/Data/CLS-LOC/val',
         ann_file=
-        '/mapai/haowenguo/ILSVRC/Data/CLS-LOC/meta/val_labeled.txt',
+        '/data/csxjiang/meta/val_labeled.txt',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(type='Resize', size=(256, -1)),
