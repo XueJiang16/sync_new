@@ -156,7 +156,6 @@ class ODINCustom(BaseModule):
             tmp = -targets * torch.nn.functional.log_softmax(outputs)
             kl_score = torch.mean(tmp, dim=-1)
             kl_score = kl_score.unsqueeze(1)
-            # confs = confs * sim
             nnOutputs = nnOutputs * kl_score
             confs, _ = torch.max(nnOutputs, dim=1)
             confs = confs.detach().clone()
