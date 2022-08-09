@@ -1,4 +1,4 @@
-method_name = 'KLDiv'
+method_name = 'EnergyCustom'
 model_name = 'resnet50'
 train_dataset = 'cifar10'
 custom_name = None
