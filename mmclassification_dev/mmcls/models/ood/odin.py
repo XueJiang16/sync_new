@@ -151,7 +151,12 @@ class ODINCustom(BaseModule):
             sim = - out_softmax * targets
             sim = torch.sum(sim, dim=1) / (torch.norm(out_softmax, dim=1) * torch.norm(targets, dim=1))
             sim = sim.unsqueeze(1)
-            nnOutputs = sim * nnOutputs
+            # nnOutputs = sim * nnOutputs
+
+            tmp = -targets * torch.nn.functional.log_softmax(outputs)
+            kl_score = torch.mean(tmp, dim=-1)
+            # confs = confs * sim
+            nnOutputs = nnOutputs * kl_score
             confs, _ = torch.max(nnOutputs, dim=1)
             confs = confs.detach().clone()
         return confs, type
