@@ -8,7 +8,7 @@ else:
     readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
 quick_test = False
 # training_file = None
-training_file = '/data/csxjiang/meta/train_LT_a8.txt'
+training_file = '/data/csxjiang/meta/cmo_imagenet_softmax.txt'
 model = dict(
     type=method_name,
     debug_mode=False,
