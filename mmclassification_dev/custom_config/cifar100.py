@@ -1,4 +1,4 @@
-method_name = 'MSPCustom'
+method_name = 'KLDiv'
 model_name = 'resnet50'
 train_dataset = 'cifar100'
 custom_name = None
