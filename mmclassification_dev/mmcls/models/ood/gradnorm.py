@@ -224,5 +224,7 @@ class KLDiv(GradNorm):
             targets = self.target
             outputs = outputs / self.temperature
             kl_score = torch.mean(-targets * self.logsoftmax(outputs), dim=-1)
+            print(kl_score.shape)
+            assert False
         return kl_score, type
 
