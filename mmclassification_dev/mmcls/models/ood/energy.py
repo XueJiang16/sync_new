@@ -103,10 +103,14 @@ class EnergyCustom(BaseModule):
             targets = self.target
             sim = -softmax_output * targets
             sim = sim.sum(1) / (torch.norm(softmax_output, dim=1) * torch.norm(targets, dim=1))
-            print(sim.shape)
+            tmp = -targets * torch.nn.functional.log_softmax(outputs)
+            print(tmp[0])
             assert False
-            # kl_score = torch.mean(-targets * torch.nn.functional.log_softmax(outputs), dim=-1)
+            tmp = tmp / tmp.sum(1)
+            kl_score = torch.mean(tmp, dim=-1)
 
-            confs = confs * sim
+
+            # confs = confs * sim
+            confs = confs * kl_score
         return confs, type
 
