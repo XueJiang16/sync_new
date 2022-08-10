@@ -8,8 +8,8 @@ else:
     readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
 quick_test = False
 # training_file = None
-# training_file = '/data/csxjiang/meta/cmo_imagenet_softmax.txt'
-training_file = '/data/csxjiang/meta/train_LT_a8.txt'
+training_file = '/data/csxjiang/meta/cmo_imagenet_softmax.txt'
+# training_file = '/data/csxjiang/meta/train_LT_a8.txt'
 
 model = dict(
     type=method_name,
@@ -22,7 +22,8 @@ model = dict(
         type='ImageClassifier',
         # init_cfg=dict(type='Pretrained', checkpoint='~/sync/mmclassification/ckpt/res50_LDAM/epoch_100.pth'),
         # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
-        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ckpt/resnet50_LT_a8/epoch_100.pth'),
+        # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ckpt/resnet50_LT_a8/epoch_100.pth'),
+        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ckpt/cmo_epoch400.pth'),
         backbone=dict(
             type='ResNet',
             depth=50,
