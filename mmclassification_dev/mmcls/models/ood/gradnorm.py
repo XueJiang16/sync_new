@@ -73,20 +73,20 @@ class GradNormBatch(BaseModule):
             if os.environ['LOCAL_RANK'] == '0':
                 print("*******DEBUG MODE********")
         if target_file is not None:
-            cls_idx = []
-            with open(target_file, 'r') as f:
-                for line in f.readlines():
-                    segs = line.strip().split(' ')
-                    cls_idx.append(int(segs[-1]))
-            cls_idx = np.array(cls_idx, dtype='int')
-            label_stat = Counter(cls_idx)
-            cls_num = [-1 for _ in range(num_classes)]
-            for i in range(num_classes):
-                cat_num = int(label_stat[i])
-                cls_num[i] = cat_num
+            # cls_idx = []
+            # with open(target_file, 'r') as f:
+            #     for line in f.readlines():
+            #         segs = line.strip().split(' ')
+            #         cls_idx.append(int(segs[-1]))
+            # cls_idx = np.array(cls_idx, dtype='int')
+            # label_stat = Counter(cls_idx)
+            # cls_num = [-1 for _ in range(num_classes)]
+            # for i in range(num_classes):
+            #     cat_num = int(label_stat[i])
+            #     cls_num[i] = cat_num
             # cls_num = [5000, 2997, 1796, 1077, 645, 387, 232, 139, 83, 50]
             # cls_num = [500, 477, 455, 434, 415, 396, 378, 361, 344, 328, 314, 299, 286, 273, 260, 248, 237, 226, 216, 206, 197, 188, 179, 171, 163, 156, 149, 142, 135, 129, 123, 118, 112, 107, 102, 98, 93, 89, 85, 81, 77, 74, 70, 67, 64, 61, 58, 56, 53, 51, 48, 46, 44, 42, 40, 38, 36, 35, 33, 32, 30, 29, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 15, 14, 13, 13, 12, 12, 11, 11, 10, 10, 9, 9, 8, 8, 7, 7, 7, 6, 6, 6, 6, 5, 5, 5, 5]
-            target = cls_num / np.sum(cls_num)
+            # target = cls_num / np.sum(cls_num)
             # target = [0.40870643, 0.24261187, 0.1396526,  0.09073718, 0.05235528, 0.02874834, 0.01950981, 0.01089936, 0.00369978, 0.00307862]
             # target = [0.04755090922117233, 0.045566413551568985, 0.04674213007092476, 0.04288483411073685,
             #           0.04729645326733589, 0.03862952068448067, 0.038489896804094315, 0.03444191813468933,
@@ -113,7 +113,7 @@ class GradNormBatch(BaseModule):
             #           0.0009549130918458104, 0.00013694827794097364, 0.0005274583236314356, 4.248924960847944e-05,
             #           0.0006339326500892639, 0.00010324336471967399, 0.00032026306143961847, 3.155545346089639e-05,
             #           0.00038130211760289967, 1.6452195268357173e-05, 9.576500451657921e-05, 0.00094736332539469]
-            # target = json.load(open(target_file))
+            target = json.load(open(target_file))
 
             self.target = torch.tensor(target).to("cuda:{}".format(self.local_rank)).unsqueeze(0)
         else:
