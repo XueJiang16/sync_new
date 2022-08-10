@@ -9,7 +9,7 @@ else:
 quick_test = False
 training_file = None
 # training_file = '/data/csxjiang/meta/cmo_imagenet_softmax.txt'
-# training_file = '/data/csxjiang/meta/train_LT_a8.txt'
+training_file = '/data/csxjiang/meta/train_LT_a8.txt'
 
 model = dict(
     type=method_name,
