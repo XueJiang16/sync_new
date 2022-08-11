@@ -177,7 +177,7 @@ def get_loader_out(args, dataset=('tim', 'noise'), config_type='default', split=
                 batch_size=batch_size, shuffle=True, num_workers=2)
         elif val_dataset == 'imagenet':
             val_ood_loader = torch.utils.data.DataLoader(
-                torchvision.datasets.ImageFolder(os.path.join('dataset/imagenet', 'val'), config.transform_test_largescale),
+                torchvision.datasets.ImageFolder(os.path.join('datasets/imagenet', 'val'), config.transform_test_largescale),
                 batch_size=config.batch_size, shuffle=True, **kwargs)
         elif val_dataset == 'noise':
             val_ood_loader = torch.utils.data.DataLoader(
