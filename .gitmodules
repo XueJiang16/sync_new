@@ -1,0 +1,3 @@
+[submodule "knn-ood"]
+	path = knn-ood
+	url = https://github.com/XueJiang16/knn-ood.git
