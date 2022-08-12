@@ -78,6 +78,8 @@ for K in [1000]:
     # index = faiss.IndexFlatL2(ftrain.shape[1])
     # index.add(ftrain[rand_ind])
     from torch_cluster import knn
+    ftrain = torch.tensor(ftrain[rand_ind], device='cuda:0')
+    ftest = torch.tensor(ftest, device='cuda:0')
 
     ################### Using KNN distance Directly ###################
     if True:
@@ -86,6 +88,7 @@ for K in [1000]:
         scores_in = -D[:,-1]
         all_results = []
         for ood_dataset, food in food_all.items():
+            food = torch.tensor(food, device='cuda:0')
             # D, _ = index.search(food, K)
             D = knn(ftrain, food, K)
             scores_ood_test = -D[:,-1]
