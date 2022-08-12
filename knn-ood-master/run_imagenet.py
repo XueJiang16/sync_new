@@ -75,16 +75,19 @@ for ood_dataset in args.out_datasets:
 ALPHA = 1.00
 for K in [1000]:
     rand_ind = np.random.choice(id_train_size, int(id_train_size * ALPHA), replace=False)
-    index = faiss.IndexFlatL2(ftrain.shape[1])
-    index.add(ftrain[rand_ind])
+    # index = faiss.IndexFlatL2(ftrain.shape[1])
+    # index.add(ftrain[rand_ind])
+    from torch_cluster import knn
 
     ################### Using KNN distance Directly ###################
     if True:
-        D, _ = index.search(ftest, K, )
+        # D, _ = index.search(ftest, K, )
+        D = knn(ftrain, ftest, K)
         scores_in = -D[:,-1]
         all_results = []
         for ood_dataset, food in food_all.items():
-            D, _ = index.search(food, K)
+            # D, _ = index.search(food, K)
+            D = knn(ftrain, food, K)
             scores_ood_test = -D[:,-1]
             results = metrics.cal_metric(scores_in, scores_ood_test)
             all_results.append(results)
