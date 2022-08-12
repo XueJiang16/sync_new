@@ -34,7 +34,7 @@ def get_args():
     parser.add_argument('--save-epoch', default=10, type=int,
                         help='save the model every save_epoch')
     parser.add_argument('--cal-metric', help='calculatse metric directly', action='store_true')
-    parser.add_argument('--gpu', default='0,1', type=str, help='gpu index')
+    parser.add_argument('--gpu', default='0', type=str, help='gpu index')
     parser.add_argument('--in-dist-only', help='only evaluate in-distribution', action='store_true')
     parser.add_argument('--out-dist-only', help='only evaluate out-distribution', action='store_true')
     parser.add_argument('--base-dir', default='output/ood_scores', type=str, help='result directory')
