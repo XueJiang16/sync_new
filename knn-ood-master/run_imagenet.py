@@ -84,13 +84,16 @@ for K in [1000]:
     ################### Using KNN distance Directly ###################
     if True:
         # D, _ = index.search(ftest, K, )
-        D = knn(ftrain, ftest, K)
-        scores_in = -D[:,-1]
+        I = knn(ftrain, ftest, K)[1]
+        D = I.reshape(ftest.shape[0], -1)[:, -1]
+        scores_in = -(((ftrain[D] - ftest)**2).sum(-1))**0.5
         all_results = []
         for ood_dataset, food in food_all.items():
             food = torch.tensor(food, device='cuda:0')
             # D, _ = index.search(food, K)
-            D = knn(ftrain, food, K)
+            I = knn(ftrain, food, K)[1]
+            D = I.reshape(food.shape[0], -1)[:, -1]
+            scores_in = -(((ftrain[D] - food) ** 2).sum(-1)) ** 0.5
             scores_ood_test = -D[:,-1]
             results = metrics.cal_metric(scores_in, scores_ood_test)
             all_results.append(results)
