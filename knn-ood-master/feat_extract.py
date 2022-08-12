@@ -37,7 +37,9 @@ begin = time.time()
 for split, in_loader in [('train', trainloaderIn), ('val', testloaderIn),]:
 
     cache_name = f"cache/{args.in_dataset}_{split}_{args.name}_in_alllayers.npy"
+    cache_dir = f"cache/"
     if FORCE_RUN or not os.path.exists(cache_name):
+        os.makedirs(cache_dir, exist_ok=True)
 
         feat_log = np.zeros((len(in_loader.dataset), sum(featdims)))
 
