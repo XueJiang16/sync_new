@@ -12,7 +12,14 @@ def get_model(args, num_classes, load_ckpt=True, load_epoch=None):
             model = resnet18(num_classes=num_classes, pretrained=True)
         elif args.model_arch == 'resnet50':
             from models.resnet import resnet50
-            model = resnet50(num_classes=num_classes, pretrained=True)
+            model = resnet50(num_classes=num_classes, pretrained=False)
+            if load_ckpt:
+                checkpoint = torch.load('/data/csxjiang/ood_ckpt/ckpt/resnet50_LT_a8/epoch_100.pth')
+                state_dict = checkpoint['state_dict']
+                state_dict = {str.replace(k, 'backbone.', ''): v for k, v in state_dict.items()}
+                state_dict = {str.replace(k, 'head.', ''): v for k, v in state_dict.items()}
+                state_dict = {str.replace(k, 'module.', ''): v for k, v in state_dict.items()}
+                model.load_state_dict(state_dict, strict=False)
         elif args.model_arch == 'resnet50-supcon':
             from models.resnet_supcon import SupConResNet
             model = SupConResNet(num_classes=num_classes)
