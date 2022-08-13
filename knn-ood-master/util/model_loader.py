@@ -6,7 +6,7 @@ import os
 import torch
 
 def get_model(args, num_classes, load_ckpt=True, load_epoch=None):
-    if args.in_dataset == 'imagenet' or args.in_dataset == 'imagnet_lta':
+    if args.in_dataset == 'imagenet' or args.in_dataset == 'imagenet_lta':
         if args.model_arch == 'resnet18':
             from models.resnet import resnet18
             model = resnet18(num_classes=num_classes, pretrained=True)
