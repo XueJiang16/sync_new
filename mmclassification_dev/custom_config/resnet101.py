@@ -1,6 +1,6 @@
 # method_list = ["GradNormBatch", "MSP", "Energy", "ODIN"]
 method_list = ["GradNormBatch", "MSPCustom", "EnergyCustom", "ODINCustom"]
-method_name = method_list[2]
+method_name = method_list[3]
 model_name = 'resnet101'
 train_dataset = 'a8'
 custom_name = None
@@ -39,7 +39,7 @@ model = dict(
 # pipline =[dict(type='Collect', keys=['img'])]
 pipline =[dict(type='Collect', keys=['img', 'type'])]
 data = dict(
-    samples_per_gpu=256,
+    samples_per_gpu=256 if "ODIN" not in method_name else 32,
     workers_per_gpu=4,
     id_data=dict(
         name='ImageNet',
