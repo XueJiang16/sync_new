@@ -84,7 +84,6 @@ for K in [1000]:
         scores_in = -D[:,-1]
         all_results = []
         for ood_dataset, food in food_all.items():
-            food = torch.tensor(food, device='cuda:0')
             D, _ = index.search(food, K)
             scores_ood_test = -D[:,-1]
             results = metrics.cal_metric(scores_in, scores_ood_test)
