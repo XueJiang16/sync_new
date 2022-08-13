@@ -1,4 +1,5 @@
-method_name = 'MSP'
+method_list = ["GradNormBatch", "MSP", "Energy", "ODIN"]
+method_name = method_list[0]
 model_name = 'resnet101'
 train_dataset = 'a8'
 custom_name = None
