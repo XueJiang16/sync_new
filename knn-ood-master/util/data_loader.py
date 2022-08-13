@@ -53,7 +53,7 @@ transform_test_largescale = transforms.Compose([
 ])
 
 kwargs = {'num_workers': 2, 'pin_memory': True}
-num_classes_dict = {'CIFAR-100': 100, 'CIFAR-10': 10, 'imagenet': 1000}
+num_classes_dict = {'CIFAR-100': 100, 'CIFAR-10': 10, 'imagenet': 1000, 'imagenet_lta': 1000}
 
 def get_loader_in(args, config_type='default', split=('train', 'val')):
     config = EasyDict({
