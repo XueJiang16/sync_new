@@ -1,6 +1,6 @@
 method_name = 'ODIN'
 model_name = 'resnet101'
-train_dataset = 'balance_10'
+train_dataset = 'a8'
 custom_name = None
 if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
@@ -17,8 +17,8 @@ model = dict(
     target_noise=2,
     classifier=dict(
         type='ImageClassifier',
-        # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ood_ckpt_other/LT_a8/epoch_100.pth'),
-        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ood_ckpt_other/resnet101_imagnet10%_100e.pth'),
+        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ood_ckpt_other/LT_a8/epoch_100.pth'),
+        # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ood_ckpt_other/resnet101_imagnet10%_100e.pth'),
         backbone=dict(
             type='ResNet',
             depth=101,
