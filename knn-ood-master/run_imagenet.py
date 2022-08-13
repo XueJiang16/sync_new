@@ -18,7 +18,8 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
 
 class_num = 1000
-id_train_size = 1281167
+# id_train_size = 1281167
+id_train_size = 127990
 id_val_size = 50000
 
 cache_dir = f"cache/{args.in_dataset}_train_{args.name}_in"
