@@ -1,4 +1,4 @@
-method_name = 'GradNormBatch'
+method_name = 'MSP'
 model_name = 'resnet101'
 train_dataset = 'balance_10'
 custom_name = None
