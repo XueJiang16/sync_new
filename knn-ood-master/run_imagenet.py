@@ -71,13 +71,13 @@ for ood_dataset in args.out_datasets:
     food_all[ood_dataset] = prepos_feat(ood_feat_log).astype(np.float32)
 
 #################### KNN score OOD detection #################
+from torch_cluster import knn
 
 ALPHA = 1.00
 for K in [1000]:
     rand_ind = np.random.choice(id_train_size, int(id_train_size * ALPHA), replace=False)
     # index = faiss.IndexFlatL2(ftrain.shape[1])
     # index.add(ftrain[rand_ind])
-    from torch_cluster import knn
     ftrain = torch.tensor(ftrain[rand_ind], device='cuda:0')
     ftest = torch.tensor(ftest, device='cuda:0')
 
