@@ -1,5 +1,5 @@
-# method_list = ["GradNormBatch", "MSP", "Energy", "ODIN"]
-method_list = ["GradNormBatch", "MSPCustom", "EnergyCustom", "ODINCustom"]
+method_list = ["GradNormBatch", "MSP", "Energy", "ODIN"]
+# method_list = ["GradNormBatch", "MSPCustom", "EnergyCustom", "ODINCustom"]
 method_name = method_list[0]
 model_name = 'resnet101'
 train_dataset = 'a7'
