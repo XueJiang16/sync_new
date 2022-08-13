@@ -101,7 +101,17 @@ def get_loader_in(args, config_type='default', split=('train', 'val')):
             val_loader = torch.utils.data.DataLoader(
                 torchvision.datasets.ImageFolder(os.path.join(root, 'val'), config.transform_test_largescale),
                 batch_size=config.batch_size, shuffle=False, **kwargs)
-
+    elif args.in_dataset == "imagenet_lta":
+        root = args.imagenet_root
+        if 'train' in split:
+            train_loader = torch.utils.data.DataLoader(
+                DatasetWithMeta(os.path.join(root, 'train'), meta_file='/data/csxjiang/meta/train_LT_a8.txt',
+                                transform=config.transform_train_largescale),
+                batch_size=config.batch_size, shuffle=False, **kwargs)
+        if 'val' in split:
+            val_loader = torch.utils.data.DataLoader(
+                torchvision.datasets.ImageFolder(os.path.join(root, 'val'), config.transform_test_largescale),
+                batch_size=config.batch_size, shuffle=False, **kwargs)
     return EasyDict({
         "train_loader": train_loader,
         "val_loader": val_loader,
