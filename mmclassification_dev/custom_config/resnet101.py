@@ -37,7 +37,7 @@ model = dict(
 # pipline =[dict(type='Collect', keys=['img'])]
 pipline =[dict(type='Collect', keys=['img', 'type'])]
 data = dict(
-    samples_per_gpu=32,
+    samples_per_gpu=256,
     workers_per_gpu=4,
     id_data=dict(
         name='ImageNet',
@@ -98,4 +98,4 @@ data = dict(
 dist_params = dict(backend='nccl')
 log_level = 'CRITICAL'
 # log_level = 'INFO'
-work_dir = './results/reproduce'
+work_dir = './results/imagenet_10percent_exp'
