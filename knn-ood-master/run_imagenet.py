@@ -71,29 +71,20 @@ for ood_dataset in args.out_datasets:
     food_all[ood_dataset] = prepos_feat(ood_feat_log).astype(np.float32)
 
 #################### KNN score OOD detection #################
-from torch_cluster import knn
-
 ALPHA = 1.00
 for K in [1000]:
     rand_ind = np.random.choice(id_train_size, int(id_train_size * ALPHA), replace=False)
-    # index = faiss.IndexFlatL2(ftrain.shape[1])
-    # index.add(ftrain[rand_ind])
-    ftrain = torch.tensor(ftrain[rand_ind], device='cuda:0')
-    ftest = torch.tensor(ftest, device='cuda:0')
+    index = faiss.IndexFlatL2(ftrain.shape[1])
+    index.add(ftrain[rand_ind])
 
     ################### Using KNN distance Directly ###################
     if True:
-        # D, _ = index.search(ftest, K, )
-        I = knn(ftrain, ftest, K)[1]
-        D = I.reshape(ftest.shape[0], -1)[:, -1]
-        scores_in = -(((ftrain[D] - ftest)**2).sum(-1))**0.5
+        D, _ = index.search(ftest, K, )
+        scores_in = -D[:,-1]
         all_results = []
         for ood_dataset, food in food_all.items():
             food = torch.tensor(food, device='cuda:0')
-            # D, _ = index.search(food, K)
-            I = knn(ftrain, food, K)[1]
-            D = I.reshape(food.shape[0], -1)[:, -1]
-            scores_in = -(((ftrain[D] - food) ** 2).sum(-1)) ** 0.5
+            D, _ = index.search(food, K)
             scores_ood_test = -D[:,-1]
             results = metrics.cal_metric(scores_in, scores_ood_test)
             all_results.append(results)
