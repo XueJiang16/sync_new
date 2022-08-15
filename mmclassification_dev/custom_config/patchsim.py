@@ -12,7 +12,7 @@ model = dict(
     type = method_name,
     num_crop = 3,
     img_size = 224,
-    threshold = 1,
+    threshold = 0.4,
     order = 1,
     mode = 'mean',
     ood_detector = dict(
@@ -34,8 +34,8 @@ model = dict(
                 num_stages=4,
                 out_indices=(3,),
                 style='pytorch',
-                random_block=1,
-                random_block_k=2.5,
+                # random_block=1,
+                # random_block_k=2.5,
             ),
             neck=dict(type='GlobalAveragePooling'),
             head=dict(

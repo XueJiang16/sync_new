@@ -1,5 +1,5 @@
 from mmcv.runner import BaseModule    # noqa
-import torch
+import torch  # noqa
 import os
 import numpy as np  # noqa
 from collections import Counter  # noqa
