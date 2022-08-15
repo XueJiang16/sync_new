@@ -8,8 +8,6 @@ else:
     readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
 quick_test = False
 training_file = None
-# training_file = '/data/csxjiang/meta/cmo_imagenet_softmax.txt'
-# training_file = '/data/csxjiang/meta/train_LT_a8.txt'
 
 model = dict(
     type=method_name,
@@ -20,19 +18,16 @@ model = dict(
     # target_noise=0.1,
     classifier=dict(
         type='ImageClassifier',
-        # init_cfg=dict(type='Pretrained', checkpoint='~/sync/mmclassification/ckpt/res50_LDAM/epoch_100.pth'),
-        # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
-        # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ckpt/resnet50_LT_a8/epoch_100.pth'),
-        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ckpt/cmo_epoch400.pth'),
+        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
         backbone=dict(
             type='ResNet',
             depth=50,
             num_stages=4,
             out_indices=(3,),
             style='pytorch',
-            # random_block=[1],
-            # random_block_k=[2.5],
-            # random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
+            random_block=[1],
+            random_block_k=[2.5],
+            random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
         ),
         neck=dict(type='GlobalAveragePooling'),
         head=dict(
