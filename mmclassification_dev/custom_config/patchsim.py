@@ -1,7 +1,7 @@
 method_name = 'FeatureMapSim'
 model_name = 'resnet50'
 train_dataset = 'Balance'
-custom_name = 'Energy'
+custom_name = 'GradNormBatch'
 if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
 else:
@@ -14,7 +14,7 @@ model = dict(
     img_size = 224,
     threshold = 0.4,
     order = 1,
-    mode = 'std',
+    mode = 'mean',
     ood_detector = dict(
         type='Energy',
         debug_mode=False,
