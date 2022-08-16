@@ -302,7 +302,7 @@ class RandomBlock(BaseModule):
         # noise = (torch.rand_like(x) - 0.5) / self.k  # (B,C,H,W)
         # patch_noise = noise[0,0,0:3,0:3]
         # patch_noise = torch.linspace(-0.5,0.5,9).to("cuda:{}".format(self.local_rank))
-        patch_noise = torch.tensor([[0.5, -0.5], [-0.5, 0.5]]).to("cuda:{}".format(self.local_rank))
+        patch_noise = torch.tensor([0.5, -0.5, 0.5, -0.5]).to("cuda:{}".format(self.local_rank))
         patch_noise = patch_noise / self.k
         # patch_noise = patch_noise.flatten()
         repeat_num = int(H*W/4) + 1
