@@ -301,7 +301,7 @@ class RandomBlock(BaseModule):
         # noise = (torch.rand_like(x) - 0.5) / self.k  # (B,C,H,W)
         _, _, H, W = x.shape
         noise = (torch.linspace(-0.5, 0.5, H*W)) / self.k  # (B,C,H,W)
-        noise = noise.unsqueeze(0).unsqueeze(0).to("cuda:{}".format(self.local_rank))
+        noise = noise.to("cuda:{}".format(self.local_rank))
         noise = noise.reshape((1,1,H,W))
         out = x+noise
         out = self.non_linear(out)
