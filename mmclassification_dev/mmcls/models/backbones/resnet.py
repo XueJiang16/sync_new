@@ -285,7 +285,9 @@ class RandomBlock(BaseModule):
 
     def __init__(self, k, non_linear='relu'):
         super(RandomBlock, self).__init__()
+        import os
         self.k = k
+        self.local_rank = os.environ['LOCAL_RANK']
         if non_linear == 'identity':
             self.non_linear = torch.nn.Identity()
         elif non_linear == 'relu':
@@ -296,11 +298,11 @@ class RandomBlock(BaseModule):
     def forward(self, x):
         # (torch.rand_like(x) - 0.5) ~ U[-0.5, 0.5)
         # print("Signal norm:", x.abs().mean())
-        noise = (torch.rand_like(x) - 0.5) / self.k  # (B,C,H,W)
-        orig_size = noise.shape
-        noise = noise.flatten(2)  # (B,C,H*W)
-        noise, _ = torch.sort(noise, dim=-1)
-        noise = noise.reshape(orig_size)
+        # noise = (torch.rand_like(x) - 0.5) / self.k  # (B,C,H,W)
+        _, _, H, W = x.shape
+        noise = (torch.linspace(-0.5, 0.5, H*W)) / self.k  # (B,C,H,W)
+        noise = noise.unsqueeze(0).unsqueeze(0).to("cuda:{}".format(self.local_rank))
+        noise = noise.reshape((1,1,H,W))
         out = x+noise
         out = self.non_linear(out)
         # x-=x.mean()*0.1
