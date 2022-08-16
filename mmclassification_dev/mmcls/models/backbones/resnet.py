@@ -299,9 +299,10 @@ class RandomBlock(BaseModule):
         # (torch.rand_like(x) - 0.5) ~ U[-0.5, 0.5)
         # print("Signal norm:", x.abs().mean())
         B, C, H, W = x.shape
-        noise = (torch.rand_like(x) - 0.5) / self.k  # (B,C,H,W)
-        patch_noise = noise[0,0,0:3,0:3]
-        patch_noise = patch_noise.flatten()
+        # noise = (torch.rand_like(x) - 0.5) / self.k  # (B,C,H,W)
+        # patch_noise = noise[0,0,0:3,0:3]
+        patch_noise = torch.linspace(-0.5,0.5,9).to("cuda:{}".format(self.local_rank))
+        # patch_noise = patch_noise.flatten()
         repeat_num = int(H*W/9) + 1
         patch_noise = torch.cat([patch_noise]*repeat_num)
         patch_noise = patch_noise[:H*W]
