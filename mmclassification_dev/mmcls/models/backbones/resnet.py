@@ -309,7 +309,7 @@ class RandomBlock(BaseModule):
         patch_noise = torch.cat([patch_noise]*repeat_num)
         patch_noise = patch_noise[:(H+1)*(W+1)]
         noise = patch_noise.reshape(1,1,H+1,W+1)
-        noise = noise[:,:,H,W].reshape(1,1,H,W)
+        noise = noise[:,:,:H,:W].reshape(1,1,H,W)
 
         out = x+noise
         out = self.non_linear(out)
