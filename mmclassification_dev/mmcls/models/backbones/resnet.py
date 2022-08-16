@@ -298,7 +298,7 @@ class RandomBlock(BaseModule):
         # print("Signal norm:", x.abs().mean())
         noise = (torch.rand_like(x) - 0.5) / self.k  # (B,C,H,W)
         orig_size = noise.shape[-2:]
-        noise = torch.nn.functional.interpolate(noise, scale_factor=1/2)
+        noise = torch.nn.functional.interpolate(noise, scale_factor=1/4)
         noise = torch.nn.functional.interpolate(noise, size=orig_size)
         out = x+noise
         out = self.non_linear(out)
