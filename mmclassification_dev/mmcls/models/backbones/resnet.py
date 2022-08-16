@@ -1,4 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import random
 
 import torch
 import torch.nn as nn
@@ -295,10 +296,10 @@ class RandomBlock(BaseModule):
     def forward(self, x):
         # (torch.rand_like(x) - 0.5) ~ U[-0.5, 0.5)
         # print("Signal norm:", x.abs().mean())
-        noise = (torch.rand_like(x) - 0.5) / self.k
-        # # noise = torch.randn_like(x) / self.k
-        # # print("Noise norm:", noise.abs().mean())
-        # # assert False
+        noise = (torch.rand_like(x) - 0.5) / self.k  # (B,C,H,W)
+        noise = noise[0,0]
+        noise = noise.unsqueeze(0)
+        noise = noise.unsqueeze(0)
         out = x+noise
         out = self.non_linear(out)
         # x-=x.mean()*0.1
