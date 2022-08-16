@@ -314,7 +314,7 @@ class RandomBlock(BaseModule):
         # out = self.non_linear(out)
         Hp = H + 1
         Wp = W + 1
-        mask = torch.zeros((Hp*Wp,), dtype=torch.int32).to("cuda:{}".format(self.local_rank))
+        mask = torch.zeros((Hp*Wp,), dtype=torch.long).to("cuda:{}".format(self.local_rank))
         mask[::2] = 1
         mask = mask.reshape(Hp, Wp)
         mask = mask[:H, :W].reshape(1,1,H,W)
