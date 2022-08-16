@@ -318,8 +318,7 @@ class RandomBlock(BaseModule):
         mask[::2] = 1
         mask = mask.reshape(Hp, Wp)
         mask = mask[:H, :W].reshape(1,1,H,W)
-        print(mask)
-        assert False
+        x += 0.5 / self.k
         x[mask] = 0
         out = x
 
