@@ -298,7 +298,16 @@ class RandomBlock(BaseModule):
     def forward(self, x):
         # (torch.rand_like(x) - 0.5) ~ U[-0.5, 0.5)
         # print("Signal norm:", x.abs().mean())
+        B, C, H, W = x.shape
         noise = (torch.rand_like(x) - 0.5) / self.k  # (B,C,H,W)
+        patch_noise = noise[0,0,0:3,0:3]
+        patch_noise = patch_noise.flatten()
+        repeat_num = int(H*W/9) + 1
+        patch_noise = torch.cat([patch_noise]*repeat_num)
+        patch_noise = patch_noise[:H*W]
+        noise = patch_noise.reshape(1,1,H,W)
+
+
         out = x+noise
         out = self.non_linear(out)
         # x-=x.mean()*0.1
