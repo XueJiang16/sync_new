@@ -302,17 +302,25 @@ class RandomBlock(BaseModule):
         # noise = (torch.rand_like(x) - 0.5) / self.k  # (B,C,H,W)
         # patch_noise = noise[0,0,0:3,0:3]
         # patch_noise = torch.linspace(-0.5,0.5,9).to("cuda:{}".format(self.local_rank))
-        patch_noise = torch.tensor([0.5, 0, -0.5]).to("cuda:{}".format(self.local_rank))
-        patch_noise = patch_noise / self.k
-        # patch_noise = patch_noise.flatten()
-        repeat_num = int(H*W/3) + 1
-        patch_noise = torch.cat([patch_noise]*repeat_num)
-        patch_noise = patch_noise[:H*W]
-        noise = patch_noise.reshape(1,1,H,W)
+        # patch_noise = torch.tensor([0.5, 0, -0.5]).to("cuda:{}".format(self.local_rank))
+        # patch_noise = patch_noise / self.k
+        # # patch_noise = patch_noise.flatten()
+        # repeat_num = int(H*W/3) + 1
+        # patch_noise = torch.cat([patch_noise]*repeat_num)
+        # patch_noise = patch_noise[:H*W]
+        # noise = patch_noise.reshape(1,1,H,W)
 
+        # out = x+noise
+        # out = self.non_linear(out)
+        Hp = H + 1
+        Wp = W + 1
+        mask = torch.zeros((Hp*Wp,), dtype=torch.int32).to("cuda:{}".format(self.local_rank))
+        mask[::2] = 1
+        mask = mask.reshape(Hp, Wp)
+        mask = mask[:H, :W].reshape(1,1,H,W)
+        x[mask] = 0
+        out = x
 
-        out = x+noise
-        out = self.non_linear(out)
         # x-=x.mean()*0.1
         # out = self.non_linear(x)
         return out
