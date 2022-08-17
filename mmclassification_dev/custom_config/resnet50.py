@@ -7,7 +7,7 @@ if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
 else:
     readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
-quick_test = True
+quick_test = False
 training_file = None
 
 model = dict(
