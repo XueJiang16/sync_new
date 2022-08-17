@@ -312,6 +312,8 @@ class RandomBlock(BaseModule):
         # noise = noise[:,:,:H,:W].reshape(1,1,H,W)
 
         out = x - self.k
+        #x[x<self.k] = 0
+        #out = x
         out = self.non_linear(out)
         # Hp = H + 1
         # Wp = W + 1
