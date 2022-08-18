@@ -101,7 +101,7 @@ class ImageClassifier(BaseClassifier):
             (f'Invalid output stage "{stage}", please choose from "backbone", '
              '"neck" and "pre_logits"')
         if th_act:
-            x = self.backbone(img, th_act)
+            x = self.backbone(img, th_act=th_act)
         else:
             x = self.backbone(img)
 
