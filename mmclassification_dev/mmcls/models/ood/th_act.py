@@ -14,7 +14,7 @@ def no_ood_detector(**kwargs):
 
 @OOD.register_module()
 class ThresholdActivation(BaseModule):
-    def __init__(self, classifier):
+    def __init__(self, classifier, **kwargs):
         super(ThresholdActivation, self).__init__()
         self.local_rank = os.environ['LOCAL_RANK']
         self.classifier = build_classifier(classifier)
