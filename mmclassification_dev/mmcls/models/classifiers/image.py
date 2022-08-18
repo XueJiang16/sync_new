@@ -33,7 +33,7 @@ class ImageClassifier(BaseClassifier):
             if augments_cfg is not None:
                 self.augments = Augments(augments_cfg)
 
-    def extract_feat(self, img, stage='neck'):
+    def extract_feat(self, img, stage='neck', th_act=False):
         """Directly extract features from the specified stage.
 
         Args:
@@ -100,8 +100,11 @@ class ImageClassifier(BaseClassifier):
         assert stage in ['backbone', 'neck', 'pre_logits'], \
             (f'Invalid output stage "{stage}", please choose from "backbone", '
              '"neck" and "pre_logits"')
+        if th_act:
+            x = self.backbone(img, th_act)
+        else:
+            x = self.backbone(img)
 
-        x = self.backbone(img)
 
         if stage == 'backbone':
             return x
@@ -140,11 +143,12 @@ class ImageClassifier(BaseClassifier):
 
         return losses
 
-    def simple_test(self, img, img_metas=None, require_features=False, require_backbone_features=False, **kwargs):
+    def simple_test(self, img, img_metas=None, require_features=False, require_backbone_features=False, th_act=False, **kwargs):
         """Test without augmentation."""
         if require_backbone_features:
+            assert th_act==False
             x_ = self.extract_feat(img, stage='backbone')[-1].detach().clone()
-        x = self.extract_feat(img)
+        x = self.extract_feat(img, th_act)
 
 
         if isinstance(self.head, MultiLabelClsHead):

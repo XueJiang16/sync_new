@@ -295,38 +295,12 @@ class RandomBlock(BaseModule):
         elif non_linear == 'l_relu':
             self.non_linear = partial(torch.nn.functional.leaky_relu, negative_slope=0)
 
-    def forward(self, x):
-        # (torch.rand_like(x) - 0.5) ~ U[-0.5, 0.5)
-        # print("Signal norm:", x.abs().mean())
-        # B, C, H, W = x.shape
-        # # noise = (torch.rand_like(x) - 0.5) / self.k  # (B,C,H,W)
-        # # patch_noise = noise[0,0,0:3,0:3]
-        # # patch_noise = torch.linspace(-0.5,0.5,9).to("cuda:{}".format(self.local_rank))
-        # patch_noise = torch.tensor([-0.5]).to("cuda:{}".format(self.local_rank))
-        # patch_noise = patch_noise / 6
-        # # patch_noise = patch_noise.flatten()
-        # repeat_num = int((H+1)*(W+1)/1) + 1
-        # patch_noise = torch.cat([patch_noise]*repeat_num)
-        # patch_noise = patch_noise[:(H+1)*(W+1)]
-        # noise = patch_noise.reshape(1,1,H+1,W+1)
-        # noise = noise[:,:,:H,:W].reshape(1,1,H,W)
-
-        out = x - self.k
-        # x[x<self.k] = 0
-        # out = x
-        out = self.non_linear(out)
-        # Hp = H + 1
-        # Wp = W + 1
-        # mask = torch.zeros((Hp*Wp,), dtype=torch.long).to("cuda:{}".format(self.local_rank))
-        # mask[::2] = 1
-        # mask = mask.reshape(Hp, Wp)
-        # mask = mask[:H, :W].reshape(1,1,H,W)
-        # x += (0.5 / self.k)
-        # x[mask] = 0
-        # out = x
-
-        # x-=x.mean()*0.1
-        # out = self.non_linear(x)
+    def forward(self, x, th_act=False):
+        if th_act:
+            out = x - self.k
+            out = self.non_linear(out)
+        else:
+            out = x
         return out
 
 
@@ -860,7 +834,7 @@ class ResNet(BaseBackbone):
                 elif isinstance(m, BasicBlock):
                     constant_init(m.norm2, 0)
 
-    def forward(self, x):
+    def forward(self, x, th_act=False):
         if self.deep_stem:
             x = self.stem(x)
         else:
@@ -879,7 +853,7 @@ class ResNet(BaseBackbone):
                     if self.num_random_block[idx] > 0:
                         for j in range(self.num_random_block[idx]):
                             random_layer = getattr(self, f'random_block{i}_{j+1}')
-                            x = random_layer(x)
+                            x = random_layer(x, th_act)
                             # print(f"After Random Block {j+1}:", x.mean())
                     else:
                         raise NotImplementedError
