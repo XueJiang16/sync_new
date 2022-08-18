@@ -19,6 +19,7 @@ class ThresholdActivation(BaseModule):
         self.local_rank = os.environ['LOCAL_RANK']
         self.classifier = build_classifier(classifier)
         self.classifier.eval()
+        self.criterion = torch.nn.Softmax(dim=-1).to("cuda:{}".format(self.local_rank))
 
 
     def forward(self, **input):
@@ -28,6 +29,8 @@ class ThresholdActivation(BaseModule):
 
         with torch.no_grad():
             confs_orig = self.classifier(return_loss=False, softmax=False, post_process=False, **input)
+            confs_orig = self.criterion(confs_orig)
             confs_th_act = self.classifier(return_loss=False, softmax=False, post_process=False, th_act=True, **input)
+            confs_th_act = self.criterion(confs_th_act)
             ood_scores = -torch.abs(confs_orig-confs_th_act).sum(1)
         return ood_scores, type
