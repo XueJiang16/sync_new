@@ -148,7 +148,7 @@ class ImageClassifier(BaseClassifier):
         if require_backbone_features:
             assert th_act==False
             x_ = self.extract_feat(img, stage='backbone')[-1].detach().clone()
-        x = self.extract_feat(img, th_act)
+        x = self.extract_feat(img, th_act=th_act)
 
 
         if isinstance(self.head, MultiLabelClsHead):
