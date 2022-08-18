@@ -30,10 +30,10 @@ class ThresholdActivation(BaseModule):
         with torch.no_grad():
             confs_orig = self.classifier(return_loss=False, softmax=False, post_process=False, **input)
             confs_orig = self.criterion(confs_orig)
-            confs_orig, pred_idx_orig = torch.max(confs_orig, dim=-1)
-            pred_idx_orig = pred_idx_orig.unsqueeze(1)
+            # confs_orig, pred_idx_orig = torch.max(confs_orig, dim=-1)
+            # pred_idx_orig = pred_idx_orig.unsqueeze(1)
             confs_th_act = self.classifier(return_loss=False, softmax=False, post_process=False, th_act=True, **input)
-            confs_th_act = self.criterion(confs_th_act)
-            confs_th_act = torch.gather(confs_th_act, 1, pred_idx_orig).squeeze(1)
-            ood_scores = -torch.abs(confs_orig-confs_th_act)
+            # confs_th_act = self.criterion(confs_th_act)
+            # confs_th_act = torch.gather(confs_th_act, 1, pred_idx_orig).squeeze(1)
+            ood_scores = -torch.abs(confs_orig-confs_th_act).sum(1)
         return ood_scores, type
