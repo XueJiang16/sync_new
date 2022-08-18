@@ -6,8 +6,10 @@ from .cosine import Cosine
 from .image_level import MeanStdDetector
 from .feature_level import PatchSim, FeatureMapSim
 from .aug_contrast import AugContrast
+from .th_act import ThresholdActivation
 
 __all__ = [
     'GradNorm', 'GradNormBatch', 'GradNormBatchScore', 'MSP', 'MSPCustom', 'PatchSim', 'FeatureMapSim', 'KLDiv',
-    'GradNormCos', 'ODIN', 'ODINCustom', 'Energy', 'EnergyCustom', 'Cosine', 'MeanStdDetector', 'AugContrast'
+    'GradNormCos', 'ODIN', 'ODINCustom', 'Energy', 'EnergyCustom', 'Cosine', 'MeanStdDetector', 'AugContrast',
+    'ThresholdActivation'
 ]

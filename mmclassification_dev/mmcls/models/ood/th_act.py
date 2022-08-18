@@ -27,6 +27,7 @@ class ThresholdActivation(BaseModule):
             del input['type']
 
         with torch.no_grad():
-            confs = self.classifier(return_loss=False, softmax=False, post_process=False, **input)
-
+            confs_orig = self.classifier(return_loss=False, softmax=False, post_process=False, **input)
+            confs_th_act = self.classifier(return_loss=False, softmax=False, post_process=False, th_act=True, **input)
+            ood_scores = -torch.abs(confs_orig-confs_th_act).sum(1)
         return ood_scores, type
