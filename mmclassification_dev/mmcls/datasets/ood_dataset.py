@@ -42,6 +42,7 @@ class OODBaseDataset(Dataset):
         random.shuffle(self.file_list)
         for sample in self.file_list:
             info = dict(img_prefix=self.data_prefix)
+            sample = os.path.join(self.data_prefix, sample)
             info['img_info'] = {'filename': sample}
             info['filename'] = sample
             info['type'] = 3  # no type
@@ -54,7 +55,8 @@ class OODBaseDataset(Dataset):
 
     def prepare_data(self, idx):
         results = copy.deepcopy(self.data_infos[idx])
-        sample = Image.open(os.path.join(results['img_prefix'], results['img_info']['filename']))
+        # sample = Image.open(os.path.join(results['img_prefix'], results['img_info']['filename']))
+        sample = Image.open(results['img_info']['filename'])
         if sample.mode != 'RGB':
             sample = sample.convert('RGB')
         if self.transform is not None:
@@ -95,6 +97,7 @@ class TxtDataset(OODBaseDataset):
 
         for sample in self.file_list:
             info = dict(img_prefix=self.data_prefix)
+            sample[0] = os.path.join(self.data_prefix, sample[0])
             info['img_info'] = {'filename': sample[0]}
             info['filename'] = sample[0]
             gt_label = int(sample[-1])
