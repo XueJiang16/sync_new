@@ -36,8 +36,6 @@ class FeatureVis(BaseModule):
             C4_features[C4_features<k] = 0
             C4_features[C4_features>=k] = 1
             C4_features = C4_features.mean(1).cpu().numpy()
-            C4_features[:,0,0] = 0
-            C4_features[:,-1,-1] = 1
             for i in range(len(filenames)):
                 plt.matshow(C4_features[i])
                 filename = os.path.splitext(os.path.basename(filenames[i]))[0]
