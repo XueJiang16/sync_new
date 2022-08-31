@@ -41,6 +41,6 @@ class ThresholdActivation(BaseModule):
                                                require_features=True, **input)
             _, features_th_act = self.classifier(return_loss=False, softmax=False, post_process=False,
                                                  th_act=True, require_features=True,**input)
-            ood_scores = - torch.linalg.norm(features_orig-features_th_act, ord=1, dim=-1)
+            ood_scores = - torch.linalg.norm(features_orig-features_th_act, ord=2, dim=-1)
 
         return ood_scores, type
