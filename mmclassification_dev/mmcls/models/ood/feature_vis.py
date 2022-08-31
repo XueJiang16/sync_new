@@ -22,9 +22,14 @@ class FeatureVis(BaseModule):
             type = input['type']
             del input['type']
         with torch.no_grad():
-            out_dir = './vis_features/'
-            os.makedirs(out_dir, exist_ok=True)
+
             filenames = [x['filename'] for x in input['img_metas']]
+            if 'ood_data' in filenames[0]:
+                mid_path = 'OOD'
+            else:
+                mid_path = 'ID'
+            out_dir = os.path.join('./vis_features/', mid_path)
+            os.makedirs(out_dir, exist_ok=True)
             _, C4_features = self.classifier(return_loss=False, softmax=False, post_process=False,
                                              require_backbone_features_idx=0, **input)
             k = 0.1
@@ -36,6 +41,7 @@ class FeatureVis(BaseModule):
             for i in range(len(filenames)):
                 plt.matshow(C4_features[i])
                 filename = os.path.splitext(os.path.basename(filenames[i]))[0]
+
                 plt.savefig(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)))
                 plt.close()
                 shutil.copy(filenames[i], out_dir)
