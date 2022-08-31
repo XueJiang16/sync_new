@@ -44,6 +44,6 @@ class FeatureVis(BaseModule):
                 plt.savefig(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)))
                 plt.close()
                 shutil.copy(filenames[i], out_dir)
-            confs = [0]*len(filenames)
+            confs = torch.tensor([0]*len(filenames)).to("cuda:{}".format(self.local_rank))
         return confs, type
 
