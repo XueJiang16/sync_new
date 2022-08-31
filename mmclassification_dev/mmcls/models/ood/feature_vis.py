@@ -3,6 +3,8 @@ import torch
 import os
 import numpy as np
 from collections import Counter
+import matplotlib.pyplot as plt
+import shutil
 
 from ..builder import OOD
 from mmcls.models import build_classifier
@@ -20,9 +22,23 @@ class FeatureVis(BaseModule):
             type = input['type']
             del input['type']
         with torch.no_grad():
-            print(input['img_metas'][0].keys())
-            assert False
+            out_dir = './vis_features/'
+            os.makedirs(out_dir, exist_ok=True)
+            filenames = [x['filename'] for x in input['img_metas']]
             _, C4_features = self.classifier(return_loss=False, softmax=False, post_process=False,
                                              require_backbone_features_idx=0, **input)
+            k = 0.1
+            C4_features[C4_features<k] = 0
+            C4_features[C4_features>=k] = 1
+            C4_features = C4_features.mean(1).cpu().numpy()
+            C4_features[:,0,0] = 0
+            C4_features[:,-1,-1] = 1
+            for i in range(len(filenames)):
+                plt.matshow(C4_features[i])
+                filename = os.path.splitext(os.path.basename(filenames[i]))[0]
+                plt.savefig(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)))
+                plt.close()
+                shutil.copy(filenames[i], out_dir)
+            confs = [0]*len(filenames)
         return confs, type
 
