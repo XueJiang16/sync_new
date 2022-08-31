@@ -20,7 +20,9 @@ class FeatureVis(BaseModule):
             type = input['type']
             del input['type']
         with torch.no_grad():
-            outputs = self.classifier(return_loss=False, softmax=False, post_process=False,  **input)
-
+            print(input.keys())
+            assert False
+            _, C4_features = self.classifier(return_loss=False, softmax=False, post_process=False,
+                                             require_backbone_features_idx=0, **input)
         return confs, type
 
