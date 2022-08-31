@@ -47,5 +47,5 @@ class ThresholdActivation(BaseModule):
             # ood_scores = sim.sum(1) / (torch.norm(features_orig, dim=1) * torch.norm(features_th_act, dim=1))
 
             #KL
-            ood_scores = torch.nn.functional.kl_div(features_orig, features_th_act, reduction='none')
+            ood_scores = torch.nn.functional.kl_div(features_orig, features_th_act, reduction='none').sum(1)
             return ood_scores, type
