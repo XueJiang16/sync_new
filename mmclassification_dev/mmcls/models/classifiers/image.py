@@ -143,12 +143,23 @@ class ImageClassifier(BaseClassifier):
 
         return losses
 
-    def simple_test(self, img, img_metas=None, require_features=False, require_backbone_features=False, th_act=False, **kwargs):
+    def simple_test(self,
+                    img,
+                    img_metas=None,
+                    require_features=False,
+                    require_backbone_features=False,
+                    th_act=False,
+                    require_backbone_features_idx=None,
+                    **kwargs):
         """Test without augmentation."""
         if require_backbone_features:
             assert th_act==False
             x_ = self.extract_feat(img, stage='backbone')[-1].detach().clone()
+        elif require_backbone_features_idx:
+            assert th_act==False
+            x_ = self.extract_feat(img, stage='backbone')[require_backbone_features_idx].detach().clone()
         x = self.extract_feat(img, th_act=th_act)
+
 
 
         if isinstance(self.head, MultiLabelClsHead):
@@ -156,7 +167,7 @@ class ImageClassifier(BaseClassifier):
                 'Please use `sigmoid` instead of `softmax` '
                 'in multi-label tasks.')
         res = self.head.simple_test(x, require_features=require_features, **kwargs)
-        if require_backbone_features:
+        if require_backbone_features or require_backbone_features_idx:
             return res, x_
         else:
             return res
