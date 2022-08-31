@@ -41,7 +41,6 @@ class FeatureVis(BaseModule):
             for i in range(len(filenames)):
                 plt.matshow(C4_features[i])
                 filename = os.path.splitext(os.path.basename(filenames[i]))[0]
-
                 plt.savefig(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)))
                 plt.close()
                 shutil.copy(filenames[i], out_dir)
