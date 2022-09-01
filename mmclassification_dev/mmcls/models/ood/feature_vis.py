@@ -66,11 +66,14 @@ class FeatureVis(BaseModule):
             C4_features_std[C4_features_std<0]=0
             # C4_features_std = (C4_features - C4_features.min((1,2))[:,None,None]) / (C4_features.max((1,2))-C4_features.min((1,2)))[:,None,None]
             for i in range(len(filenames)):
-                img = cv2.imread(filenames[i])
-                res = show_heatmap(img, C4_features_std[i])
-                # plt.matshow(C4_features[i])
-                filename = os.path.splitext(os.path.basename(filenames[i]))[0]
-                cv2.imwrite(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)), res)
+                try:
+                    img = cv2.imread(filenames[i])
+                    res = show_heatmap(img, C4_features_std[i])
+                    # plt.matshow(C4_features[i])
+                    filename = os.path.splitext(os.path.basename(filenames[i]))[0]
+                    cv2.imwrite(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)), res)
+                except:
+                    continue
                 # plt.savefig(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)))
                 # plt.close()
                 # shutil.copy(filenames[i], out_dir)
