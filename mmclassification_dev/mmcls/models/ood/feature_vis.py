@@ -69,7 +69,7 @@ class FeatureVis(BaseModule):
                 res = show_heatmap(img, C4_features_std[i])
                 # plt.matshow(C4_features[i])
                 filename = os.path.splitext(os.path.basename(filenames[i]))[0]
-                cv2.imwrite(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)), res)
+                # cv2.imwrite(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)), res)
                 # plt.savefig(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)))
                 # plt.close()
                 # shutil.copy(filenames[i], out_dir)
