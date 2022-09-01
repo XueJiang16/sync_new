@@ -5,9 +5,35 @@ import numpy as np
 from collections import Counter
 import matplotlib.pyplot as plt
 import shutil
+import cv2
 
 from ..builder import OOD
 from mmcls.models import build_classifier
+
+def show_heatmap(img: np.ndarray,
+                 mask: np.ndarray,
+                 use_rgb: bool = False,
+                 colormap: int = cv2.COLORMAP_JET,
+                 image_weight: float = 0.5):
+    mask = cv2.resize(np.uint8(255 * mask), (img.shape[1], img.shape[0]), interpolation=cv2.INTER_CUBIC)
+    heatmap = cv2.applyColorMap(mask, colormap)
+    if use_rgb:
+        heatmap = cv2.cvtColor(heatmap, cv2.COLOR_BGR2RGB)
+    heatmap = np.float32(heatmap) / 255
+
+    if np.max(img) > 1:
+        img = np.float32(img) / 255
+    else:
+        img = np.float32(img)
+
+    if image_weight < 0 or image_weight > 1:
+        raise Exception(
+            f"image_weight should be in the range [0, 1].\
+                    Got: {image_weight}")
+
+    cam = (1 - image_weight) * heatmap + image_weight * img
+    cam = cam / np.max(cam)
+    return np.uint8(255 * cam)
 
 @OOD.register_module()
 class FeatureVis(BaseModule):
