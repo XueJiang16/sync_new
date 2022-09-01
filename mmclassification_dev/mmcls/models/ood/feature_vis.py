@@ -48,13 +48,12 @@ class FeatureVis(BaseModule):
             type = input['type']
             del input['type']
         with torch.no_grad():
-
             filenames = [x['filename'] for x in input['img_metas']]
             if 'ood_data' in filenames[0]:
                 mid_path = 'OOD'
             else:
                 mid_path = 'ID'
-            out_dir = os.path.join('./vis_features_orig/', mid_path)
+            out_dir = os.path.join('./vis_cam_features_orig/', mid_path)
             os.makedirs(out_dir, exist_ok=True)
             _, C4_features = self.classifier(return_loss=False, softmax=False, post_process=False,
                                              require_backbone_features_idx='0', **input)
@@ -62,12 +61,16 @@ class FeatureVis(BaseModule):
             # C4_features[C4_features<k] = 0
             # C4_features[C4_features>=k] = 1
             C4_features = C4_features.mean(1).cpu().numpy()
+            C4_features_std = (C4_features - C4_features.min((1,2))) / (C4_features.max((1,2))-C4_features.min((1,2)))
             for i in range(len(filenames)):
-                plt.matshow(C4_features[i])
+                img = cv2.imread(filenames[i])
+                res = show_heatmap(img, C4_features_std[i])
+                # plt.matshow(C4_features[i])
                 filename = os.path.splitext(os.path.basename(filenames[i]))[0]
-                plt.savefig(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)))
-                plt.close()
-                shutil.copy(filenames[i], out_dir)
+                cv2.imwrite(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)), res)
+                # plt.savefig(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)))
+                # plt.close()
+                # shutil.copy(filenames[i], out_dir)
             confs = torch.tensor([0]*len(filenames)).to("cuda:{}".format(self.local_rank))
         return confs, type
 
