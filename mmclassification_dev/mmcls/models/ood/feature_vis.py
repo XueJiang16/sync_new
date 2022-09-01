@@ -73,6 +73,7 @@ class FeatureVis(BaseModule):
                     filename = os.path.splitext(os.path.basename(filenames[i]))[0]
                     cv2.imwrite(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)), res)
                 except:
+                    print('Image Read Error!')
                     continue
                 # plt.savefig(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)))
                 # plt.close()
