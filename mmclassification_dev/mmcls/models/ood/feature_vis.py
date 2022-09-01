@@ -28,13 +28,13 @@ class FeatureVis(BaseModule):
                 mid_path = 'OOD'
             else:
                 mid_path = 'ID'
-            out_dir = os.path.join('./vis_features/', mid_path)
+            out_dir = os.path.join('./vis_features_orig/', mid_path)
             os.makedirs(out_dir, exist_ok=True)
             _, C4_features = self.classifier(return_loss=False, softmax=False, post_process=False,
                                              require_backbone_features_idx='0', **input)
-            k = 0.1
-            C4_features[C4_features<k] = 0
-            C4_features[C4_features>=k] = 1
+            # k = 0.1
+            # C4_features[C4_features<k] = 0
+            # C4_features[C4_features>=k] = 1
             C4_features = C4_features.mean(1).cpu().numpy()
             for i in range(len(filenames)):
                 plt.matshow(C4_features[i])
