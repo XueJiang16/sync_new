@@ -61,6 +61,8 @@ class FeatureVis(BaseModule):
             C4_features[C4_features<k] = 0
             C4_features[C4_features>=k] = 1
             C4_features = C4_features.mean(1).cpu().numpy()
+            print(np.percentile(C4_features,95))
+            print(np.percentile(C4_features,5))
             C4_features_std = (C4_features - C4_features.min((1,2))[:,None,None]) / (C4_features.max((1,2))-C4_features.min((1,2)))[:,None,None]
             for i in range(len(filenames)):
                 img = cv2.imread(filenames[i])
