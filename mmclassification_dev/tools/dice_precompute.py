@@ -210,7 +210,7 @@ def main():
                                  args.gpu_collect)
     rank, _ = get_dist_info()
     if rank == 0:
-        print(outputs[0].shape)
+        print(len(outputs))
         assert False
         outputs_mean = outputs.mean(0)
         root_dir = 'dice_cache'
