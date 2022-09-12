@@ -208,12 +208,13 @@ def main():
             broadcast_buffers=False)
         outputs = multi_gpu_test(model, data_loader, args.tmpdir,
                                  args.gpu_collect)
-    print(outputs.shape)
-    outputs_mean = outputs.mean(0)
-    root_dir = 'dice_cache'
-    os.makedirs(root_dir, exist_ok=True)
-    torch.save('{}/imagenet_a8_feature_stat.pth'.format(root_dir), outputs_mean)
-    # rank, _ = get_dist_info()
+    rank, _ = get_dist_info()
+    if rank == 0:
+        print(outputs[0].shape)
+        outputs_mean = outputs.mean(0)
+        root_dir = 'dice_cache'
+        os.makedirs(root_dir, exist_ok=True)
+        torch.save('{}/imagenet_a8_feature_stat.pth'.format(root_dir), outputs_mean)
     # if rank == 0:
     #     results = {}
     #     logger = get_root_logger()
