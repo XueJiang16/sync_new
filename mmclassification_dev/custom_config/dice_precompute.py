@@ -12,10 +12,10 @@ model = dict(
         num_classes=1000,
         in_channels=2048,
         loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-        topk=(1, 5)),
+        topk=(1, 5),
         info=None,
         p=70,
-        mode='precompute')
+        mode='precompute'))
 
 dataset_type = 'ImageNet'
 img_norm_cfg = dict(
