@@ -47,6 +47,7 @@ class DiceHead(ClsHead):
             self.info = None
         self.p = p
         self.masked_w = None
+        self.mode = mode
 
     def pre_logits(self, x):
         if isinstance(x, tuple):
