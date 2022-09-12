@@ -210,8 +210,7 @@ def main():
                                  args.gpu_collect)
     rank, _ = get_dist_info()
     if rank == 0:
-        print(len(outputs))
-        assert False
+        outputs = torch.cat(outputs, dim=0)
         outputs_mean = outputs.mean(0)
         root_dir = 'dice_cache'
         os.makedirs(root_dir, exist_ok=True)
