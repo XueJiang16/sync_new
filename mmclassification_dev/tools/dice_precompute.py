@@ -215,7 +215,7 @@ def main():
         outputs_mean = outputs.mean(0)
         root_dir = 'dice_cache'
         os.makedirs(root_dir, exist_ok=True)
-        torch.save( outputs_mean, '{}/imagenet_a8_feature_stat.pth'.format(root_dir))
+        torch.save(outputs_mean, '{}/imagenet_a8_feature_stat.pth'.format(root_dir))
     # if rank == 0:
     #     results = {}
     #     logger = get_root_logger()

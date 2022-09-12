@@ -113,7 +113,9 @@ def multi_gpu_test(model, data_loader, tmpdir=None, gpu_collect=False):
             raise OSError((f'The tmpdir {tmpdir} already exists.',
                            ' Since tmpdir will be deleted after testing,',
                            ' please make sure you specify an empty one.'))
-        prog_bar = mmcv.ProgressBar(len(dataset))
+        # prog_bar = mmcv.ProgressBar(len(dataset))
+        prog = 0
+        tic = time.time()
     time.sleep(2)
     dist.barrier()
     for i, data in enumerate(data_loader):
@@ -126,8 +128,16 @@ def multi_gpu_test(model, data_loader, tmpdir=None, gpu_collect=False):
 
         if rank == 0:
             batch_size = data['img'].size(0)
-            for _ in range(batch_size * world_size):
-                prog_bar.update()
+            prog += batch_size * world_size
+            toc = time.time()
+            passed_time = toc - tic
+            inf_speed = passed_time / prog
+            fps = 1 / inf_speed
+            eta = max(0, (len(dataset) - prog)) * inf_speed
+            print("[{}] {} / {}, fps = {}, eta = {}"
+                  .format(int(passed_time), prog, len(dataset), round(fps, 2), round(eta, 2)))
+            # for _ in range(batch_size * world_size):
+                # prog_bar.update()
 
     # collect results from all ranks
     if gpu_collect:
