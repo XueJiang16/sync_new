@@ -41,7 +41,10 @@ class DiceHead(ClsHead):
         self.fc = nn.Linear(self.in_channels, self.num_classes)
         self.require_features = require_features
 
-        self.info = torch.load(info)
+        if info is not None:
+            self.info = torch.load(info)
+        else:
+            self.info = None
         self.p = p
         self.masked_w = None
 
