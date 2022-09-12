@@ -211,6 +211,7 @@ def main():
     rank, _ = get_dist_info()
     if rank == 0:
         print(outputs[0].shape)
+        assert False
         outputs_mean = outputs.mean(0)
         root_dir = 'dice_cache'
         os.makedirs(root_dir, exist_ok=True)
