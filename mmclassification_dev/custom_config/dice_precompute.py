@@ -86,7 +86,7 @@ data = dict(
         type='ImageNet',
         data_prefix='/data/csxjiang/ILSVRC/Data/CLS-LOC/train',
         ann_file=
-        '/data/csxjiang/meta/train_LT_a8.txt',
+        '/data/csxjiang/meta/train.txt',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(type='Resize', size=(256, -1)),
