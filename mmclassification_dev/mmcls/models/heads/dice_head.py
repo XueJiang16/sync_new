@@ -42,7 +42,7 @@ class DiceHead(ClsHead):
         self.require_features = require_features
 
         if info is not None:
-            self.info = torch.load(info)
+            self.info = torch.load(info).cpu()
         else:
             self.info = None
         self.p = p
