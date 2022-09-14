@@ -1,3 +1,7 @@
+import os
+
+info=os.path.expanduser('/root/jx/sync/mmclassification_dev/dice_cache/imagenet_a8_feature_stat.pth')
+
 method_name = 'Energy'
 model_name = 'resnet50'
 train_dataset = 'Balance'
@@ -36,7 +40,7 @@ model = dict(
             in_channels=2048,
             loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
             topk=(1, 5),
-            info='/root/jx/sync/mmclassification_dev/dice_cache/imagenet_a8_feature_stat.pth',
+            info=info,
             p=70,)
     )
 )
