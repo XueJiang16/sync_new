@@ -1,6 +1,6 @@
 import os
 
-info=os.path.expanduser('/root/jx/sync/mmclassification_dev/dice_cache/imagenet_a8_feature_stat.pth')
+info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_a8_feature_stat.pth')
 
 method_name = 'Energy'
 model_name = 'resnet50'
