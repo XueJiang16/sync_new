@@ -213,7 +213,7 @@ def main():
         outputs = [x.cpu() for x in outputs]
         outputs = torch.cat(outputs, dim=0)
         outputs_mean = outputs.mean(0)
-        root_dir = 'dice_cache'
+        root_dir = '/data/csxjiang/dice_cache'
         os.makedirs(root_dir, exist_ok=True)
         torch.save(outputs_mean, '{}/imagenet_a8_feature_stat.pth'.format(root_dir))
     # if rank == 0:
