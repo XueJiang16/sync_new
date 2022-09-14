@@ -36,7 +36,7 @@ model = dict(
             in_channels=2048,
             loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
             topk=(1, 5),
-            info='~/jx/sync/mmclassification_dev/dice_cache/imagenet_a8_feature_stat.pth',
+            info='/root/jx/sync/mmclassification_dev/dice_cache/imagenet_a8_feature_stat.pth',
             p=70,)
     )
 )
