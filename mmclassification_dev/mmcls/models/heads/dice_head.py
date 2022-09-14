@@ -1,4 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import os
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -30,6 +31,7 @@ class DiceHead(ClsHead):
                  *args,
                  **kwargs):
         super(DiceHead, self).__init__(init_cfg=init_cfg, *args, **kwargs)
+        self.local_rank = os.environ['LOCAL_RANK']
 
         self.in_channels = in_channels
         self.num_classes = num_classes
@@ -42,7 +44,7 @@ class DiceHead(ClsHead):
         self.require_features = require_features
 
         if info is not None:
-            self.info = torch.load(info).cpu()
+            self.info = torch.load(info).to("cuda:{}".format(self.local_rank))
         else:
             self.info = None
         self.p = p
