@@ -41,7 +41,7 @@ model = dict(
             loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
             topk=(1, 5),
             info=info,
-            p=70,)
+            p=0.7,)
     )
 )
 pipline =[
