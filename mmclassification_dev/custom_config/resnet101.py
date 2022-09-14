@@ -1,16 +1,16 @@
 method_list = ["GradNormBatch", "MSP", "Energy", "ODIN"]
 # method_list = ["GradNormBatch", "MSPCustom", "EnergyCustom", "ODINCustom"]
-method_name = method_list[1]
+method_name = method_list[2]
 model_name = 'resnet101'
-train_dataset = 'a7'
+train_dataset = 'a8'
 custom_name = None
 if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
 else:
     readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
 quick_test = False
-training_file = None
-# training_file = '/data/csxjiang/meta/train_LT_a8.txt'
+# training_file = None
+training_file = '/data/csxjiang/meta/train_LT_a8.txt'
 model = dict(
     type=method_name,
     num_classes=1000,
@@ -19,7 +19,7 @@ model = dict(
     target_noise=2,
     classifier=dict(
         type='ImageClassifier',
-        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ood_ckpt_other/LT_a7/epoch_100.pth'),
+        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ood_ckpt_other/LT_a8/epoch_100.pth'),
         # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ood_ckpt_other/resnet101_imagnet10%_100e.pth'),
         backbone=dict(
             type='ResNet',
