@@ -6,7 +6,7 @@ if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
 else:
     readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
-quick_test = False
+quick_test = True
 # training_file = '/data/csxjiang/meta/train_labeled.txt'
 model = dict(
     type=method_name,
@@ -36,7 +36,7 @@ model = dict(
             in_channels=2048,
             loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
             topk=(1, 5)),
-            info='',
+            info='~/jx/sync/mmclassification_dev/dice_cache/imagenet_a8_feature_stat.pth',
             p=70,
     )
 )
