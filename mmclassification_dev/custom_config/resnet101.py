@@ -1,3 +1,7 @@
+import os
+
+info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_res101_a8_feature_stat.pth')
+
 method_list = ["GradNormBatch", "MSP", "Energy", "ODIN"]
 # method_list = ["GradNormBatch", "MSPCustom", "EnergyCustom", "ODINCustom"]
 method_name = method_list[2]
@@ -28,12 +32,20 @@ model = dict(
             out_indices=(3,),
             style='pytorch'),
         neck=dict(type='GlobalAveragePooling'),
-        head=dict(
-            type='LinearClsHead',
+        # head=dict(
+        #     type='LinearClsHead',
+        #     num_classes=1000,
+        #     in_channels=2048,
+        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        #     topk=(1, 5))
+        head = dict(
+            type='DiceHead',
             num_classes=1000,
             in_channels=2048,
             loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-            topk=(1, 5))
+            topk=(1, 5),
+            info=info,
+            p=0.7, )
     )
 )
 # pipline =[dict(type='Collect', keys=['img'])]
