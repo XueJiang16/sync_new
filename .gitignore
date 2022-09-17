@@ -7,3 +7,5 @@ checkpoints
 *.pdf
 *.pkl
 *.tar.gz
+*.log
+
