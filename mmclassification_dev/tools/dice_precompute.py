@@ -213,9 +213,9 @@ def main():
         outputs = [x.cpu() for x in outputs]
         outputs = torch.cat(outputs, dim=0)
         outputs_mean = outputs.mean(0)
-        root_dir = '/data/csxjiang/dice_cache'
+        root_dir = cfg.precompute_name
         os.makedirs(root_dir, exist_ok=True)
-        torch.save(outputs_mean, '{}/imagenet_mobile_a8_feature_stat.pth'.format(root_dir))
+        torch.save(outputs_mean, '{}feature_stat.pth'.format(root_dir))
     # if rank == 0:
     #     results = {}
     #     logger = get_root_logger()

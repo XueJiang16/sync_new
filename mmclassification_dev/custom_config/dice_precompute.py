@@ -1,4 +1,5 @@
 meta_file='/data/csxjiang/meta/train_LT_a8.txt'
+precompute_name = '/data/csxjiang/dice_cache/imagenet_mobile_a8_'
 # model = dict(
 #     type='ImageClassifier',
 #     backbone=dict(
