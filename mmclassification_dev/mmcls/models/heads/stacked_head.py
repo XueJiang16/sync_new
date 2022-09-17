@@ -220,8 +220,8 @@ class DiceStackedLinearClsHead(StackedLinearClsHead):
             if self.masked_w is None:
                 self.calculate_mask_weight()
             vote = x[:, None, :] * self.masked_w
-            if self.fc.bias is not None:
-                cls_score = vote.sum(2) + self.fc.bias
+            if self.fc.fc.bias is not None:
+                cls_score = vote.sum(2) + self.fc.fc.bias
             else:
                 cls_score = vote.sum(2)
 
