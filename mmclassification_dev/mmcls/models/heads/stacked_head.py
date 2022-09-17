@@ -168,6 +168,7 @@ class StackedLinearClsHead(ClsHead):
 class DiceStackedLinearClsHead(StackedLinearClsHead):
 
     def __init__(self,
+                 require_features=False,
                  p=90,
                  info=None,
                  mode='ood',
@@ -175,6 +176,7 @@ class DiceStackedLinearClsHead(StackedLinearClsHead):
                  ):
         super(DiceStackedLinearClsHead, self).__init__(**kwargs)
         self.local_rank = os.environ['LOCAL_RANK']
+        self.require_features = require_features
         if info is not None:
             self.info = torch.load(info).to("cuda:{}".format(self.local_rank))
         else:
@@ -213,7 +215,7 @@ class DiceStackedLinearClsHead(StackedLinearClsHead):
         if self.mode == 'precompute':
             return x
         else:
-            if require_features:
+            if self.require_features or require_features:
                 f = x.detach().clone()
             # cls_score = self.fc(x)
             # DICE
@@ -230,3 +232,11 @@ class DiceStackedLinearClsHead(StackedLinearClsHead):
                     F.softmax(cls_score, dim=1) if cls_score is not None else None)
             else:
                 pred = cls_score
+
+            if post_process:
+                return self.post_process(pred)
+            else:
+                if self.require_features or require_features:
+                    return pred, f
+                else:
+                    return pred
