@@ -21,6 +21,8 @@ model = dict(
     num_classes=1000,
     # temperature=1,
     target_file=training_file,
+    init_cfg=dict(type='Pretrained',
+                  checkpoint=' /data/csxjiang/ood_ckpt/ckpt/mobile_LT_a8/epoch_600.pth'),
     # target_noise=2,
     classifier=dict(
     type='ImageClassifier',
