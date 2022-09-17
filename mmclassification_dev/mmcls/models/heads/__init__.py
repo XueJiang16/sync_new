@@ -5,12 +5,12 @@ from .deit_head import DeiTClsHead
 from .linear_head import LinearClsHead
 from .multi_label_head import MultiLabelClsHead
 from .multi_label_linear_head import MultiLabelLinearClsHead
-from .stacked_head import StackedLinearClsHead
+from .stacked_head import StackedLinearClsHead, DiceStackedLinearClsHead
 from .vision_transformer_head import VisionTransformerClsHead
 from .dice_head import DiceHead
 
 __all__ = [
     'ClsHead', 'LinearClsHead', 'StackedLinearClsHead', 'MultiLabelClsHead',
     'MultiLabelLinearClsHead', 'VisionTransformerClsHead', 'DeiTClsHead',
-    'ConformerHead', 'DiceHead'
+    'ConformerHead', 'DiceHead', 'DiceStackedLinearClsHead'
 ]

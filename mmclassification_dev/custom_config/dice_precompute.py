@@ -1,23 +1,40 @@
-meta_file='/data/csxjiang/meta/train_LT_a7.txt'
-model = dict(
+meta_file='/data/csxjiang/meta/train_LT_a8.txt'
+# model = dict(
+#     type='ImageClassifier',
+#     backbone=dict(
+#         type='ResNet',
+#         depth=101,
+#         num_stages=4,
+#         out_indices=(3, ),
+#         style='pytorch'),
+#     neck=dict(type='GlobalAveragePooling'),
+#     head=dict(
+#         type='DiceHead',
+#         num_classes=1000,
+#         in_channels=2048,
+#         loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+#         topk=(1, 5),
+#         info=None,
+#         p=0.7,
+#         mode='precompute'))
+
+model=dict(
     type='ImageClassifier',
-    backbone=dict(
-        type='ResNet',
-        depth=101,
-        num_stages=4,
-        out_indices=(3, ),
-        style='pytorch'),
+    backbone=dict(type='MobileNetV3', arch='large'),
     neck=dict(type='GlobalAveragePooling'),
     head=dict(
-        type='DiceHead',
+        type='DiceStackedLinearClsHead',
         num_classes=1000,
-        in_channels=2048,
+        in_channels=960,
+        mid_channels=[1280],
+        dropout_rate=0.2,
+        act_cfg=dict(type='HSwish'),
         loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
         topk=(1, 5),
         info=None,
         p=0.7,
-        mode='precompute'))
-
+        mode='precompute',
+    ))
 dataset_type = 'ImageNet'
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)

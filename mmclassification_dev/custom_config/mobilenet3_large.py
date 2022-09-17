@@ -1,16 +1,44 @@
+import os
+
+info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_res101_a8_feature_stat.pth')
+
+method_list = ["GradNormBatch", "MSP", "Energy", "ODIN"]
+# method_list = ["GradNormBatch", "MSPCustom", "EnergyCustom", "ODINCustom"]
+method_name = method_list[2]
+model_name = 'resnet101'
+train_dataset = 'a8'
+custom_name = None
+if custom_name is not None:
+    readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
+else:
+    readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
+quick_test = False
+# training_file = None
+training_file = '/data/csxjiang/meta/train_LT_a8.txt'
+
 model = dict(
+    type=method_name,
+    num_classes=1000,
+    # temperature=1,
+    target_file=training_file,
+    # target_noise=2,
+    classifier=dict(
     type='ImageClassifier',
     backbone=dict(type='MobileNetV3', arch='large'),
     neck=dict(type='GlobalAveragePooling'),
     head=dict(
-        type='StackedLinearClsHead',
+        type='DiceStackedLinearClsHead',
         num_classes=1000,
         in_channels=960,
         mid_channels=[1280],
         dropout_rate=0.2,
         act_cfg=dict(type='HSwish'),
         loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-        topk=(1, 5)))
+        topk=(1, 5),
+        info=info,
+        p=0.7,
+    )))
+
 dataset_type = 'ImageNet'
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
