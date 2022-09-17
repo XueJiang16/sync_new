@@ -1,12 +1,12 @@
 import os
 
-info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_res101_a8_feature_stat.pth')
-
-# method_list = ["GradNormBatch", "MSP", "Energy", "ODIN"]
-method_list = ["GradNormBatch", "MSPCustom", "EnergyCustom", "ODINCustom"]
+method_list = ["GradNormBatch", "MSP", "Energy", "ODIN"]
+# method_list = ["GradNormBatch", "MSPCustom", "EnergyCustom", "ODINCustom"]
 method_name = method_list[2]
 model_name = 'resnet101'
-train_dataset = 'a8'
+train_dataset = 'a7'
+info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_res101_{}_feature_stat.pth'.format(train_dataset))
+
 custom_name = None
 if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
@@ -14,16 +14,16 @@ else:
     readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
 quick_test = False
 # training_file = None
-training_file = '/data/csxjiang/meta/train_LT_a8.txt'
+training_file = '/data/csxjiang/meta/train_LT_{}.txt'.format(train_dataset)
 model = dict(
     type=method_name,
     num_classes=1000,
     # temperature=1,
     target_file=training_file,
-    target_noise=2,
+    # target_noise=2,
     classifier=dict(
         type='ImageClassifier',
-        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ood_ckpt_other/LT_a8/epoch_100.pth'),
+        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ood_ckpt_other/LT_{}/epoch_100.pth'.format(train_dataset)),
         # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ood_ckpt_other/resnet101_imagnet10%_100e.pth'),
         backbone=dict(
             type='ResNet',

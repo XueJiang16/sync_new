@@ -1,3 +1,4 @@
+meta_file='/data/csxjiang/meta/train_LT_a7.txt'
 model = dict(
     type='ImageClassifier',
     backbone=dict(
@@ -51,8 +52,7 @@ data = dict(
     train=dict(
         type='ImageNet',
         data_prefix='/data/csxjiang/ILSVRC/Data/CLS-LOC/train',
-        ann_file=
-        '/data/csxjiang/meta/train_LT_a8.txt',
+        ann_file=meta_file,
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(type='RandomResizedCrop', size=224),
@@ -69,8 +69,7 @@ data = dict(
     val=dict(
         type='ImageNet',
         data_prefix='/data/csxjiang/ILSVRC/Data/CLS-LOC/train',
-        ann_file=
-        '/data/csxjiang/meta/train_LT_a8.txt',
+        ann_file=meta_file,
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(type='Resize', size=(256, -1)),
@@ -86,8 +85,7 @@ data = dict(
     test=dict(
         type='ImageNet',
         data_prefix='/data/csxjiang/ILSVRC/Data/CLS-LOC/train',
-        ann_file=
-        '/data/csxjiang/meta/train_LT_a8.txt',
+        ann_file=meta_file,
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(type='Resize', size=(256, -1)),
