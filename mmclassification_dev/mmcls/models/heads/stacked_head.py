@@ -173,6 +173,7 @@ class DiceStackedLinearClsHead(StackedLinearClsHead):
                  **kwargs
                  ):
         super(DiceStackedLinearClsHead, self).__init__(**kwargs)
+        self.local_rank = os.environ['LOCAL_RANK']
         if info is not None:
             self.info = torch.load(info).to("cuda:{}".format(self.local_rank))
         else:
