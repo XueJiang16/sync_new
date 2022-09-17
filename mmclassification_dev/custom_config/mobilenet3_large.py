@@ -26,7 +26,7 @@ model = dict(
     classifier=dict(
     type='ImageClassifier',
     init_cfg=dict(type='Pretrained',
-                  checkpoint=' /data/csxjiang/ood_ckpt/ckpt/mobile_LT_a8/epoch_600.pth'),
+                  checkpoint='/data/csxjiang/ood_ckpt/ckpt/mobile_LT_a8/epoch_600.pth'),
     backbone=dict(type='MobileNetV3', arch='large'),
     neck=dict(type='GlobalAveragePooling'),
     head=dict(
