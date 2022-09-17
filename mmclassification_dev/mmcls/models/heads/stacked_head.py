@@ -187,7 +187,7 @@ class DiceStackedLinearClsHead(StackedLinearClsHead):
         contrib = self.info[None, :] * self.fc.weight.data
         thresh = torch.quantile(contrib, self.p)
         mask = contrib > thresh
-        self.masked_w = self.fc.weight * mask
+        self.masked_w = self.fc.fc.weight * mask
 
     def simple_test(self, x, softmax=True, post_process=True, require_features=False):
         """Inference without augmentation.
