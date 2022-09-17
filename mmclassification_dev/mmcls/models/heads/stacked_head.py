@@ -1,6 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from typing import Dict, Sequence
 
+import os
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
