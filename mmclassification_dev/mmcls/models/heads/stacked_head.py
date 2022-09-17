@@ -184,7 +184,7 @@ class DiceStackedLinearClsHead(StackedLinearClsHead):
         self.mode = mode
 
     def calculate_mask_weight(self):
-        contrib = self.info[None, :] * self.fc.weight.data
+        contrib = self.info[None, :] * self.fc.fc.weight.data
         thresh = torch.quantile(contrib, self.p)
         mask = contrib > thresh
         self.masked_w = self.fc.fc.weight * mask
