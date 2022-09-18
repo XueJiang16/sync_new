@@ -1,5 +1,5 @@
-import numpy as np
-import matplotlib as mpl
+# import numpy as np
+# import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 
@@ -107,13 +107,15 @@ if __name__ == '__main__':
 
 
 
-    data_list = list(map(float, data_auroc.split()))
-    # data_list = list(map(float, data_fpr.split()))
-    msp = data_list[::5]
-    odin = data_list[1::5]
-    energy = data_list[2::5]
-    gradnorm = data_list[3::5]
-    ours = data_list[4::5]
+    # data_list = list(map(float, data_auroc.split()))
+    data_list = list(map(float, data_fpr.split()))
+    msp = data_list[::7]
+    odin = data_list[1::7]
+    maha = data_list[2::7]
+    energy = data_list[3::7]
+    gradnorm = data_list[4::7]
+    dice = data_list[5::7]
+    ours = data_list[6::7]
     from matplotlib.ticker import MaxNLocator
 
 
@@ -127,13 +129,15 @@ if __name__ == '__main__':
 
     plt.plot(y, msp, label='MSP', marker="d")
     plt.plot(y, odin, label='ODIN', marker="x")
+    plt.plot(y, maha, label='Mahalanobis', marker="o")
     plt.plot(y, energy, label='Energy', marker="p")
     plt.plot(y, gradnorm, label='GradNorm', marker="v")
+    plt.plot(y, dice, label='Dice', marker="^")
     plt.plot(y, ours, label='RP+GradNorm(Ours)', marker="*")
     plt.legend(loc='upper left', fontsize=14, ncol=2, framealpha=0.5)
     plt.xlabel('Tail Index a', fontsize=18, fontweight='bold')
     plt.ylabel('Average AUROC (%)', fontsize=18, fontweight='bold')
-    plt.ylim((59, 81))
+    plt.ylim((69, 103))
     plt.xticks(size=16)
     plt.yticks(size=16)
     plt.grid(color='w')
@@ -146,5 +150,5 @@ if __name__ == '__main__':
     plt.gca().yaxis.set_major_locator(MaxNLocator(integer=True))
     plt.tight_layout()
     plt.show()
-    plt.savefig('line_auroc.pdf')
+    # plt.savefig('line_fpr.pdf')
 
