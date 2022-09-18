@@ -136,7 +136,8 @@ if __name__ == '__main__':
     plt.plot(y, ours, label='RP+GradNorm(Ours)', marker="*")
     plt.legend(loc='upper left', fontsize=14, ncol=2, framealpha=0.5)
     plt.xlabel('Tail Index a', fontsize=18, fontweight='bold')
-    plt.ylabel('Average AUROC (%)', fontsize=18, fontweight='bold')
+    plt.ylabel('Average FPR95 (%)', fontsize=18, fontweight='bold')
+    # plt.ylim((50,90))
     plt.ylim((69, 103))
     plt.xticks(size=16)
     plt.yticks(size=16)
@@ -149,6 +150,6 @@ if __name__ == '__main__':
     plt.gca().xaxis.set_major_locator(MaxNLocator(integer=True))
     plt.gca().yaxis.set_major_locator(MaxNLocator(integer=True))
     plt.tight_layout()
-    plt.show()
-    # plt.savefig('line_fpr.pdf')
+    # plt.show()
+    plt.savefig('line_fpr.pdf')
 
