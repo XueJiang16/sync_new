@@ -1,5 +1,5 @@
-meta_file='/data/csxjiang/meta/train_LT_repeat1_a8.txt'
-precompute_name = '/data/csxjiang/dice_cache/imagenet_res101_repeat1_a8_'
+meta_file='/data/csxjiang/meta/train_LT_repeat2_a8.txt'
+precompute_name = '/data/csxjiang/dice_cache/imagenet_res101_repeat2_a8_'
 model = dict(
     type='ImageClassifier',
     backbone=dict(
