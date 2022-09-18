@@ -23,7 +23,7 @@ model = dict(
     # target_noise=2,
     classifier=dict(
         type='ImageClassifier',
-        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ood_ckpt_other/LT_{}/epoch_100.pth'.format(train_dataset)),
+        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ckpt/LT_{}/epoch_100.pth'.format(train_dataset)),
         # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ood_ckpt_other/resnet101_imagnet10%_100e.pth'),
         backbone=dict(
             type='ResNet',
