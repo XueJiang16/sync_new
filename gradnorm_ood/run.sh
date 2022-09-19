@@ -32,17 +32,30 @@ list_dataset=('SUN' 'Places' 'Textures' 'iNaturalist')
 #export CUDA_VISIBLE_DEVICES=1
 #bash ./scripts/tune_mahalanobis.sh ./ood_ckpt/mmcls_offical/resnet101_8xb32_in1k_20210831-539c63f8.pth \
 #    ./maha_ckpts /data/csxjiang/meta/train_labeled.txt
-for i in {2,3,4,5,6,7}
+#for i in {2,3,4,5,6,7}
+#do
+##bash ./scripts/tune_mahalanobis.sh ./ood_ckpt/ood_ckpt_other/LT_a${i}/epoch_100.pth \
+##    ./maha_ckpts/a${i} /data/csxjiang/meta/train_LT_a${i}.txt
+#for dataset in ${list_dataset[*]}
+#do
+#bash  ./custom_test_v3_.sh Mahalanobis $dataset ./ood_ckpt/ood_ckpt_other/LT_a${i}/epoch_100.pth \
+#      checkpoint0804/maha_a${i} /data/csxjiang/meta/train_LT_a${i}.txt 0 \
+#      --mahalanobis_param_path ./maha_ckpts/a${i}/tune_mahalanobis/
+#done
+#done
+for i in {1,2,3}
 do
-#bash ./scripts/tune_mahalanobis.sh ./ood_ckpt/ood_ckpt_other/LT_a${i}/epoch_100.pth \
-#    ./maha_ckpts/a${i} /data/csxjiang/meta/train_LT_a${i}.txt
+bash ./scripts/tune_mahalanobis.sh /data/csxjiang/ood_ckpt/ckpt/LT_repeat${i}_a8/epoch_100.pth \
+    ./maha_ckpts/LT_repeat${i}_a8 /data/csxjiang/meta/train_LT_repeat${i}_a8.txt
 for dataset in ${list_dataset[*]}
 do
-bash  ./custom_test_v3_.sh Mahalanobis $dataset ./ood_ckpt/ood_ckpt_other/LT_a${i}/epoch_100.pth \
-      checkpoint0804/maha_a${i} /data/csxjiang/meta/train_LT_a${i}.txt 0 \
-      --mahalanobis_param_path ./maha_ckpts/a${i}/tune_mahalanobis/
+bash  ./custom_test_v3_.sh Mahalanobis $dataset /data/csxjiang/ood_ckpt/ckpt/LT_repeat${i}_a8/epoch_100.pth \
+      checkpoint0919/maha_repeat${i}_a8 /data/csxjiang/meta/train_LT_repeat${i}_a8.txt 0 \
+      --mahalanobis_param_path ./maha_ckpts/LT_repeat${i}_a8/tune_mahalanobis/
 done
 done
+
+
 # for method in ${list_method[*]}
 # do
 # for dataset in ${list_dataset[*]}
