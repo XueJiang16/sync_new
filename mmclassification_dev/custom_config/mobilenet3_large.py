@@ -30,7 +30,7 @@ model = dict(
     backbone=dict(type='MobileNetV3', arch='large'),
     neck=dict(type='GlobalAveragePooling'),
     head=dict(
-        type='DiceStackedLinearClsHead',
+        type='StackedLinearClsHead',
         num_classes=1000,
         in_channels=960,
         mid_channels=[1280],
@@ -38,8 +38,8 @@ model = dict(
         act_cfg=dict(type='HSwish'),
         loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
         topk=(1, 5),
-        info=info,
-        p=0.7,
+        # info=info,
+        # p=0.7,
     )))
 
 pipline =[dict(type='Collect', keys=['img', 'type'])]
