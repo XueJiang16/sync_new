@@ -38,8 +38,6 @@ model = dict(
         act_cfg=dict(type='HSwish'),
         loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
         topk=(1, 5),
-        # info=info,
-        # p=0.7,
     )))
 
 pipline =[dict(type='Collect', keys=['img', 'type'])]
@@ -103,5 +101,5 @@ data = dict(
 dist_params = dict(backend='nccl')
 log_level = 'CRITICAL'
 # log_level = 'INFO'
-work_dir = './results/imagenet_10percent_exp'
+work_dir = './results/mobile'
 
