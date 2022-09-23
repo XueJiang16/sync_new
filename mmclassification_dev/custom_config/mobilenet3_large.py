@@ -1,6 +1,6 @@
 import os
 
-info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_mobile_a8_feature_stat.pth')
+info = os.path.expanduser('/data/csxjiang/dice_cache/imagenet_mobile_a8_feature_stat.pth')
 
 method_list = ["GradNormBatch", "MSP", "Energy", "ODIN"]
 # method_list = ["GradNormBatch", "MSPCustom", "EnergyCustom", "ODINCustom"]
