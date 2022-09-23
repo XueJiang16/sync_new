@@ -69,6 +69,7 @@ class StackedLinearClsHead(ClsHead):
                  dropout_rate: float = 0.,
                  norm_cfg: Dict = None,
                  act_cfg: Dict = dict(type='ReLU'),
+                 require_features=False,
                  **kwargs):
         super(StackedLinearClsHead, self).__init__(**kwargs)
         assert num_classes > 0, \
@@ -86,6 +87,8 @@ class StackedLinearClsHead(ClsHead):
         self.dropout_rate = dropout_rate
         self.norm_cfg = norm_cfg
         self.act_cfg = act_cfg
+
+        self.require_features=require_features
 
         self._init_layers()
 
@@ -124,7 +127,7 @@ class StackedLinearClsHead(ClsHead):
     def fc(self):
         return self.layers[-1]
 
-    def simple_test(self, x, softmax=True, post_process=True):
+    def simple_test(self, x, softmax=True, post_process=True, require_features=False):
         """Inference without augmentation.
 
         Args:
@@ -145,6 +148,9 @@ class StackedLinearClsHead(ClsHead):
                   float and the dimensions are ``(num_samples, num_classes)``.
         """
         x = self.pre_logits(x)
+        if self.require_features or require_features:
+            f = x.detach().clone()
+
         cls_score = self.fc(x)
 
         if softmax:
@@ -156,7 +162,10 @@ class StackedLinearClsHead(ClsHead):
         if post_process:
             return self.post_process(pred)
         else:
-            return pred
+            if self.require_features or require_features:
+                return pred, f
+            else:
+                return pred
 
     def forward_train(self, x, gt_label, **kwargs):
         x = self.pre_logits(x)
