@@ -4,7 +4,7 @@ info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_mobile_a8_feature_st
 
 method_list = ["GradNormBatch", "MSP", "Energy", "ODIN"]
 # method_list = ["GradNormBatch", "MSPCustom", "EnergyCustom", "ODINCustom"]
-method_name = method_list[2]
+method_name = method_list[1]
 model_name = 'resnet101'
 train_dataset = 'a8'
 custom_name = None
