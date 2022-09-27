@@ -296,11 +296,11 @@ class RandomBlock(BaseModule):
             self.non_linear = partial(torch.nn.functional.leaky_relu, negative_slope=0)
 
     def forward(self, x, th_act=False):
-        # if th_act:
-        out = x - self.k
-        out = self.non_linear(out)
-        # else:
-            # out = x
+        if th_act:
+            out = x - self.k
+            out = self.non_linear(out)
+        else:
+            out = x
         return out
 
 
