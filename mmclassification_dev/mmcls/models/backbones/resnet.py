@@ -297,8 +297,8 @@ class RandomBlock(BaseModule):
 
     def forward(self, x, th_act=False):
         # if th_act:
-            out = x - self.k
-            out = self.non_linear(out)
+        out = x - self.k
+        out = self.non_linear(out)
         # else:
             # out = x
         return out
