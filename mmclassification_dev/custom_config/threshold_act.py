@@ -1,5 +1,5 @@
-# method_name = 'ThresholdActivation'
-method_name = 'Energy'
+method_name = 'ThresholdActivation'
+# method_name = 'Energy'
 model_name = 'resnet50'
 train_dataset = 'Balance'
 custom_name = None
