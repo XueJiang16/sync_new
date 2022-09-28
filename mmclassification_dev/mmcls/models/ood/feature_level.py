@@ -160,14 +160,16 @@ class FeatureMapSim(BaseModule):
             # patch_sim = ((1 / self.threshold) ** (self.order)) * torch.pow(patch_sim, self.order)
             # patch_sim[patch_sim > 1] = 1
             # ood_scores *= patch_sim
-            ratio = (ood_scores / patch_sim).abs().cpu().data
-            if ratio > 1:
-                ratio = str(int(ratio))
-                ratio = 10**(len(ratio)-1)
-            else:
-                ratio = str(int(1/ratio))
-                ratio = 10 ** (1-len(ratio))
-            ood_scores += (patch_sim * ratio)
+            batch_ratio = (ood_scores / patch_sim).abs().cpu()
+            for i in range(batch_ratio.shape[0]):
+                ratio = batch_ratio[i].data
+                if ratio > 1:
+                    ratio = str(int(ratio))
+                    ratio = 10**(len(ratio)-1)
+                else:
+                    ratio = str(int(1/ratio))
+                    ratio = 10 ** (1-len(ratio))
+                ood_scores[i] += (patch_sim[i] * ratio)
         else:
             ood_scores = patch_sim
         return ood_scores, type
