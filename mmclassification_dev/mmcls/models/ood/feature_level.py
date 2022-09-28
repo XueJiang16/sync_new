@@ -126,6 +126,18 @@ class FeatureMapSim(BaseModule):
                 feature_crops = feature_c5.flatten(2)
                 patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
                 patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
+                # exclude 3-sigma
+                # patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=-1)
+                # patch_sim_std = patch_sim.std(dim=-1)
+                # patch_sim_mean = patch_sim.mean(dim=-1)
+                # lower = patch_sim_mean-3*patch_sim_std
+                # upper = patch_sim_mean+3*patch_sim_std
+                # lower = lower.unsqueeze(1)
+                # upper = upper.unsqueeze(1)
+                # patch_sim = torch.where(patch_sim < lower, lower, patch_sim)
+                # patch_sim = torch.where(patch_sim > upper, upper, patch_sim)
+                # patch_sim = patch_sim.mean(-1)
+
             elif self.mode == 'channel_mean':
                 feature_crops = feature_c5.flatten(2)
                 patch_mean = feature_crops.mean(1).unsqueeze(1)  # (N, C, H*W) -> (N, C)
@@ -147,7 +159,8 @@ class FeatureMapSim(BaseModule):
             ood_scores, _ = self.ood_detector(**input)
             # patch_sim = ((1 / self.threshold) ** (self.order)) * torch.pow(patch_sim, self.order)
             # patch_sim[patch_sim > 1] = 1
-            ood_scores *= patch_sim
+            # ood_scores *= patch_sim
+            ood_scores += patch_sim
         else:
             ood_scores = patch_sim
         return ood_scores, type
