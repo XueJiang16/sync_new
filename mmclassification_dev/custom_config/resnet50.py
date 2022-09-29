@@ -27,7 +27,7 @@ model = dict(
             out_indices=(3,),
             style='pytorch',
             random_block=[1],
-            random_block_k=[0.1],
+            random_block_k=[0.05],
             random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
         ),
         neck=dict(type='GlobalAveragePooling'),
@@ -103,4 +103,4 @@ data = dict(
 dist_params = dict(backend='nccl')
 log_level = 'CRITICAL'
 # log_level = 'INFO'
-work_dir = './results_random_block/'
+work_dir = './results_th_act/'
