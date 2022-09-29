@@ -17,7 +17,7 @@ model = dict(
     order = 1,
     mode = 'mean',
     ood_detector = dict(
-        type= method_list[3],
+        type= method_list[1],
         debug_mode=False,
         num_classes=1000,
         # temperature=1,
@@ -51,7 +51,7 @@ model = dict(
 )
 pipline =[dict(type='Collect', keys=['img', 'type'])]
 data = dict(
-    samples_per_gpu=256,
+    samples_per_gpu=64,
     workers_per_gpu=4,
     # id_data=dict(
     #     name='ImageNet',
