@@ -159,7 +159,7 @@ class FeatureMapSim(BaseModule):
             ood_scores, _ = self.ood_detector(**input)
             # patch_sim = ((1 / self.threshold) ** (self.order)) * torch.pow(patch_sim, self.order)
             # patch_sim[patch_sim > 1] = 1
-            ood_scores = ood_scores + 1
+            ood_scores = ood_scores - 0.0004
             ood_scores *= patch_sim
             ## add strategies
             # batch_ratio = (ood_scores / patch_sim).abs().cpu()
