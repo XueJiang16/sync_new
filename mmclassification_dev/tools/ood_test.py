@@ -154,16 +154,16 @@ def main():
         if os.environ['LOCAL_RANK'] == '0':
             print()
             print("Processing in-distribution data...")
-        # outputs_id, type_id = single_gpu_test_ood_score(model, data_loader_id, 'ID')
-        outputs_id, type_id = single_gpu_test_ood(model, data_loader_id, 'ID')
+        outputs_id, type_id = single_gpu_test_ood_score(model, data_loader_id, 'ID')
+        # outputs_id, type_id = single_gpu_test_ood(model, data_loader_id, 'ID')
         in_scores = gather_tensors(outputs_id)
         in_scores = np.concatenate(in_scores, axis=0)
-        # np.save('patchsim_imagenet.npy', in_scores)
+        np.save('{}/imagenet_trainset.npy'.format(cfg.work_dir), in_scores)
         type_id = gather_tensors(type_id)
         type_id = np.concatenate(type_id, axis=0)
         if os.environ['LOCAL_RANK'] == '0':
             print("Average ID score:", in_scores.mean())
-
+        assert False
         # out_scores_list = []
         for ood_set, ood_name in zip(data_loader_ood, name_ood):
             if os.environ['LOCAL_RANK'] == '0':

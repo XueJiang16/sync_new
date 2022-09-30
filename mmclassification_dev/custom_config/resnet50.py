@@ -1,5 +1,5 @@
 method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch']
-method_name = method_list[3]
+method_name = method_list[1]
 model_name = 'resnet50'
 train_dataset = 'Balance'
 custom_name = None
@@ -27,7 +27,7 @@ model = dict(
             out_indices=(3,),
             style='pytorch',
             random_block=[1],
-            random_block_k=[0.06],
+            random_block_k=[0.1],
             random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
         ),
         neck=dict(type='GlobalAveragePooling'),
@@ -47,8 +47,10 @@ data = dict(
     id_data=dict(
         name='ImageNet',
         type='TxtDataset',
-        path='/data/csxjiang/val',
-        data_ann='/data/csxjiang/meta/val_labeled.txt',
+        # path='/data/csxjiang/val',
+        # data_ann='/data/csxjiang/meta/val_labeled.txt',
+        path='/data/csxjiang/ILSVRC/Data/CLS-LOC/train',
+        data_ann='/data/csxjiang/meta/train_labeled.txt',
         pipeline=pipline,
         len_limit=5000 if quick_test else -1,
         train_label=None,
@@ -103,4 +105,4 @@ data = dict(
 dist_params = dict(backend='nccl')
 log_level = 'CRITICAL'
 # log_level = 'INFO'
-work_dir = './results_th_act/'
+work_dir = './trainset_score/{}'.format(method_name)
