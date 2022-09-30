@@ -155,23 +155,23 @@ class FeatureMapSim(BaseModule):
                 patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C, 1)
                 patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(0, 2))  # for ID: .mean(dim=(0, 2))
             ood_scores = patch_sim
-        if self.has_ood_detector:
-            ood_scores, _ = self.ood_detector(**input)
-            # patch_sim = ((1 / self.threshold) ** (self.order)) * torch.pow(patch_sim, self.order)
-            # patch_sim[patch_sim > 1] = 1
-            ood_scores = ood_scores + 7.97
-            ood_scores *= patch_sim
-            ## add strategies
-            # batch_ratio = (ood_scores / patch_sim).abs().cpu()
-            # for i in range(batch_ratio.shape[0]):
-            #     ratio = batch_ratio[i].data
-            #     if ratio > 1:
-            #         ratio = str(int(ratio))
-            #         ratio = 10**(len(ratio)-1)
-            #     else:
-            #         ratio = str(int(1/ratio))
-            #         ratio = 10 ** (1-len(ratio))
-            #     ood_scores[i] += (patch_sim[i] * ratio)
-        else:
-            ood_scores = patch_sim
+        # if self.has_ood_detector:
+        #     ood_scores, _ = self.ood_detector(**input)
+        #     # patch_sim = ((1 / self.threshold) ** (self.order)) * torch.pow(patch_sim, self.order)
+        #     # patch_sim[patch_sim > 1] = 1
+        #     ood_scores = ood_scores + 7.97
+        #     ood_scores *= patch_sim
+        #     ## add strategies
+        #     # batch_ratio = (ood_scores / patch_sim).abs().cpu()
+        #     # for i in range(batch_ratio.shape[0]):
+        #     #     ratio = batch_ratio[i].data
+        #     #     if ratio > 1:
+        #     #         ratio = str(int(ratio))
+        #     #         ratio = 10**(len(ratio)-1)
+        #     #     else:
+        #     #         ratio = str(int(1/ratio))
+        #     #         ratio = 10 ** (1-len(ratio))
+        #     #     ood_scores[i] += (patch_sim[i] * ratio)
+        # else:
+        #     ood_scores = patch_sim
         return ood_scores, type

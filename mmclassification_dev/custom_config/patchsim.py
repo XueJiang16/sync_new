@@ -65,8 +65,10 @@ data = dict(
         name='ImageNet',
         noise_engine=noise_engine,
         type='TxtDataset',
-        path='/data/csxjiang/val',
-        data_ann='/data/csxjiang/meta/val_labeled.txt',
+        # path='/data/csxjiang/val',
+        # data_ann='/data/csxjiang/meta/val_labeled.txt',
+        path='/data/csxjiang/ILSVRC/Data/CLS-LOC/train',
+        data_ann='/data/csxjiang/meta/train_labeled.txt',
         pipeline=pipline,
         len_limit = 5000 if quick_test else -1,
     ),
@@ -108,4 +110,4 @@ data = dict(
 dist_params = dict(backend='nccl')
 log_level = 'CRITICAL'
 # log_level = 'INFO'
-work_dir = './results_random_block/'
+work_dir = './trainset_score/{}'.format(method_name)
