@@ -8,4 +8,5 @@ checkpoints
 *.pkl
 *.tar.gz
 *.log
+*.npy
 
