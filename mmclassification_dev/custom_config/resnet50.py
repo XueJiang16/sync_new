@@ -105,4 +105,4 @@ data = dict(
 dist_params = dict(backend='nccl')
 log_level = 'CRITICAL'
 # log_level = 'INFO'
-work_dir = './trainset_score/{}'.format(method_name)
+work_dir = './results/{}'
