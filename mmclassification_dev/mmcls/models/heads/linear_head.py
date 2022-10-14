@@ -1,4 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import numpy as np
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -42,6 +44,26 @@ class LinearClsHead(ClsHead):
             x = x[-1]
         return x
 
+    def apply_ash(self, x, percentile=90):
+
+        # Ash-S
+        b, c= x.shape
+        # percentile = 90
+        # calculate the sum of the input per sample
+        s1 = x.sum(dim=[1])
+        n = x.shape[1:].numel()
+        k = n - int(np.round(n * percentile / 100.0))
+        t = x.view((b, c))
+        v, i = torch.topk(t, k, dim=1)
+        t.zero_().scatter_(dim=1, index=i, src=v)
+        # calculate new sum of the input per sample after pruning
+        s2 = x.sum(dim=[1])
+
+        # apply sharpening
+        scale = s1 / s2
+        out = x * torch.exp(scale[:, None])
+        return out
+
     def simple_test(self, x, softmax=True, post_process=True, require_features=False):
         """Inference without augmentation.
 
@@ -65,6 +87,8 @@ class LinearClsHead(ClsHead):
         x = self.pre_logits(x)
         if self.require_features or require_features:
             f = x.detach().clone()
+
+        x = self.apply_ash(x)
         cls_score = self.fc(x)
 
         if softmax:
