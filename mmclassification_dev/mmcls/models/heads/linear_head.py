@@ -88,7 +88,7 @@ class LinearClsHead(ClsHead):
         if self.require_features or require_features:
             f = x.detach().clone()
 
-        x = self.apply_ash(x)
+        # x = self.apply_ash(x)
         cls_score = self.fc(x)
 
         if softmax:
