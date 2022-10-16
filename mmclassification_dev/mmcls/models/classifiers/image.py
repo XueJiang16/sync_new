@@ -111,7 +111,7 @@ class ImageClassifier(BaseClassifier):
 
         x_sum = x[0].sum(dim=[1, 2, 3])
         ratio = (x_sum - 30000) / 10000
-        x[0] = x[0] * ratio[:, None, None, None]
+        x = (x[0] * ratio[:, None, None, None],)
 
         if self.with_neck:
             x = self.neck(x)
