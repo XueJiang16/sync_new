@@ -307,7 +307,6 @@ class RandomBlock(BaseModule):
 
             out = x - self.k
             out = self.non_linear(out)
-            out = torch.exp(out) - 1
             # after_sum = out.sum(dim=[1, 2, 3])
             # after_count = (out!=0).sum(dim=[1,2,3]).type_as(out)
             # ratio = before_sum / after_sum

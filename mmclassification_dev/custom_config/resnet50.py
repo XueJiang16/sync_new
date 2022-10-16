@@ -28,7 +28,7 @@ model = dict(
             style='pytorch',
             random_block=[1],
             random_block_k=[0.1],
-            random_block_location=[3],  ## 0:C2 1:C3 2:C4 3:C5
+            random_block_location=[2, 3],  ## 0:C2 1:C3 2:C4 3:C5
         ),
         neck=dict(type='GlobalAveragePooling'),
         head=dict(
