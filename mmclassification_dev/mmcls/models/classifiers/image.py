@@ -160,9 +160,9 @@ class ImageClassifier(BaseClassifier):
             x_ = self.extract_feat(img, stage='backbone')[int(require_backbone_features_idx)].detach().clone()
         x = self.extract_feat(img, th_act=th_act)
 
-        x_sum = x[0].sum(dim=[1,2,3])
+        x_sum = x.sum(dim=[1,2,3])
         ratio = (x_sum - 30000) / 10000
-        x[0] = x[0] * ratio[:, None, None, None]
+        x = x * ratio[:, None, None, None]
 
 
 
