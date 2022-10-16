@@ -105,15 +105,14 @@ class ImageClassifier(BaseClassifier):
         else:
             x = self.backbone(img)
 
-
-        if stage == 'backbone':
-            return x
-
         if sum_scale:
             x_sum = x[0].sum(dim=[1, 2, 3])
             # print(x_sum.mean())
             ratio = (x_sum - 20000) / 10000
             x = (x[0] * ratio[:, None, None, None],)
+
+        if stage == 'backbone':
+            return x
 
         if self.with_neck:
             x = self.neck(x)
@@ -160,7 +159,7 @@ class ImageClassifier(BaseClassifier):
         """Test without augmentation."""
         if require_backbone_features:
             # assert th_act==False
-            x_ = self.extract_feat(img, stage='backbone', th_act=th_act)[-1].detach().clone()
+            x_ = self.extract_feat(img, stage='backbone', th_act=th_act, sum_scale=True)[-1].detach().clone()
         elif require_backbone_features_idx:
             # assert th_act==False
             x_ = self.extract_feat(img, stage='backbone')[int(require_backbone_features_idx)].detach().clone()
