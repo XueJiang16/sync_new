@@ -97,7 +97,7 @@ class FeatureMapSim(BaseModule):
 
         with torch.no_grad():
             _, feature_c5 = self.ood_detector.classifier(return_loss=False, softmax=False, post_process=False,
-                                                         require_backbone_features=True, **input)
+                                                         require_backbone_features=True, sum_scale=False, **input)
             input['type'] = type
             if self.mode in ['cosine', 'euclidean']:
                 feature_crops = torch.nn.functional.interpolate(feature_c5, size=self.num_crop, mode='bilinear')
