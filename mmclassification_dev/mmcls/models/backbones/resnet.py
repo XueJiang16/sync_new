@@ -303,12 +303,12 @@ class RandomBlock(BaseModule):
             # assert False
             # out = x - percentile_th[:, None, None, None]
             before_sum = x.sum(dim=[1, 2, 3])
-            before_count = (x!=0).sum(dim=[1,2,3])
+            before_count = (x!=0).sum(dim=[1,2,3]).type_as(x)
 
             out = x - self.k
             out = self.non_linear(out)
             after_sum = out.sum(dim=[1, 2, 3])
-            after_count = (out!=0).sum(dim=[1,2,3])
+            after_count = (out!=0).sum(dim=[1,2,3]).type_as(out)
             # ratio = before_sum / after_sum
             ratio = after_sum / (before_sum + 1e-5)
             count_ratio = after_count / before_count
