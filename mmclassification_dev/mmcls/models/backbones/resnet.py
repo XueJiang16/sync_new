@@ -313,7 +313,7 @@ class RandomBlock(BaseModule):
             # ratio = after_sum / (before_sum + 1e-5)
             # count_ratio = after_count / before_count
             count_ratio = (before_sum - 30000) / 10000
-            count_ratio = count_ratio**2
+            count_ratio = count_ratio**1.5
             # print("Before: sum={}, count={}. After:sum={}, count={}".
             #       format(before_sum.mean(), before_count.mean(), after_sum.mean(), after_count.mean()))
             out = out * count_ratio[:, None, None, None]
