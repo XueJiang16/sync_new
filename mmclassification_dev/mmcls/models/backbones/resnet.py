@@ -307,7 +307,7 @@ class RandomBlock(BaseModule):
             out = self.non_linear(out)
             after_sum = out.sum(dim=[2,3])
             # ratio = before_sum / after_sum
-            ratio = after_sum / before_sum
+            ratio = after_sum / (before_sum + 1e-5)
             out = out * ratio[:, :, None, None]
         else:
             out = x
