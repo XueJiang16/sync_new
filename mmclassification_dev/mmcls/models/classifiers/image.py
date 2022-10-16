@@ -109,6 +109,10 @@ class ImageClassifier(BaseClassifier):
         if stage == 'backbone':
             return x
 
+        x_sum = x[0].sum(dim=[1, 2, 3])
+        ratio = (x_sum - 30000) / 10000
+        x[0] = x[0] * ratio[:, None, None, None]
+
         if self.with_neck:
             x = self.neck(x)
         if stage == 'neck':
@@ -159,13 +163,6 @@ class ImageClassifier(BaseClassifier):
             # assert th_act==False
             x_ = self.extract_feat(img, stage='backbone')[int(require_backbone_features_idx)].detach().clone()
         x = self.extract_feat(img, th_act=th_act)
-
-        x_sum = x[0].sum(dim=[1,2,3])
-        ratio = (x_sum - 30000) / 10000
-        x[0] = x[0] * ratio[:, None, None, None]
-
-
-
 
         if isinstance(self.head, MultiLabelClsHead):
             assert 'softmax' not in kwargs, (
