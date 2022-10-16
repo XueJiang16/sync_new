@@ -126,6 +126,9 @@ class FeatureMapSim(BaseModule):
                 feature_crops = feature_c5.flatten(2)
                 patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
                 patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
+                c5_sum = feature_c5.sum(dim=[1,2,3])
+                ratio = (c5_sum - 30000) / 10000
+                patch_sim = ratio * patch_sim
                 ## exclude 1-sigma
                 # patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=-1)
                 # patch_sim_std = patch_sim.std(dim=-1)
@@ -159,7 +162,7 @@ class FeatureMapSim(BaseModule):
             ood_scores, _ = self.ood_detector(**input)
             # patch_sim = ((1 / self.threshold) ** (self.order)) * torch.pow(patch_sim, self.order)
             # patch_sim[patch_sim > 1] = 1
-            ood_scores = ood_scores + 7.97
+            # ood_scores = ood_scores + 7.97
             ood_scores *= patch_sim
             ## add strategies
             # batch_ratio = (ood_scores / patch_sim).abs().cpu()
