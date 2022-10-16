@@ -164,7 +164,7 @@ class ImageClassifier(BaseClassifier):
             x_ = self.extract_feat(img, stage='backbone', th_act=th_act, sum_scale=sum_scale)[-1].detach().clone()
         elif require_backbone_features_idx:
             # assert th_act==False
-            x_ = self.extract_feat(img, stage='backbone')[int(require_backbone_features_idx)].detach().clone()
+            x_ = self.extract_feat(img, stage='backbone', sum_scale=sum_scale)[int(require_backbone_features_idx)].detach().clone()
         x = self.extract_feat(img, th_act=th_act, sum_scale=sum_scale)
 
         if isinstance(self.head, MultiLabelClsHead):
