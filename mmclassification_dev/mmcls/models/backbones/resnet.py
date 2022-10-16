@@ -307,7 +307,7 @@ class RandomBlock(BaseModule):
 
             out = x - self.k
             out = self.non_linear(out)
-            out = out.sigmoid() - 1
+            out = out.sigmoid() - 0.5
             # after_sum = out.sum(dim=[1, 2, 3])
             # after_count = (out!=0).sum(dim=[1,2,3]).type_as(out)
             # ratio = before_sum / after_sum
