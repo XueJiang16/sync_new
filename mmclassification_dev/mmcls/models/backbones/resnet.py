@@ -298,11 +298,11 @@ class RandomBlock(BaseModule):
 
     def forward(self, x, th_act=False):
         if th_act:
-            percentile_th = torch.quantile(x.flatten(1), self.k, dim=1)
+            # percentile_th = torch.quantile(x.flatten(1), self.k, dim=1)
             # print(percentile_th.shape)
             # assert False
-            out = x - percentile_th[:, None, None, None]
-            # out = x - self.k
+            # out = x - percentile_th[:, None, None, None]
+            out = x - self.k
             out = self.non_linear(out)
 
             ## Ash-S
