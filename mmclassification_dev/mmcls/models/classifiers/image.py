@@ -156,16 +156,15 @@ class ImageClassifier(BaseClassifier):
                     require_backbone_features=False,
                     th_act=True,
                     require_backbone_features_idx=None,
-                    sum_scale=True,
                     **kwargs):
         """Test without augmentation."""
         if require_backbone_features:
             # assert th_act==False
-            x_ = self.extract_feat(img, stage='backbone', th_act=th_act, sum_scale=sum_scale)[-1].detach().clone()
+            x_ = self.extract_feat(img, stage='backbone', th_act=th_act)[-1].detach().clone()
         elif require_backbone_features_idx:
             # assert th_act==False
-            x_ = self.extract_feat(img, stage='backbone', sum_scale=sum_scale)[int(require_backbone_features_idx)].detach().clone()
-        x = self.extract_feat(img, th_act=th_act, sum_scale=sum_scale)
+            x_ = self.extract_feat(img, stage='backbone')[int(require_backbone_features_idx)].detach().clone()
+        x = self.extract_feat(img, th_act=th_act, sum_scale=True)
 
         if isinstance(self.head, MultiLabelClsHead):
             assert 'softmax' not in kwargs, (
