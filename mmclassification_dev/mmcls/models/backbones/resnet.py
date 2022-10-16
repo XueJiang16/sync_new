@@ -302,25 +302,12 @@ class RandomBlock(BaseModule):
             # print(percentile_th.shape)
             # assert False
             # out = x - percentile_th[:, None, None, None]
+            before_sum = x.sum(dim=[1, 2, 3])
             out = x - self.k
             out = self.non_linear(out)
-
-            ## Ash-S
-            # b, c, h, w = x.shape
-            # percentile = 90
-            # # calculate the sum of the input per sample
-            # s1 = x.sum(dim=[1, 2, 3])
-            # n = x.shape[1:].numel()
-            # k = n - int(np.round(n * percentile / 100.0))
-            # t = x.view((b, c * h * w))
-            # v, i = torch.topk(t, k, dim=1)
-            # t.zero_().scatter_(dim=1, index=i, src=v)
-            # # calculate new sum of the input per sample after pruning
-            # s2 = x.sum(dim=[1, 2, 3])
-            #
-            # # apply sharpening
-            # scale = s1 / s2
-            # out = x * torch.exp(scale[:, None, None, None])
+            after_sum = out.sum(dim=[1,2,3])
+            ratio = before_sum / after_sum
+            out = out * ratio[:, None, None, None]
         else:
             out = x
         return out
