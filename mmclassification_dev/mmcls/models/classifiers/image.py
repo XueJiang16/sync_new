@@ -33,7 +33,7 @@ class ImageClassifier(BaseClassifier):
             if augments_cfg is not None:
                 self.augments = Augments(augments_cfg)
 
-    def extract_feat(self, img, stage='neck', th_act=False):
+    def extract_feat(self, img, stage='neck', th_act=False, sum_scale=False):
         """Directly extract features from the specified stage.
 
         Args:
@@ -109,10 +109,11 @@ class ImageClassifier(BaseClassifier):
         if stage == 'backbone':
             return x
 
-        x_sum = x[0].sum(dim=[1, 2, 3])
-        # print(x_sum.mean())
-        ratio = (x_sum - 20000) / 10000
-        x = (x[0] * ratio[:, None, None, None],)
+        if sum_scale:
+            x_sum = x[0].sum(dim=[1, 2, 3])
+            # print(x_sum.mean())
+            ratio = (x_sum - 20000) / 10000
+            x = (x[0] * ratio[:, None, None, None],)
 
         if self.with_neck:
             x = self.neck(x)
@@ -163,7 +164,7 @@ class ImageClassifier(BaseClassifier):
         elif require_backbone_features_idx:
             # assert th_act==False
             x_ = self.extract_feat(img, stage='backbone')[int(require_backbone_features_idx)].detach().clone()
-        x = self.extract_feat(img, th_act=th_act)
+        x = self.extract_feat(img, th_act=th_act, sum_scale=True)
 
         if isinstance(self.head, MultiLabelClsHead):
             assert 'softmax' not in kwargs, (
