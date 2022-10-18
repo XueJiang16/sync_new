@@ -772,10 +772,9 @@ class ResNet(BaseBackbone):
             # self.layer4[0].conv1.weight.data += noise
             state_dict = self.state_dict()
             for name, param in state_dict.items():
-                print(name)
-            assert False
-
-
+                if name == 'layer4.0.conv1.weight':
+                    tmp = param + (torch.rand_like(param) - 0.5) / 2.5
+                    param.copy_(tmp)
 
     def make_res_layer(self, **kwargs):
         return ResLayer(**kwargs)
