@@ -765,16 +765,18 @@ class ResNet(BaseBackbone):
         self._freeze_stages()
 
         self.feat_dim = res_layer[-1].out_channels
+
+    def change_weights(self):
         with torch.no_grad():
             # noise = (torch.rand_like(self.layer3[5].conv3.weight) - 0.5) / 2.5
             # self.layer3[5].conv3.weight += noise
-            # noise = (torch.rand_like(self.layer4[0].conv1.weight) - 0.5) / 2.5
-            # self.layer4[0].conv1.weight.data += noise
-            state_dict = self.state_dict()
-            for name, param in state_dict.items():
-                if name == 'layer4.0.conv1.weight':
-                    tmp = param + (torch.rand_like(param) - 0.5) / 2.5
-                    param.copy_(tmp)
+            noise = (torch.rand_like(self.layer4[0].conv1.weight) - 0.5) / 2.5
+            self.layer4[0].conv1.weight.data += noise
+            # state_dict = self.state_dict()
+            # for name, param in state_dict.items():
+            #     if name == 'layer4.0.conv1.weight':
+            #         tmp = param + (torch.rand_like(param) - 0.5) / 2.5
+            #         param.copy_(tmp)
 
     def make_res_layer(self, **kwargs):
         return ResLayer(**kwargs)
