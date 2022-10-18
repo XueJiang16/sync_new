@@ -765,7 +765,7 @@ class ResNet(BaseBackbone):
         self._freeze_stages()
 
         self.feat_dim = res_layer[-1].out_channels
-        print(self)
+        print(self.layer4[0].conv1.weight)
         assert False
 
     def make_res_layer(self, **kwargs):
