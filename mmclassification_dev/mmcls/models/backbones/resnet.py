@@ -768,6 +768,8 @@ class ResNet(BaseBackbone):
         with torch.no_grad():
             noise = (torch.rand_like(self.layer4[0].conv1.weight) - 0.5) / 2.5
             self.layer4[0].conv1.weight += noise
+        print(self)
+        assert False
 
     def make_res_layer(self, **kwargs):
         return ResLayer(**kwargs)
