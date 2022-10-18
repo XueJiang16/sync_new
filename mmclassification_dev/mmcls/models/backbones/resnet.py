@@ -765,9 +765,9 @@ class ResNet(BaseBackbone):
         self._freeze_stages()
 
         self.feat_dim = res_layer[-1].out_channels
-
-        noise = (torch.rand_like(self.layer4[0].conv1.weight) - 0.5) / 2.5
-        self.layer4[0].conv1.weight += noise
+        with torch.no_grad():
+            noise = (torch.rand_like(self.layer4[0].conv1.weight) - 0.5) / 2.5
+            self.layer4[0].conv1.weight += noise
 
     def make_res_layer(self, **kwargs):
         return ResLayer(**kwargs)
