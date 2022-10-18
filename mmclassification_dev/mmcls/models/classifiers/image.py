@@ -105,11 +105,12 @@ class ImageClassifier(BaseClassifier):
         else:
             x = self.backbone(img)
 
+        x_sum = x[0].sum(dim=[1, 2, 3])
         if sum_scale:
-            x_sum = x[0].sum(dim=[1, 2, 3])
-            # print(x_sum.mean())
-            ratio = (x_sum - 20000) / 10000
-            x = (x[0] * ratio[:, None, None, None],)
+            ratio = (x_sum + 70000) / 10000
+        else:
+            ratio = (x_sum + 100000) / 10000
+        x = (x[0] * ratio[:, None, None, None],)
 
         if stage == 'backbone':
             return x
