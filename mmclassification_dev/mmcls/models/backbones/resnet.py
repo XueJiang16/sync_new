@@ -768,8 +768,8 @@ class ResNet(BaseBackbone):
 
     def change_weights(self):
         with torch.no_grad():
-            noise = (torch.rand_like(self.layer3[5].conv3.weight) - 0.5) * 0.025
-            self.layer3[5].conv3.weight += noise
+            noise = (torch.rand_like(self.layer3[5].conv2.weight) - 0.5) * 0.02
+            self.layer3[5].conv2.weight += noise
             # print(self.layer3[5].conv3.weight.std())
             # exit()
             # noise = (torch.rand_like(self.layer4[0].conv1.weight) - 0.5) / 2.5
