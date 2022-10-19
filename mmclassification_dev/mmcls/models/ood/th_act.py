@@ -37,7 +37,7 @@ class ThresholdActivation(BaseModule):
             # confs_th_act = self.criterion(confs_th_act)
             # # confs_th_act = torch.gather(confs_th_act, 1, pred_idx_orig).squeeze(1)
             # ood_scores = -torch.abs(confs_orig-confs_th_act).sum(1)
-            ood_scores = torch.nn.functional.kl_div(confs_orig, confs_th_act, reduction='none').sum(1)
+            ood_scores = -torch.nn.functional.kl_div(confs_orig, confs_th_act, reduction='none').sum(1)
             # sim = confs_orig * confs_th_act
             # ood_scores = sim.sum(1) / (torch.norm(confs_orig, dim=1) * torch.norm(confs_th_act, dim=1))
             # _, features_orig = self.classifier(return_loss=False, softmax=False, post_process=False,
