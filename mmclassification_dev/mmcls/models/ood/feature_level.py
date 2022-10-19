@@ -163,9 +163,9 @@ class FeatureMapSim(BaseModule):
             # patch_sim = ((1 / self.threshold) ** (self.order)) * torch.pow(patch_sim, self.order)
             # patch_sim[patch_sim > 1] = 1
             with torch.no_grad():
-                _, features_orig = self.classifier(return_loss=False, softmax=False, post_process=False,
+                _, features_orig = self.ood_detector.classifier(return_loss=False, softmax=False, post_process=False,
                                                    th_act=False, require_features=True, **input)
-                _, features_th_act = self.classifier(return_loss=False, softmax=False, post_process=False,
+                _, features_th_act = self.ood_detector.classifier(return_loss=False, softmax=False, post_process=False,
                                                     th_act=True, require_features=True, **input)
                 kl_sim = -torch.nn.functional.kl_div(features_orig, features_th_act, reduction='none').mean(1)
             ood_scores = ood_scores * kl_sim * patch_sim
