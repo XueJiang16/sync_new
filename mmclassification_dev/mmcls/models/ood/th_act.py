@@ -46,7 +46,7 @@ class ThresholdActivation(BaseModule):
                                                th_act=False,require_features=True, **input)
             confs_th_act, features_th_act = self.classifier(return_loss=False, softmax=False, post_process=False,
                                                  th_act=True, require_features=True,**input)
-            prediction, _ = confs_th_act.max(dim=-1)
+            prediction, _ = confs_th_act.max(dim=-1) + 1.4
             # ood_scores = - torch.linalg.norm(features_orig-features_th_act, ord=2, dim=-1)
             #  cosine sim
             # sim = features_orig * features_th_act
