@@ -98,6 +98,13 @@ class FeatureMapSim(BaseModule):
         with torch.no_grad():
             _, feature_c5 = self.ood_detector.classifier(return_loss=False, softmax=False, post_process=False,
                                                          require_backbone_features=True, **input)
+            ##########
+            _, features_orig = self.ood_detector.classifier(return_loss=False, softmax=False, post_process=False,
+                                                            th_act=False, require_features=True, **input)
+            _, features_th_act = self.ood_detector.classifier(return_loss=False, softmax=False, post_process=False,
+                                                              th_act=True, require_features=True, **input)
+            kl_sim = -torch.nn.functional.kl_div(features_orig, features_th_act, reduction='none').mean(1)
+
             input['type'] = type
             if self.mode in ['cosine', 'euclidean']:
                 feature_crops = torch.nn.functional.interpolate(feature_c5, size=self.num_crop, mode='bilinear')
@@ -162,12 +169,8 @@ class FeatureMapSim(BaseModule):
             ood_scores, _ = self.ood_detector(**input)
             # patch_sim = ((1 / self.threshold) ** (self.order)) * torch.pow(patch_sim, self.order)
             # patch_sim[patch_sim > 1] = 1
-            with torch.no_grad():
-                _, features_orig = self.ood_detector.classifier(return_loss=False, softmax=False, post_process=False,
-                                                   th_act=False, require_features=True, **input)
-                _, features_th_act = self.ood_detector.classifier(return_loss=False, softmax=False, post_process=False,
-                                                    th_act=True, require_features=True, **input)
-                kl_sim = -torch.nn.functional.kl_div(features_orig, features_th_act, reduction='none').mean(1)
+            # with torch.no_grad():
+
             ood_scores = ood_scores * kl_sim * patch_sim
             # ood_scores *= patch_sim
             # print("mean:", ood_scores.mean())
