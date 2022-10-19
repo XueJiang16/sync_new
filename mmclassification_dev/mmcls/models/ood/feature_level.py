@@ -164,8 +164,8 @@ class FeatureMapSim(BaseModule):
             # patch_sim[patch_sim > 1] = 1
             ood_scores = ood_scores - 800
             ood_scores *= patch_sim
-            # print("mean:", patch_sim.mean())
-            # print("std:", ood_scores.std())
+            print("mean:", ood_scores.mean())
+            print("std:", ood_scores.std())
             # exit()
             ## add strategies
             # batch_ratio = (ood_scores / patch_sim).abs().cpu()
