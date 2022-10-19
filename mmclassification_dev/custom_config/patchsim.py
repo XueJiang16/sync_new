@@ -2,7 +2,7 @@ method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch', 'ThresholdActivation']
 method_name = 'FeatureMapSim'
 model_name = 'resnet50'
 train_dataset = 'Balance'
-custom_name = 'th_act'
+custom_name = 'triple'
 if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
 else:
@@ -17,7 +17,7 @@ model = dict(
     order = 1,
     mode = 'mean',
     ood_detector = dict(
-        type= method_list[-1],
+        type= method_list[2],
         debug_mode=False,
         num_classes=1000,
         # temperature=1,
