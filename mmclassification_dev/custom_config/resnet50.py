@@ -1,5 +1,5 @@
 method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch']
-method_name = method_list[2]
+method_name = method_list[3]
 model_name = 'resnet50'
 train_dataset = 'Balance_with_fog_aug'
 custom_name = None
