@@ -41,6 +41,9 @@ model = dict(
 )
 # pipline =[dict(type='Collect', keys=['img'])]
 pipline =[dict(type='Collect', keys=['img', 'type'])]
+
+aug = []
+
 data = dict(
     samples_per_gpu=256 if method_name is not 'ODIN' else 32,
     workers_per_gpu=4,
@@ -54,6 +57,7 @@ data = dict(
         pipeline=pipline,
         len_limit=5000 if quick_test else -1,
         train_label=None,
+        aug=aug,
     ),
     # id_data=dict(
     #     type='JsonDataset',
@@ -76,6 +80,7 @@ data = dict(
             type='FolderDataset',
             path='/data/csxjiang/ood_data/iNaturalist/images',
             pipeline=pipline,
+            aug=aug,
             len_limit=1000 if quick_test else -1,
         ),
         dict(
@@ -83,6 +88,7 @@ data = dict(
             type='FolderDataset',
             path='/data/csxjiang/ood_data/SUN/images',
             pipeline=pipline,
+            aug=aug,
             len_limit=1000 if quick_test else -1,
         ),
         dict(
@@ -90,6 +96,7 @@ data = dict(
             type='FolderDataset',
             path='/data/csxjiang/ood_data/Places/images',
             pipeline=pipline,
+            aug=aug,
             len_limit=1000 if quick_test else -1,
         ),
         dict(
@@ -97,6 +104,7 @@ data = dict(
             type='FolderDataset',
             path='/data/csxjiang/ood_data/Textures/dtd/images_collate',
             pipeline=pipline,
+            aug=aug,
             len_limit=1000 if quick_test else -1,
         ),
     ],

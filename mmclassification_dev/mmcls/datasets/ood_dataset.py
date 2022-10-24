@@ -13,13 +13,15 @@ import torchvision as tv
 import os
 import copy
 from collections import Counter
+import imgaug as ia
+import imgaug.augmenters as iaa
 
 # from .base_dataset import BaseDataset
 from .builder import DATASETS
 from .pipelines import Compose
 
 class OODBaseDataset(Dataset):
-    def __init__(self, name, pipeline, noise_engine=None, len_limit=-1):
+    def __init__(self, name, pipeline, aug=None, noise_engine=None, len_limit=-1):
         super().__init__()
         self.pipeline = Compose(pipeline)
         self.file_list = []
@@ -36,6 +38,7 @@ class OODBaseDataset(Dataset):
         self.noise_engine = noise_engine
         self.len_limit = len_limit
         self.data_infos = []
+        self.aug = aug
 
     def parse_datainfo(self):
         random.seed(111)
@@ -59,6 +62,8 @@ class OODBaseDataset(Dataset):
         sample = Image.open(results['img_info']['filename'])
         if sample.mode != 'RGB':
             sample = sample.convert('RGB')
+        if self.aug is not None:
+
         if self.transform is not None:
             sample = self.transform(sample)
         if self.noise_engine == "uniform":
