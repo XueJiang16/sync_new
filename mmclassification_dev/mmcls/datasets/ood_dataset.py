@@ -64,7 +64,7 @@ class OODBaseDataset(Dataset):
             sample = sample.convert('RGB')
         if self.aug is not None:
             seq = iaa.Sequential([
-                iaa.imgcorruptlike.Fog(severity=2)
+                iaa.imgcorruptlike.Fog(severity=5)
             ])
             sample = np.array(sample).astype('uint8')
             sample = seq(images=[sample])[0]
