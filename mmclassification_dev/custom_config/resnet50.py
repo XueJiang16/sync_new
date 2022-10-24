@@ -1,7 +1,7 @@
 method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch']
 method_name = method_list[3]
 model_name = 'resnet50'
-train_dataset = 'Balance'
+train_dataset = 'Balance_with_fog_aug'
 custom_name = None
 if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
