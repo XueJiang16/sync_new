@@ -50,62 +50,73 @@ model = dict(
     )
 )
 pipline =[dict(type='Collect', keys=['img', 'type'])]
+aug = ['fog']
+
 data = dict(
-    samples_per_gpu=256,
+    samples_per_gpu=256 if method_name is not 'ODIN' else 32,
     workers_per_gpu=4,
-    # id_data=dict(
-    #     name='ImageNet',
-    #     type='TxtDataset',
-    #     path='/data/csxjiang/ILSVRC/Data/CLS-LOC/train',
-    #     data_ann='/data/csxjiang/meta/train_labeled.txt',
-    #     pipeline=pipline,
-    #     len_limit = 5000 if quick_test else -1,
-    # ),
     id_data=dict(
         name='ImageNet',
-        noise_engine=noise_engine,
         type='TxtDataset',
         path='/data/csxjiang/val',
         data_ann='/data/csxjiang/meta/val_labeled.txt',
         # path='/data/csxjiang/ILSVRC/Data/CLS-LOC/train',
         # data_ann='/data/csxjiang/meta/train_labeled.txt',
         pipeline=pipline,
-        len_limit = 5000 if quick_test else -1,
+        len_limit=5000 if quick_test else -1,
+        train_label=None,
+        aug=aug,
     ),
+    # id_data=dict(
+    #     type='JsonDataset',
+    #     path='/data/csxjiang/',
+    #     data_ann='/data/csxjiang/ood_data/inat/val2018.json',
+    #     pipeline=[
+    #         dict(type='LoadImageFromFile'),
+    #         dict(type='Resize', size=480),
+    #         dict(
+    #             type='Normalize',
+    #             mean=[123.675, 116.28, 103.53],
+    #             std=[58.395, 57.12, 57.375],
+    #             to_rgb=True),
+    #         dict(type='ImageToTensor', keys=['img']),
+    #         dict(type='Collect', keys=['img'])
+    #     ]),
     ood_data=[
         dict(
             name='iNaturalist',
-            noise_engine=noise_engine,
             type='FolderDataset',
             path='/data/csxjiang/ood_data/iNaturalist/images',
             pipeline=pipline,
+            aug=aug,
             len_limit=1000 if quick_test else -1,
         ),
         dict(
             name='SUN',
-            noise_engine=noise_engine,
             type='FolderDataset',
             path='/data/csxjiang/ood_data/SUN/images',
             pipeline=pipline,
+            aug=aug,
             len_limit=1000 if quick_test else -1,
         ),
         dict(
             name='Places',
-            noise_engine=noise_engine,
             type='FolderDataset',
             path='/data/csxjiang/ood_data/Places/images',
             pipeline=pipline,
+            aug=aug,
             len_limit=1000 if quick_test else -1,
         ),
         dict(
             name='Textures',
-            noise_engine=noise_engine,
             type='FolderDataset',
             path='/data/csxjiang/ood_data/Textures/dtd/images_collate',
             pipeline=pipline,
+            aug=aug,
             len_limit=1000 if quick_test else -1,
         ),
     ],
+
 )
 dist_params = dict(backend='nccl')
 log_level = 'CRITICAL'
