@@ -67,7 +67,7 @@ class OODBaseDataset(Dataset):
                 iaa.imgcorruptlike.Fog(severity=2)
             ])
             sample = np.array(sample).astype('uint8')
-            sample = seq(images=sample)
+            sample = seq(images=[sample])[0]
             sample = Image.fromarray(sample)
         if self.transform is not None:
             sample = self.transform(sample)
