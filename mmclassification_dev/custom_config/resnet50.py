@@ -42,7 +42,7 @@ model = dict(
 # pipline =[dict(type='Collect', keys=['img'])]
 pipline =[dict(type='Collect', keys=['img', 'type'])]
 
-aug = []
+aug = ['fog']
 
 data = dict(
     samples_per_gpu=256 if method_name is not 'ODIN' else 32,

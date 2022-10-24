@@ -63,7 +63,12 @@ class OODBaseDataset(Dataset):
         if sample.mode != 'RGB':
             sample = sample.convert('RGB')
         if self.aug is not None:
-
+            seq = iaa.Sequential([
+                iaa.imgcorruptlike.Fog(severity=2)
+            ])
+            sample = np.array(sample).astype('uint8')
+            sample = seq(images=sample)
+            sample = Image.fromarray(sample)
         if self.transform is not None:
             sample = self.transform(sample)
         if self.noise_engine == "uniform":
