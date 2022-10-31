@@ -5,7 +5,7 @@
 #bash ./tools/ood_dist_test.sh custom_config/Noise/resnet50_uniform.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/Noise/resnet50_gaussian.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/Noise/resnet50_colorband.py foo 
-#bash ./tools/ood_dist_test.sh custom_config/resnet50.py foo 2
+# bash ./tools/ood_dist_test.sh custom_config/resnet50.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/resnet50_official.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/meanstd.py foo 2
  bash ./tools/ood_dist_test.sh custom_config/patchsim.py foo 2

@@ -89,6 +89,10 @@ class LinearClsHead(ClsHead):
             f = x.detach().clone()
 
         # x = self.apply_ash(x)
+        # # noise = (torch.rand_like(x) - 0.5) / 2.5
+        # x = x - 0.1
+        # x = torch.nn.functional.relu(x)
+
         cls_score = self.fc(x)
 
         if softmax:

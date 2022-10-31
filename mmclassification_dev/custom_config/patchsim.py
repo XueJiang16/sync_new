@@ -2,7 +2,7 @@ method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch', 'ThresholdActivation']
 method_name = 'FeatureMapSim'
 model_name = 'resnet50'
 train_dataset = 'Balance'
-custom_name = 'add_aug'
+custom_name = 'fc_th_act'
 if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
 else:
@@ -36,8 +36,8 @@ model = dict(
                 out_indices=(3,),
                 style='pytorch',
                 random_block=[1],
-                random_block_k=[0.1],
-                random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
+                random_block_k=[0.5],
+                random_block_location=[3],  # 0:C2 1:C3 2:C4 3:C5
             ),
             neck=dict(type='GlobalAveragePooling'),
             head=dict(
@@ -50,7 +50,8 @@ model = dict(
     )
 )
 pipline =[dict(type='Collect', keys=['img', 'type'])]
-aug = ['fog']
+# aug = ['fog']
+aug = None
 
 data = dict(
     samples_per_gpu=256 if method_name is not 'ODIN' else 32,
@@ -121,4 +122,4 @@ data = dict(
 dist_params = dict(backend='nccl')
 log_level = 'CRITICAL'
 # log_level = 'INFO'
-work_dir = './results/{}'
+work_dir = './results/1031'

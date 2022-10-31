@@ -1,7 +1,7 @@
 method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch']
 method_name = method_list[3]
 model_name = 'resnet50'
-train_dataset = 'Balance_with_fog_aug'
+train_dataset = 'Balance'
 custom_name = None
 if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
@@ -42,7 +42,8 @@ model = dict(
 # pipline =[dict(type='Collect', keys=['img'])]
 pipline =[dict(type='Collect', keys=['img', 'type'])]
 
-aug = ['fog']
+# aug =
+aug = None
 
 data = dict(
     samples_per_gpu=256 if method_name is not 'ODIN' else 32,
@@ -113,4 +114,4 @@ data = dict(
 dist_params = dict(backend='nccl')
 log_level = 'CRITICAL'
 # log_level = 'INFO'
-work_dir = './results/{}'
+work_dir = './results/1031'
