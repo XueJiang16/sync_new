@@ -171,8 +171,8 @@ class FeatureMapSim(BaseModule):
             # patch_sim[patch_sim > 1] = 1
             # with torch.no_grad():
 
-            ood_scores = ood_scores * kl_sim * patch_sim
-            # ood_scores *= patch_sim
+            # ood_scores = ood_scores * kl_sim * patch_sim
+            ood_scores *= patch_sim
             # print("mean:", ood_scores.mean())
             # print("std:", ood_scores.std())
             # exit()
