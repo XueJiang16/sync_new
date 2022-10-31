@@ -201,7 +201,7 @@ def main():
                         logger.critical('AUPR (Out): {}'.format(aupr_out))
                         logger.critical('FPR95: {}'.format(fpr95))
                         logger.critical('quick data: {},{},{},{}'.format(auroc, aupr_in, aupr_out, fpr95))
-        logger.critical('all quick data:', ",".join(list(map(str, result_list))))
+        logger.critical('all quick data: '+",".join(list(map(str, result_list))))
 
 if __name__ == '__main__':
     main()
