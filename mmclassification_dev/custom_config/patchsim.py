@@ -7,7 +7,7 @@ if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
 else:
     readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
-quick_test = False
+quick_test = True
 noise_engine = None
 model = dict(
     type=method_name,
@@ -39,9 +39,9 @@ model = dict(
                 random_block_k=[0.14],
                 random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
             ),
-            # neck=dict(type='GlobalAveragePooling'),
-            neck=dict(type='TopKAveragePooling',
-                      k=0.65),
+            neck=dict(type='GlobalAveragePooling'),
+            # neck=dict(type='TopKAveragePooling',
+            #           k=0.65),
             head=dict(
                 type='LinearClsHead',
                 num_classes=1000,
