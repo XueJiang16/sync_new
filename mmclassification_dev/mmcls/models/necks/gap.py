@@ -43,3 +43,48 @@ class GlobalAveragePooling(nn.Module):
         else:
             raise TypeError('neck inputs should be tuple or torch.tensor')
         return outs
+
+@NECKS.register_module()
+class TopKAveragePooling(nn.Module):
+    """Global Average Pooling neck.
+
+    Note that we use `view` to remove extra channel after pooling. We do not
+    use `squeeze` as it will also remove the batch dimension when the tensor
+    has a batch dimension of size 1, which can lead to unexpected errors.
+
+    Args:
+        dim (int): Dimensions of each sample channel, can be one of {1, 2, 3}.
+            Default: 2
+    """
+
+    def __init__(self, k):
+        super(TopKAveragePooling, self).__init__()
+        self.k = k
+
+    def init_weights(self):
+        pass
+
+    def gap(self, x):
+        b, c, h, w = x.shape
+        # x = x.view(b, c, -1)
+        # h*w -> top k
+        # num = int(self.k * (h + w))
+        num = int(self.k * h)
+        topk_v, _ = x.topk(num, dim=-1)
+        out = topk_v.mean(dim=-1)
+        topk_v, _ = out.topk(num, dim=-1)
+        out = topk_v.mean(dim=-1)
+        return out
+
+    def forward(self, inputs):
+        if isinstance(inputs, tuple):
+            outs = tuple([self.gap(x) for x in inputs])
+            outs = tuple(
+                [out.view(x.size(0), -1) for out, x in zip(outs, inputs)])
+        elif isinstance(inputs, torch.Tensor):
+            outs = self.gap(inputs)
+            outs = outs.view(inputs.size(0), -1)
+        else:
+            raise TypeError('neck inputs should be tuple or torch.tensor')
+        return outs
+
