@@ -166,6 +166,7 @@ def main():
             print("Average ID score:", in_scores.mean())
         # assert False
         # out_scores_list = []
+        result_list = []
         for ood_set, ood_name in zip(data_loader_ood, name_ood):
             if os.environ['LOCAL_RANK'] == '0':
                 print()
@@ -180,6 +181,7 @@ def main():
             # out_scores_list.append(out_scores)
             if os.environ['LOCAL_RANK'] == '0':
                 auroc, aupr_in, aupr_out, fpr95 = evaluate_all(in_scores, out_scores)
+                result_list.extend([auroc, aupr_in, aupr_out, fpr95])
                 logger.critical('============Overall Results for {}============'.format(ood_name))
                 logger.critical('AUROC: {}'.format(auroc))
                 logger.critical('AUPR (In): {}'.format(aupr_in))
@@ -199,7 +201,7 @@ def main():
                         logger.critical('AUPR (Out): {}'.format(aupr_out))
                         logger.critical('FPR95: {}'.format(fpr95))
                         logger.critical('quick data: {},{},{},{}'.format(auroc, aupr_in, aupr_out, fpr95))
-
+        logger.critical('all quick data:', ",".join(list(map(str, result_list))))
 
 if __name__ == '__main__':
     main()
