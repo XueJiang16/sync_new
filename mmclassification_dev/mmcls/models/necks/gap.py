@@ -60,29 +60,36 @@ class TopKAveragePooling(nn.Module):
     def __init__(self, k):
         super(TopKAveragePooling, self).__init__()
         self.k = k
+        self.gap = nn.AdaptiveAvgPool2d((1, 1))
 
     def init_weights(self):
         pass
 
-    def gap(self, x):
+    def kap(self, x):
         b, c, h, w = x.shape
+        x_gap = self.gap(x).view(b, c)
+
+        ## kap
         x = x.view(b, c, -1)
-        # h*w -> top k
+        ## h*w -> top k
         num = int(self.k * (h * w))
         # num = int(self.k * h)
         topk_v, _ = x.topk(num, dim=-1)
         out = topk_v.mean(dim=-1)
         # topk_v, _ = out.topk(num, dim=-1)
         # out = topk_v.mean(dim=-1)
+        mean_gap = x_gap.mean(dim=-1)
+        mean_kap = out.mean(dim=-1)
+        out = out * (mean_gap / mean_kap).unsqueeze(-1)
         return out
 
     def forward(self, inputs):
         if isinstance(inputs, tuple):
-            outs = tuple([self.gap(x) for x in inputs])
+            outs = tuple([self.kap(x) for x in inputs])
             outs = tuple(
                 [out.view(x.size(0), -1) for out, x in zip(outs, inputs)])
         elif isinstance(inputs, torch.Tensor):
-            outs = self.gap(inputs)
+            outs = self.kap(inputs)
             outs = outs.view(inputs.size(0), -1)
         else:
             raise TypeError('neck inputs should be tuple or torch.tensor')
