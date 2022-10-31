@@ -66,14 +66,14 @@ class TopKAveragePooling(nn.Module):
 
     def gap(self, x):
         b, c, h, w = x.shape
-        # x = x.view(b, c, -1)
+        x = x.view(b, c, -1)
         # h*w -> top k
-        # num = int(self.k * (h + w))
-        num = int(self.k * h)
+        num = int(self.k * (h * w))
+        # num = int(self.k * h)
         topk_v, _ = x.topk(num, dim=-1)
         out = topk_v.mean(dim=-1)
-        topk_v, _ = out.topk(num, dim=-1)
-        out = topk_v.mean(dim=-1)
+        # topk_v, _ = out.topk(num, dim=-1)
+        # out = topk_v.mean(dim=-1)
         return out
 
     def forward(self, inputs):
