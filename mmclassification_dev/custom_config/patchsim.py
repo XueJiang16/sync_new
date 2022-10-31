@@ -17,7 +17,7 @@ model = dict(
     order=1,
     mode='mean',
     ood_detector=dict(
-        type=method_list[0],
+        type=method_list[2],
         debug_mode=False,
         num_classes=1000,
         # temperature=1,
@@ -36,7 +36,7 @@ model = dict(
                 out_indices=(3,),
                 style='pytorch',
                 random_block=[1],
-                random_block_k=[0.1],
+                random_block_k=[0.11],
                 random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
             ),
             # neck=dict(type='GlobalAveragePooling'),
