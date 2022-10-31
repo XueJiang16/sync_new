@@ -7,7 +7,7 @@ if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
 else:
     readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
-quick_test = False
+quick_test = True
 noise_engine = None
 model = dict(
     type=method_name,
@@ -17,7 +17,7 @@ model = dict(
     order=1,
     mode='mean',
     ood_detector=dict(
-        type=method_list[2],
+        type=method_list[0],
         debug_mode=False,
         num_classes=1000,
         # temperature=1,
