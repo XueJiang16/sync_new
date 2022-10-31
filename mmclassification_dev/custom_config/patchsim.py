@@ -41,7 +41,7 @@ model = dict(
             ),
             # neck=dict(type='GlobalAveragePooling'),
             neck=dict(type='TopKAveragePooling',
-                      k=0.8),
+                      k=0.9),
             head=dict(
                 type='LinearClsHead',
                 num_classes=1000,
