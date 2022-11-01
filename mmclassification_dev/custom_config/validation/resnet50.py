@@ -90,7 +90,7 @@ model = dict(
             ),
             # neck=dict(type='GlobalAveragePooling'),
             neck=dict(type='TopKAveragePooling',
-                      k=0.5),
+                      k=0.6),
             head=dict(
                 type='LinearClsHead',
                 num_classes=train_num_class,
