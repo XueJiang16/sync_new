@@ -163,7 +163,6 @@ class FolderDataset(OODBaseDataset):
         self.parse_datainfo()
 
 
-# TODO
 @DATASETS.register_module()
 class ImageNetSuperclass(OODBaseDataset):
     def __init__(self, name, path, data_ann, pipeline, train_label=None,**kwargs):
