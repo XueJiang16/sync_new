@@ -60,7 +60,6 @@ noise_engine = None
 #             topk=(1, 5))
 #     )
 # )
-train_num_class = 1000
 model = dict(
     type=method_name,
     num_crop=3,
@@ -77,8 +76,7 @@ model = dict(
         target_file=None,
         classifier=dict(
             type='ImageClassifier',
-            # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/validation_ckpt/imagenet/resnet50/epoch_100.pth'),
-            init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
+            init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/validation_ckpt/imagenet/resnet50/epoch_100.pth'),
             backbone=dict(
                 type='ResNet',
                 depth=50,
@@ -105,93 +103,27 @@ pipline =[dict(type='Collect', keys=['img', 'type'])]
 # aug = ['fog']
 aug = None
 
-# data = dict(
-#     samples_per_gpu=256 if method_name is not 'ODIN' else 32,
-#     workers_per_gpu=4,
-#     id_data=dict(
-#         name='SubImageNet',
-#         type='ImageNetSuperclass',
-#         path='/data/csxjiang/ILSVRC/Data/CLS-LOC/train',
-#         data_ann=val_list,
-#         pipeline=pipline,
-#         len_limit=5000 if quick_test else 50000,
-#     ),
-#     ood_data=[
-#         dict(
-#             name=super_class_names[pick_class],
-#             type='TxtDataset',
-#             path='/data/csxjiang/ILSVRC/Data/CLS-LOC/train',
-#             data_ann="/data/csxjiang/meta/superclasses/train_{}.txt".format(super_class_names[pick_class]),
-#             pipeline=pipline,
-#             len_limit=1000 if quick_test else 10000,
-#             train_label=None,
-#             aug=aug,
-#         ),
-#     ],
-# )
-
 data = dict(
     samples_per_gpu=256 if method_name is not 'ODIN' else 32,
     workers_per_gpu=4,
     id_data=dict(
-        name='ImageNet',
-        type='TxtDataset',
-        path='/data/csxjiang/val',
-        data_ann='/data/csxjiang/meta/val_labeled.txt',
-        # path='/data/csxjiang/ILSVRC/Data/CLS-LOC/train',
-        # data_ann='/data/csxjiang/meta/train_labeled.txt',
+        name='SubImageNet',
+        type='ImageNetSuperclass',
+        path='/data/csxjiang/ILSVRC/Data/CLS-LOC/train',
+        data_ann=val_list,
         pipeline=pipline,
-        len_limit=5000 if quick_test else -1,
-        train_label=None,
-        aug=aug,
+        len_limit=5000 if quick_test else 50000,
     ),
-    # id_data=dict(
-    #     type='JsonDataset',
-    #     path='/data/csxjiang/',
-    #     data_ann='/data/csxjiang/ood_data/inat/val2018.json',
-    #     pipeline=[
-    #         dict(type='LoadImageFromFile'),
-    #         dict(type='Resize', size=480),
-    #         dict(
-    #             type='Normalize',
-    #             mean=[123.675, 116.28, 103.53],
-    #             std=[58.395, 57.12, 57.375],
-    #             to_rgb=True),
-    #         dict(type='ImageToTensor', keys=['img']),
-    #         dict(type='Collect', keys=['img'])
-    #     ]),
     ood_data=[
         dict(
-            name='iNaturalist',
-            type='FolderDataset',
-            path='/data/csxjiang/ood_data/iNaturalist/images',
+            name=super_class_names[pick_class],
+            type='TxtDataset',
+            path='/data/csxjiang/ILSVRC/Data/CLS-LOC/train',
+            data_ann="/data/csxjiang/meta/superclasses/train_{}.txt".format(super_class_names[pick_class]),
             pipeline=pipline,
+            len_limit=1000 if quick_test else 10000,
+            train_label=None,
             aug=aug,
-            len_limit=1000 if quick_test else -1,
-        ),
-        dict(
-            name='SUN',
-            type='FolderDataset',
-            path='/data/csxjiang/ood_data/SUN/images',
-            pipeline=pipline,
-            aug=aug,
-            len_limit=1000 if quick_test else -1,
-        ),
-        dict(
-            name='Places',
-            type='FolderDataset',
-            path='/data/csxjiang/ood_data/Places/images',
-            pipeline=pipline,
-            aug=aug,
-            len_limit=1000 if quick_test else -1,
-        ),
-        dict(
-            name='Textures',
-            type='FolderDataset',
-            path='/data/csxjiang/ood_data/Textures/dtd/images_collate',
-            pipeline=pipline,
-            aug=aug,
-            len_limit=1000 if quick_test else -1,
         ),
     ],
 
