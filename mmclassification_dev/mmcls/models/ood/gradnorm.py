@@ -138,6 +138,7 @@ class GradNormBatch(BaseModule):
             targets = self.target
             V = torch.norm((targets - out_softmax), p=1, dim=1)
             S = U * V / channel_num
+            S = V
             if self.debug_mode:
                 # print_topk(outputs, softmax=True)
                 S_dump = S.cpu().tolist()

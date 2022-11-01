@@ -110,7 +110,7 @@ data = dict(
         name='SubImageNet',
         type='ImageNetSuperclass',
         path='/data/csxjiang/ILSVRC/Data/CLS-LOC/train',
-        data_ann=train_list,
+        data_ann=val_list,
         pipeline=pipline,
         len_limit=5000 if quick_test else 50000,
     ),
