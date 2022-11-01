@@ -84,13 +84,13 @@ model = dict(
                 num_stages=4,
                 out_indices=(3,),
                 style='pytorch',
-                random_block=[1],
-                random_block_k=[0.01],
-                random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
+                # random_block=[1],
+                # random_block_k=[0.01],
+                # random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
             ),
-            neck=dict(type='GlobalAveragePooling'),
-            # neck=dict(type='TopKAveragePooling',
-            #           k=0.65),
+            # neck=dict(type='GlobalAveragePooling'),
+            neck=dict(type='TopKAveragePooling',
+                      k=0.65),
             head=dict(
                 type='LinearClsHead',
                 num_classes=train_num_class,
