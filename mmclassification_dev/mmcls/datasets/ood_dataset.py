@@ -66,9 +66,11 @@ class OODBaseDataset(Dataset):
             seq = iaa.Sequential([
                 # iaa.imgcorruptlike.Fog(severity=5)
                 # iaa.GammaContrast((0.8, 1.2)),
-                iaa.LogContrast(gain=(0.5,0.5)),
+                # iaa.LogContrast(gain=(0.5,0.5)),
                 # iaa.MultiplyAndAddToBrightness(mul=(0.5, 0.5), add=(0, 0)),
                 # iaa.AddToBrightness((-10, 10))
+                iaa.Resize({"height": 64, "width": 64})
+
             ])
             sample = np.array(sample).astype('uint8')
             sample = seq(images=[sample])[0]
