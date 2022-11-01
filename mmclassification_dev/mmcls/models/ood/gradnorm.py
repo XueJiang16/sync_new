@@ -132,11 +132,12 @@ class GradNormBatch(BaseModule):
                 type = input['type']
                 del input['type']
             outputs, features = self.classifier(return_loss=False, softmax=False, post_process=False, **input)
+            channel_num = features.shape[1]
             U = torch.norm(features, p=1, dim=1)
             out_softmax = torch.nn.functional.softmax(outputs, dim=1)
             targets = self.target
             V = torch.norm((targets - out_softmax), p=1, dim=1)
-            S = U * V / 2048
+            S = U * V / channel_num
             if self.debug_mode:
                 # print_topk(outputs, softmax=True)
                 S_dump = S.cpu().tolist()

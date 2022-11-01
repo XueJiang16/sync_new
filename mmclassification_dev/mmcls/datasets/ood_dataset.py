@@ -161,3 +161,61 @@ class FolderDataset(OODBaseDataset):
         for filename in images:
             self.file_list.append(filename)
         self.parse_datainfo()
+
+
+# TODO
+@DATASETS.register_module()
+class ImageNetSuperclass(OODBaseDataset):
+    def __init__(self, name, path, data_ann, pipeline, train_label=None,**kwargs):
+        super().__init__(name, pipeline, **kwargs)
+        self.data_prefix = path
+        # self.file_list = glob.glob(os.path.join(path, '*'))
+        self.data_ann = data_ann
+        self.train_label = train_label
+        # with open(self.data_ann) as f:
+        #     samples = [x.strip().rsplit(' ', 1) for x in f.readlines()]
+        samples = []
+        labels = []
+        for ann in self.data_ann:
+            with open(ann) as f:
+                samples.extend([x.strip().rsplit(' ', 1) for x in f.readlines()])
+        self.samples = samples
+        for filename, gt_label in self.samples:
+            labels.append(gt_label)
+        labels_unique = list(set(labels))
+        labels_unique.sort()
+        label_map = dict()
+        for i, idx in enumerate(labels_unique):
+            label_map[idx] = i
+        self.file_list = [[filename, label_map[gt_label]] for filename, gt_label in self.samples]
+        self.parse_datainfo()
+    #
+    def parse_datainfo(self):
+        random.seed(111)
+        random.shuffle(self.file_list)
+        if self.train_label is not None:
+            train_labels = []
+            with open(self.train_label, 'r') as f:
+                for line in f.readlines():
+                    segs = line.strip().split(' ')
+                    train_labels.append(int(segs[-1]))
+            train_label_index = Counter(train_labels)
+
+        for sample in self.file_list:
+            info = dict(img_prefix=self.data_prefix)
+            sample[0] = os.path.join(self.data_prefix, sample[0])
+            info['img_info'] = {'filename': sample[0]}
+            info['filename'] = sample[0]
+            gt_label = int(sample[-1])
+            info['label'] = gt_label
+            if self.train_label is not None:
+                freq = train_label_index[gt_label]
+                if freq > 100:
+                    info['type'] = 0  # head
+                elif freq < 20:
+                    info['type'] = 2  # tail
+                else:
+                    info['type'] = 1  # mid
+            else:
+                info['type'] = 3  # no type
+            self.data_infos.append(info)

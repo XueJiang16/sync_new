@@ -13,7 +13,7 @@ from .mnist import MNIST, FashionMNIST
 from .multi_label import MultiLabelDataset
 from .samplers import DistributedSampler, RepeatAugSampler
 from .voc import VOC
-from .ood_dataset import JsonDataset, FolderDataset, TxtDataset
+from .ood_dataset import JsonDataset, FolderDataset, TxtDataset, ImageNetSuperclass
 from .noise_dataset import NoiseDatasetUniform, NoiseDatasetGaussian
 
 __all__ = [
@@ -22,5 +22,6 @@ __all__ = [
     'DistributedSampler', 'ConcatDataset', 'RepeatDataset',
     'ClassBalancedDataset', 'DATASETS', 'PIPELINES', 'ImageNet21k', 'SAMPLERS',
     'build_sampler', 'RepeatAugSampler', 'KFoldDataset', 'CUB', 'CustomDataset',
-    'FolderDataset', 'JsonDataset', 'TxtDataset', 'NoiseDatasetUniform', 'NoiseDatasetGaussian'
+    'FolderDataset', 'JsonDataset', 'TxtDataset', 'NoiseDatasetUniform', 'NoiseDatasetGaussian',
+    'ImageNetSuperclass'
 ]
