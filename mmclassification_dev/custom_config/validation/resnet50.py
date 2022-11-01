@@ -31,78 +31,74 @@ else:
 quick_test = True
 noise_engine = None
 
-model = dict(
-    type=method_list[3],
-    debug_mode=False,
-    num_classes=train_num_class,
-    # temperature=1,
-    target_file=None,
-    # target_noise=0.1,
-    classifier=dict(
-        type='ImageClassifier',
-        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/validation_ckpt/imagenet/resnet50/epoch_100.pth'),
-        backbone=dict(
-            type='ResNet',
-            depth=50,
-            num_stages=4,
-            out_indices=(3,),
-            style='pytorch',
-            # random_block=[1],
-            # random_block_k=[0.1],
-            # random_block_location=[2],  ## 0:C2 1:C3 2:C4 3:C5
-        ),
-        neck=dict(type='GlobalAveragePooling'),
-        head=dict(
-            type='LinearClsHead',
-            num_classes=train_num_class,
-            in_channels=2048,
-            loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-            topk=(1, 5))
-    )
-)
-
 # model = dict(
-#     type=method_name,
-#     num_crop=3,
-#     img_size=224,
-#     threshold=0.4,
-#     order=1,
-#     mode='mean',
-#     ood_detector=dict(
-#         type=method_list[2],
-#         debug_mode=False,
-#         num_classes=train_num_class,
-#         # temperature=1,
-#         target_file=None,
-#         classifier=dict(
-#             type='ImageClassifier',
-#             # init_cfg=dict(type='Pretrained', checkpoint='/home/csxjiang/sync/mmclassification/ckpt/inat/epoch_80.pth'),
-#             # init_cfg=None,
-#             init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
-#             # init_cfg=dict(type='Pretrained',
-#             #               checkpoint='/home/csxjiang/sync/mmclassification_dev/resnet50_random_block_rand_like_0.033.pth'),
-#             backbone=dict(
-#                 type='ResNet',
-#                 depth=50,
-#                 num_stages=4,
-#                 out_indices=(3,),
-#                 style='pytorch',
-#                 random_block=[1],
-#                 random_block_k=[0.14],
-#                 random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
-#             ),
-#             # neck=dict(type='GlobalAveragePooling'),
-#             neck=dict(type='TopKAveragePooling',
-#                       k=0.7),
-#             head=dict(
-#                 type='LinearClsHead',
-#                 num_classes=train_num_class,
-#                 in_channels=2048,
-#                 loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-#                 topk=(1, 5))
-# )
+#     type=method_list[3],
+#     debug_mode=False,
+#     num_classes=train_num_class,
+#     # temperature=1,
+#     target_file=None,
+#     # target_noise=0.1,
+#     classifier=dict(
+#         type='ImageClassifier',
+#         init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/validation_ckpt/imagenet/resnet50/epoch_100.pth'),
+#         backbone=dict(
+#             type='ResNet',
+#             depth=50,
+#             num_stages=4,
+#             out_indices=(3,),
+#             style='pytorch',
+#             # random_block=[1],
+#             # random_block_k=[0.1],
+#             # random_block_location=[2],  ## 0:C2 1:C3 2:C4 3:C5
+#         ),
+#         neck=dict(type='GlobalAveragePooling'),
+#         head=dict(
+#             type='LinearClsHead',
+#             num_classes=train_num_class,
+#             in_channels=2048,
+#             loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+#             topk=(1, 5))
 #     )
 # )
+
+model = dict(
+    type=method_name,
+    num_crop=3,
+    img_size=224,
+    threshold=0.4,
+    order=1,
+    mode='mean',
+    ood_detector=dict(
+        type=method_list[2],
+        debug_mode=False,
+        num_classes=train_num_class,
+        # temperature=1,
+        target_file=None,
+        classifier=dict(
+            type='ImageClassifier',
+            init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/validation_ckpt/imagenet/resnet50/epoch_100.pth'),
+            backbone=dict(
+                type='ResNet',
+                depth=50,
+                num_stages=4,
+                out_indices=(3,),
+                style='pytorch',
+                random_block=[1],
+                random_block_k=[0.14],
+                random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
+            ),
+            # neck=dict(type='GlobalAveragePooling'),
+            neck=dict(type='TopKAveragePooling',
+                      k=0.65),
+            head=dict(
+                type='LinearClsHead',
+                num_classes=train_num_class,
+                in_channels=2048,
+                loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+                topk=(1, 5))
+)
+    )
+)
 pipline =[dict(type='Collect', keys=['img', 'type'])]
 # aug = ['fog']
 aug = None
