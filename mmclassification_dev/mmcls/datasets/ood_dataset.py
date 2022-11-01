@@ -101,7 +101,7 @@ class TxtDataset(OODBaseDataset):
         self.parse_datainfo()
 
     def parse_datainfo(self):
-        random.seed(111)
+        random.seed(222)
         random.shuffle(self.file_list)
         if self.train_label is not None:
             train_labels = []
