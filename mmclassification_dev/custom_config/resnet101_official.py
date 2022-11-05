@@ -1,4 +1,4 @@
-method_name = 'ODIN'
+method_name = 'Cosine'
 model_name = 'resnet101'
 train_dataset = 'Balance'
 custom_name = "Official"
