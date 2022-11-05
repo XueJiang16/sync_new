@@ -1,4 +1,4 @@
-method_name = 'MSP'
+method_name = 'Energy'
 model_name = 'resnet101'
 train_dataset = 'Balance'
 custom_name = "Official"
