@@ -1,4 +1,4 @@
-method_name = 'EnergyCustom'
+method_name = 'ODIN'
 model_name = 'resnet101'
 train_dataset = 'Balance'
 custom_name = "Official"
