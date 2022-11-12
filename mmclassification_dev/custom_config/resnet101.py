@@ -1,7 +1,7 @@
 import os
 
-method_list = ["GradNormBatch", "MSP", "Energy", "ODIN"]
-# method_list = ["GradNormBatch", "MSPCustom", "EnergyCustom", "ODINCustom"]
+# method_list = ["GradNormBatch", "MSP", "Energy", "ODIN"]
+method_list = ["GradNormBatch", "MSPCustom", "EnergyCustom", "ODINCustom"]
 method_name = method_list[1]
 model_name = 'resnet101'
 train_dataset = 'a8'
@@ -13,8 +13,8 @@ if custom_name is not None:
 else:
     readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
 quick_test = False
-training_file = None
-# training_file = '/data/csxjiang/meta/train_LT_{}.txt'.format(train_dataset)
+# training_file = None
+training_file = '/data/csxjiang/meta/train_LT_{}.txt'.format(train_dataset)
 model = dict(
     type=method_name,
     num_classes=1000,
