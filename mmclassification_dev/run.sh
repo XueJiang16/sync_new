@@ -1,6 +1,6 @@
 #gits
-#bash ./tools/ood_dist_test.sh custom_config/resnet101.py foo 2
-bash ./tools/ood_dist_test.sh custom_config/resnet101_official.py foo 2
+bash ./tools/ood_dist_test.sh custom_config/resnet101.py foo 2
+#bash ./tools/ood_dist_test.sh custom_config/resnet101_official.py foo 2
 #python ./tools/ood_test.py custom_config/resnet50.py foo 
 #bash ./tools/ood_dist_test.sh custom_config/resnet101_nest_cfg.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/Noise/resnet50_uniform.py foo 2

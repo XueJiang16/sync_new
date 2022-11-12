@@ -2,10 +2,10 @@ import os
 
 method_list = ["GradNormBatch", "MSP", "Energy", "ODIN"]
 # method_list = ["GradNormBatch", "MSPCustom", "EnergyCustom", "ODINCustom"]
-method_name = method_list[2]
+method_name = method_list[1]
 model_name = 'resnet101'
-train_dataset = 'repeat3_a8'
-info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_res101_{}_feature_stat.pth'.format(train_dataset))
+train_dataset = 'a8'
+# info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_res101_{}_feature_stat.pth'.format(train_dataset))
 
 custom_name = None
 if custom_name is not None:
@@ -32,20 +32,20 @@ model = dict(
             out_indices=(3,),
             style='pytorch'),
         neck=dict(type='GlobalAveragePooling'),
-        # head=dict(
-        #     type='LinearClsHead',
-        #     num_classes=1000,
-        #     in_channels=2048,
-        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-        #     topk=(1, 5))
-        head = dict(
-            type='DiceHead',
+        head=dict(
+            type='LinearClsHead',
             num_classes=1000,
             in_channels=2048,
             loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-            topk=(1, 5),
-            info=info,
-            p=0.7, )
+            topk=(1, 5))
+        # head = dict(
+        #     type='DiceHead',
+        #     num_classes=1000,
+        #     in_channels=2048,
+        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        #     topk=(1, 5),
+        #     info=info,
+        #     p=0.7, )
     )
 )
 # pipline =[dict(type='Collect', keys=['img'])]
@@ -112,4 +112,4 @@ data = dict(
 dist_params = dict(backend='nccl')
 log_level = 'CRITICAL'
 # log_level = 'INFO'
-work_dir = './results/imagenet_10percent_exp'
+work_dir = './results/imagenet_a8'

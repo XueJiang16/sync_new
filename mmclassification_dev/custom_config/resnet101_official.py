@@ -1,4 +1,4 @@
-method_name = 'ODINCustom'
+method_name = 'MSP'
 model_name = 'resnet101'
 train_dataset = 'Balance'
 custom_name = "Official"
