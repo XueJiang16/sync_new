@@ -75,7 +75,7 @@ class MSPCustom(BaseModule):
             outputs, features = self.classifier(return_loss=False, softmax=False, post_process=False, **input)
             out_softmax = torch.nn.functional.softmax(outputs, dim=1)
             targets = self.target
-            confs = out_softmax + targets
+            confs = out_softmax - targets
             # cos_sim = -out_softmax * targets
             # cos_sim = cos_sim.sum(1) / (torch.norm(out_softmax, dim=1) * torch.norm(targets, dim=1))
             # cos_sim = (1 + cos_sim) / 2
