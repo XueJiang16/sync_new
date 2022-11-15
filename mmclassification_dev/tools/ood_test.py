@@ -136,7 +136,7 @@ def main():
             data_loader_ood.append(build_dataloader(ood_set, **test_loader_cfg))
 
         model = build_ood_model(cfg.model)
-        model.init_weights()
+        # model.init_weights()
         # model.classifier.backbone.change_weights()
         # if os.environ['LOCAL_RANK'] == '0':
         #     save_checkpoint(model.ood_detector.classifier, 'resnet50_random_block.pth')
