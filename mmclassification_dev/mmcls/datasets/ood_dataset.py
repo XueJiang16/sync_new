@@ -32,8 +32,10 @@ class OODBaseDataset(Dataset):
             tv.transforms.CenterCrop(224),
             # tv.transforms.Resize((480, 480)),
             tv.transforms.ToTensor(),
-            tv.transforms.Normalize([123.675/255, 116.28/255, 103.53/255],
-                                    [58.395/255, 57.12/255, 57.375/255]),
+            # tv.transforms.Normalize([123.675/255, 116.28/255, 103.53/255],
+            #                         [58.395/255, 57.12/255, 57.375/255]),
+            tv.transforms.Normalize([0.5, 0.5, 0.5],
+                                    [0.5, 0.5, 0.5]),
         ])
         self.noise_engine = noise_engine
         self.len_limit = len_limit
