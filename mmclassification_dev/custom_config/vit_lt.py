@@ -25,6 +25,7 @@ model = dict(
         type='VitClassifier',
         model='vit_base_patch16_224_in21k',
         checkpoint='/data/csxjiang/vit_lt_ckpt/vit-b16-lt-a8-ep90.pth.tar',
+        gp=None,
         num_classes=21843,
     )
 )

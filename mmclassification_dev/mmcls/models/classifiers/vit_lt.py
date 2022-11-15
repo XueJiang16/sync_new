@@ -17,17 +17,18 @@ class VitClassifier(BaseClassifier):
                  model='ViT-B/16',
                  checkpoint=None,
                  num_classes=None,
+                 gp=None,
                  init_cfg=None):
         super(VitClassifier, self).__init__(init_cfg)
         self.local_rank = os.environ['LOCAL_RANK']
         self.device = "cuda:{}".format(self.local_rank)
         self.model = create_model(
             model,
-            pretrained=None,
+            pretrained=False,
             num_classes=num_classes,
             in_chans=3,
-            # global_pool=args.gp,
-            # scriptable=args.torchscript,
+            global_pool=gp,
+            scriptable=False,
         )
         load_checkpoint(self.model, checkpoint)
         self.model = self.model.to(self.device)
