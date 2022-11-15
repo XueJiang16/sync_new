@@ -28,7 +28,8 @@ class OODBaseDataset(Dataset):
         self.data_prefix = None
         self.name = name
         self.transform = tv.transforms.Compose([
-            tv.transforms.Resize(248),
+            # tv.transforms.Resize(256),
+            tv.transforms.Resize(248, interpolation=tv.InterpolationMode.BICUBIC)
             tv.transforms.CenterCrop(224),
             # tv.transforms.Resize((480, 480)),
             tv.transforms.ToTensor(),
