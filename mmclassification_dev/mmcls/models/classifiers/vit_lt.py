@@ -44,7 +44,6 @@ class VitClassifier(BaseClassifier):
         """Test without augmentation."""
         with torch.no_grad():
             output = self.model(img)
-            print(output.shape)
-            assert False
+            output = output[:,:1000]
         return output
 

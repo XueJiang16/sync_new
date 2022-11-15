@@ -24,6 +24,8 @@ class MSP(BaseModule):
         with torch.no_grad():
             outputs = self.classifier(return_loss=False, softmax=False, post_process=False, **input)
             out_softmax = torch.nn.functional.softmax(outputs, dim=1)
+            print(out_softmax.max(dim=-1))
+            assert False
             # out_softmax = outputs
             confs, _ = torch.max(out_softmax, dim=-1)
         return confs, type
