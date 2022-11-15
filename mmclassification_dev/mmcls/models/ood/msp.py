@@ -33,7 +33,7 @@ class MSPCustom(BaseModule):
     def __init__(self, classifier, num_classes, target_file=None,target_noise=0,**kwargs):
         super(MSPCustom, self).__init__()
         self.local_rank = os.environ['LOCAL_RANK']
-        classifier['head']['require_features'] = True
+        # classifier['head']['require_features'] = True
         self.classifier = build_classifier(classifier)
         self.classifier.eval()
         self.num_classes = num_classes
@@ -72,7 +72,8 @@ class MSPCustom(BaseModule):
             type = input['type']
             del input['type']
         with torch.no_grad():
-            outputs, features = self.classifier(return_loss=False, softmax=False, post_process=False, **input)
+            # outputs, features = self.classifier(return_loss=False, softmax=False, post_process=False, **input)
+            outputs = self.classifier(return_loss=False, softmax=False, post_process=False, **input)
             out_softmax = torch.nn.functional.softmax(outputs, dim=1)
             targets = self.target
             confs = out_softmax / targets
