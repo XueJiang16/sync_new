@@ -13,8 +13,8 @@ if custom_name is not None:
 else:
     readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
 quick_test = True
-training_file = None
-# training_file = '/data/csxjiang/meta/train_LT_{}.txt'.format(train_dataset)
+# training_file = None
+training_file = '/data/csxjiang/meta/train_LT_{}.txt'.format(train_dataset)
 model = dict(
     type=method_name,
     num_classes=1000,
