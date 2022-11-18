@@ -1,8 +1,8 @@
 import os
 
-# method_list = ["GradNormBatch", "MSP", "Energy", "ODIN"]
-method_list = ["GradNormBatch", "MSPCustom", "EnergyCustom", "ODINCustom"]
-method_name = method_list[2]
+method_list = ["GradNorm", "MSP", "Energy", "ODIN"]
+# method_list = ["GradNormBatch", "MSPCustom", "EnergyCustom", "ODINCustom"]
+method_name = method_list[0]
 model_name = 'resnet101'
 train_dataset = 'a8'
 # info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_res101_{}_feature_stat.pth'.format(train_dataset))
