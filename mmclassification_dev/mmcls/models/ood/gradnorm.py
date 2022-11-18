@@ -54,7 +54,9 @@ class GradNorm(BaseModule):
         loss = torch.sum(torch.mean(-targets * self.logsoftmax(outputs), dim=-1))
 
         loss.backward()
-        layer_grad = self.classifier.head.fc.weight.grad.data
+        # layer_grad = self.classifier.head.fc.weight.grad.data
+        layer_grad = self.classifier.model.head.weight.grad.data
+
         layer_grad_norm = torch.sum(torch.abs(layer_grad))
         return layer_grad_norm, type
 
