@@ -33,8 +33,6 @@ class VitClassifier(BaseClassifier):
         load_checkpoint(self.model, checkpoint)
         self.model = self.model.to(self.device)
         self.model.eval()
-        print(self.model)
-        assert False
 
     def extract_feat(self, img, stage='neck'):
         # TODO
