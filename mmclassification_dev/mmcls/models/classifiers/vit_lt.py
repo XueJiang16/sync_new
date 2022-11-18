@@ -43,9 +43,9 @@ class VitClassifier(BaseClassifier):
 
     def simple_test(self, img, img_metas=None, require_features=False, require_backbone_features=False, softmax=True, **kwargs):
         """Test without augmentation."""
-        with torch.no_grad():
-            output = self.model(img)
+        # with torch.no_grad():
+        output = self.model(img)
 
-            output = output[:,:1000]
+        output = output[:,:1000]
         return output
 
