@@ -152,7 +152,7 @@ class FeatureMapSim(BaseModule):
                 feature_crops = feature_c5.flatten(2)  # (B, C, H*W)
                 patch_sim = feature_crops.std(-1).mean(-1)
             elif self.mode == 'kap':
-                patch_mean = self.kap(feature_c5)
+                patch_mean = self.kap(feature_c5).unsqueeze(-1)
                 patch_sim = torch.abs(feature_c5 - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
             elif self.mode == 'mean':
                 # feature_c5 = feature_c5[:,:,1:6,1:6]
