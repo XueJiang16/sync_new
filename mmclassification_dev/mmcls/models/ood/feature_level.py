@@ -1,5 +1,7 @@
 from mmcv.runner import BaseModule    # noqa
 import torch  # noqa
+import torch.nn as nn
+
 import os
 import numpy as np  # noqa
 from collections import Counter  # noqa
@@ -76,7 +78,7 @@ class PatchSim(BaseModule):
 
 @OOD.register_module()
 class FeatureMapSim(BaseModule):
-    def __init__(self, num_crop, img_size, threshold, order=1, ood_detector=None, mode='cosine',**kwargs):
+    def __init__(self, num_crop, img_size, threshold, k=1, order=1, ood_detector=None, mode='cosine',**kwargs):
         super(FeatureMapSim, self).__init__()
         self.local_rank = os.environ['LOCAL_RANK']
         self.has_ood_detector = True if ood_detector else False
@@ -89,6 +91,27 @@ class FeatureMapSim(BaseModule):
         self.threshold = threshold
         self.order = order
         self.mode = mode
+        self.gap = nn.AdaptiveAvgPool2d((1, 1))
+        self.k = k
+
+
+    def kap(self, x):
+        b, c, h, w = x.shape
+        x_gap = self.gap(x).view(b, c)
+
+        ## kap
+        x = x.view(b, c, -1)
+        ## h*w -> top k
+        num = int(self.k * (h * w))
+        # num = int(self.k * h)
+        topk_v, _ = x.topk(num, dim=-1)
+        out = topk_v.mean(dim=-1)
+        # topk_v, _ = out.topk(num, dim=-1)
+        # out = topk_v.mean(dim=-1)
+        mean_gap = x_gap.mean(dim=-1)
+        mean_kap = out.mean(dim=-1)
+        out = out * (mean_gap / mean_kap).unsqueeze(-1)
+        return out
 
     def forward(self, **input):
         if "type" in input:
@@ -128,6 +151,9 @@ class FeatureMapSim(BaseModule):
                 # feature_c5 = feature_c5[:,:,1:6,1:6]
                 feature_crops = feature_c5.flatten(2)  # (B, C, H*W)
                 patch_sim = feature_crops.std(-1).mean(-1)
+            elif self.mode == 'kap':
+                patch_mean = self.kap(feature_c5)
+                patch_sim = torch.abs(feature_c5 - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
             elif self.mode == 'mean':
                 # feature_c5 = feature_c5[:,:,1:6,1:6]
                 feature_crops = feature_c5.flatten(2)
