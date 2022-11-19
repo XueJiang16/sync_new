@@ -44,7 +44,7 @@ class LinearClsHead(ClsHead):
             x = x[-1]
         return x
 
-    def apply_ash(self, x, percentile=50):
+    def apply_ash(self, x, percentile=10):
 
         # Ash-S
         b, c= x.shape
