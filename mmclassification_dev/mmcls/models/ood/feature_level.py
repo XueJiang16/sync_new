@@ -149,8 +149,8 @@ class FeatureMapSim(BaseModule):
                 # patch_sim = patch_sim.mean(-1)
             elif self.mode == 'median':
                 feature_crops = feature_c5.flatten(2)
-                patch_median = feature_crops.median(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
-                patch_sim = torch.abs(feature_crops - patch_median).median(dim=(-1, -2))  # for ID: .mean(dim=-2)
+                patch_median = feature_crops.median(-1)[0].unsqueeze(-1)  # (N, C, H*W) -> (N, C)
+                patch_sim = torch.abs(feature_crops - patch_median).flatten(1).median(dim=-1)[0] # for ID: .mean(dim=-2)
 
             elif self.mode == 'channel_mean':
                 feature_crops = feature_c5.flatten(2)
