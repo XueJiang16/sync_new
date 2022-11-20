@@ -22,7 +22,7 @@ model = dict(
     classifier=dict(
         type='ImageClassifier',
         init_cfg=dict(type='Pretrained',
-                      checkpoint='~/sync/mmclassification/ckpt/res50_pretrain21k_cifar10/epoch_200.pth'),
+                      checkpoint='~/sync/mmclassification/ckpt/res18_cifar10/epoch_200.pth'),
         backbone=dict(
             type='ResNet_CIFAR',
             depth=50,
