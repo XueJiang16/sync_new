@@ -15,6 +15,7 @@ from .samplers import DistributedSampler, RepeatAugSampler
 from .voc import VOC
 from .ood_dataset import JsonDataset, FolderDataset, TxtDataset, ImageNetSuperclass
 from .noise_dataset import NoiseDatasetUniform, NoiseDatasetGaussian
+from .svhn import SVHN
 
 __all__ = [
     'BaseDataset', 'ImageNet', 'CIFAR10', 'CIFAR100', 'MNIST', 'FashionMNIST',
@@ -23,5 +24,5 @@ __all__ = [
     'ClassBalancedDataset', 'DATASETS', 'PIPELINES', 'ImageNet21k', 'SAMPLERS',
     'build_sampler', 'RepeatAugSampler', 'KFoldDataset', 'CUB', 'CustomDataset',
     'FolderDataset', 'JsonDataset', 'TxtDataset', 'NoiseDatasetUniform', 'NoiseDatasetGaussian',
-    'ImageNetSuperclass'
+    'ImageNetSuperclass', 'SVHN'
 ]
