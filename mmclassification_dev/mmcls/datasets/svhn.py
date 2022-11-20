@@ -28,7 +28,7 @@ class SVHN(data.Dataset):
                  "extra_32x32.mat", "a93ce644f1a588dc4d68dda5feec44a7"]]}
 
     def __init__(self, path, split='train',
-                 pipeline=None, target_transform=None, download=False):
+                 pipeline=None, target_transform=None, download=False, name=None):
         self.root = path
         self.transform = pipeline
         self.target_transform = target_transform
