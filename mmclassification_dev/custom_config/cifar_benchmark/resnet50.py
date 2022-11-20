@@ -56,6 +56,8 @@ pipeline = [
     dict(type='Collect', keys=['img', 'type'])
 ]
 
+transform = 'Cifar'
+
 data = dict(
     samples_per_gpu=256,
     workers_per_gpu=4,
@@ -66,19 +68,20 @@ data = dict(
         pipeline=pipeline,
         test_mode=True),
     ood_data=[
-        dict(
-            name='SVHN',
-            type='SVHN',
-            path='/data/csxjiang/cifar_benchmark/svhn',
-            split='test',
-            pipeline=pipeline,
-            download=False,
-        ),
+        # dict(
+        #     name='SVHN',
+        #     type='SVHN',
+        #     path='/data/csxjiang/cifar_benchmark/svhn',
+        #     split='test',
+        #     pipeline=pipeline,
+        #     download=False,
+        # ),
         dict(
             name='LSUN',
             type='FolderDataset',
             path='/data/csxjiang/cifar_benchmark/LSUN/test',
             pipeline=pipeline,
+            transform=transform,
             len_limit=1000 if quick_test else -1,
         ),
         dict(
@@ -86,6 +89,7 @@ data = dict(
             type='FolderDataset',
             path='/data/csxjiang/cifar_benchmark/iSUN/iSUN_patches',
             pipeline=pipeline,
+            transform=transform,
             len_limit=1000 if quick_test else -1,
         ),
         dict(
@@ -93,6 +97,7 @@ data = dict(
             type='FolderDataset',
             path='/data/csxjiang/ood_data/Places/images',
             pipeline=pipeline,
+            transform=transform,
             len_limit=1000 if quick_test else -1,
         ),
         dict(
@@ -100,6 +105,7 @@ data = dict(
             type='FolderDataset',
             path='/data/csxjiang/ood_data/Textures/dtd/images_collate',
             pipeline=pipeline,
+            transform=transform,
             len_limit=1000 if quick_test else -1,
         ),
     ],

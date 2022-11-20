@@ -4,6 +4,7 @@ import os
 import os.path
 import numpy as np
 from torchvision.datasets.utils import check_integrity, download_url
+import torchvision as tv
 
 from .builder import DATASETS
 from .pipelines import Compose
@@ -30,9 +31,18 @@ class SVHN(data.Dataset):
     def __init__(self, path, split='train',
                  pipeline=None, target_transform=None, download=False, name=None):
         self.root = path
-        self.transform = pipeline
         self.target_transform = target_transform
         self.split = split  # training set or test set or extra set
+
+        self.transform = tv.transforms.Compose([
+                tv.transforms.Resize(32),
+                tv.transforms.CenterCrop(32),
+                tv.transforms.ToTensor(),
+                tv.transforms.Normalize([0.4914, 0.4822, 0.4465],
+                                        [0.2023, 0.1994, 0.2010]),
+
+            ])
+        self.pipeline = Compose(pipeline)
 
         if self.split not in self.split_list:
             raise ValueError('Wrong split entered! Please use split="train" '
@@ -89,10 +99,9 @@ class SVHN(data.Dataset):
         # doing this so that it is consistent with all other datasets
         # to return a PIL Image
         img = Image.fromarray(np.transpose(img, (1, 2, 0)))
-        print(img)
-        # assert False
         if self.transform is not None:
             img = self.transform(img)
+            img = self.pipeline(img)
 
         if self.target_transform is not None:
             target = self.target_transform(target)

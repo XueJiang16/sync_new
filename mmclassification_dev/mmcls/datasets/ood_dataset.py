@@ -21,23 +21,33 @@ from .builder import DATASETS
 from .pipelines import Compose
 
 class OODBaseDataset(Dataset):
-    def __init__(self, name, pipeline, aug=None, noise_engine=None, len_limit=-1):
+    def __init__(self, name, pipeline, transform='ImageNet', aug=None, noise_engine=None, len_limit=-1):
         super().__init__()
         self.pipeline = Compose(pipeline)
         self.file_list = []
         self.data_prefix = None
         self.name = name
-        self.transform = tv.transforms.Compose([
-            tv.transforms.Resize(256),
-            # tv.transforms.Resize(248, interpolation=tv.transforms.InterpolationMode.BICUBIC),
-            tv.transforms.CenterCrop(224),
-            # tv.transforms.Resize((480, 480)),
-            tv.transforms.ToTensor(),
-            tv.transforms.Normalize([123.675/255, 116.28/255, 103.53/255],
-                                    [58.395/255, 57.12/255, 57.375/255]),
-            # tv.transforms.Normalize([0.5, 0.5, 0.5],
-            #                         [0.5, 0.5, 0.5]),
-        ])
+        if transform == 'ImageNet':
+            self.transform = tv.transforms.Compose([
+                tv.transforms.Resize(256),
+                # tv.transforms.Resize(248, interpolation=tv.transforms.InterpolationMode.BICUBIC),
+                tv.transforms.CenterCrop(224),
+                # tv.transforms.Resize((480, 480)),
+                tv.transforms.ToTensor(),
+                tv.transforms.Normalize([123.675/255, 116.28/255, 103.53/255],
+                                        [58.395/255, 57.12/255, 57.375/255]),
+                # tv.transforms.Normalize([0.5, 0.5, 0.5],
+                #                         [0.5, 0.5, 0.5]),
+            ])
+        elif transform == 'Cifar':
+            self.transform = tv.transforms.Compose([
+                tv.transforms.Resize(32),
+                tv.transforms.CenterCrop(32),
+                tv.transforms.ToTensor(),
+                tv.transforms.Normalize([0.4914, 0.4822, 0.4465],
+                                        [0.2023, 0.1994, 0.2010]),
+
+            ])
         self.noise_engine = noise_engine
         self.len_limit = len_limit
         self.data_infos = []
