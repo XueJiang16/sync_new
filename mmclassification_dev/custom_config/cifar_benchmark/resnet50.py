@@ -55,6 +55,9 @@ pipeline = [
     dict(type='ImageToTensor', keys=['img']),
     dict(type='Collect', keys=['img', 'type'])
 ]
+ood_pipeline = [
+    dict(type='Collect', keys=['img', 'type'])
+]
 
 transform = 'Cifar'
 
@@ -80,7 +83,7 @@ data = dict(
             name='LSUN',
             type='FolderDataset',
             path='/data/csxjiang/cifar_benchmark/LSUN/test',
-            pipeline=pipeline,
+            pipeline=ood_pipeline,
             transform=transform,
             len_limit=1000 if quick_test else -1,
         ),
@@ -88,7 +91,7 @@ data = dict(
             name='iSUN',
             type='FolderDataset',
             path='/data/csxjiang/cifar_benchmark/iSUN/iSUN_patches',
-            pipeline=pipeline,
+            pipeline=ood_pipeline,
             transform=transform,
             len_limit=1000 if quick_test else -1,
         ),
@@ -96,7 +99,7 @@ data = dict(
             name='Places',
             type='FolderDataset',
             path='/data/csxjiang/ood_data/Places/images',
-            pipeline=pipeline,
+            pipeline=ood_pipeline,
             transform=transform,
             len_limit=1000 if quick_test else -1,
         ),
@@ -104,7 +107,7 @@ data = dict(
             name='Textures',
             type='FolderDataset',
             path='/data/csxjiang/ood_data/Textures/dtd/images_collate',
-            pipeline=pipeline,
+            pipeline=ood_pipeline,
             transform=transform,
             len_limit=1000 if quick_test else -1,
         ),
