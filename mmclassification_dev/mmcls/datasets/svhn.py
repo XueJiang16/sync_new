@@ -90,7 +90,7 @@ class SVHN(data.Dataset):
         # to return a PIL Image
         img = Image.fromarray(np.transpose(img, (1, 2, 0)))
         print(img)
-        assert False
+        # assert False
         if self.transform is not None:
             img = self.transform(img)
 
