@@ -15,7 +15,7 @@ model = dict(
     img_size=224,
     threshold=0.4,
     order=1,
-    k = 0.65,
+    k=0.65,
     mode='kap',
     ood_detector=dict(
         type=method_list[2],
@@ -36,9 +36,9 @@ model = dict(
                 num_stages=4,
                 out_indices=(3,),
                 style='pytorch',
-                random_block=[1],
-                random_block_k=[0.14],
-                random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
+                # random_block=[1],
+                # random_block_k=[0.14],
+                # random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
             ),
             # neck=dict(type='GlobalAveragePooling'),
             neck=dict(type='TopKAveragePooling',
