@@ -57,7 +57,7 @@ class SVHN(data.Dataset):
         import scipy.io as sio
 
         # reading(loading) mat file as array
-        loaded_mat = sio.loadmat(os.path.join(root, self.filename))
+        loaded_mat = sio.loadmat(os.path.join(path, self.filename))
 
         if self.split == "test":
             self.data = loaded_mat['X']
@@ -71,7 +71,7 @@ class SVHN(data.Dataset):
 
             if self.split == "train_and_extra":
                 extra_filename = self.split_list[split][1][1]
-                loaded_mat = sio.loadmat(os.path.join(root, extra_filename))
+                loaded_mat = sio.loadmat(os.path.join(path, extra_filename))
                 self.data = np.concatenate([self.data,
                                                   loaded_mat['X']], axis=3)
                 self.targets = np.vstack((self.targets,

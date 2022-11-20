@@ -72,7 +72,7 @@ data = dict(
             path='/data/csxjiang/cifar_benchmark/svhn',
             split='test',
             pipeline=pipeline,
-            download=True,
+            download=False,
         ),
         dict(
             name='LSUN',
