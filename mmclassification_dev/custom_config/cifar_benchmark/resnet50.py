@@ -70,7 +70,7 @@ data = dict(
             name='SVHN',
             type='SVHN',
             path='/data/csxjiang/cifar_benchmark/svhn',
-            spilt='test',
+            split='test',
             pipeline=pipeline,
             download=True,
         ),
