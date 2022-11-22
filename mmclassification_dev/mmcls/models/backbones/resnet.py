@@ -305,7 +305,8 @@ class RandomBlock(BaseModule):
             # before_sum = x.sum(dim=[1, 2, 3])
             # before_count = (x!=0).sum(dim=[1,2,3]).type_as(x)
 
-            out = x - self.k
+            # out = x - self.k
+            out = x - x.mean(dim=(-1,-2)).unsqueeze(-1).unsqueeze(-1)
             out = self.non_linear(out)
             # after_sum = out.sum(dim=[1, 2, 3])
             # after_count = (out!=0).sum(dim=[1,2,3]).type_as(out)
