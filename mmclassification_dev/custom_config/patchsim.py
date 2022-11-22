@@ -9,7 +9,7 @@ else:
     readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
 quick_test = True
 noise_engine = None
-k_c5 = 0.6
+k_c5 = 0.7
 model = dict(
     type=method_name,
     num_crop=3,
