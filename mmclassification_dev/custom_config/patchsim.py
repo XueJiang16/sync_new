@@ -9,13 +9,14 @@ else:
     readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
 quick_test = True
 noise_engine = None
+k_c5 = 0.6
 model = dict(
     type=method_name,
     num_crop=3,
     img_size=224,
     threshold=0.4,
     order=1,
-    k=0.65,
+    k=k_c5,
     mode='kap',
     ood_detector=dict(
         type=method_list[2],
@@ -42,7 +43,7 @@ model = dict(
             ),
             # neck=dict(type='GlobalAveragePooling'),
             neck=dict(type='TopKAveragePooling',
-                      k=0.6),
+                      k=k_c5),
             head=dict(
                 type='LinearClsHead',
                 num_classes=1000,
