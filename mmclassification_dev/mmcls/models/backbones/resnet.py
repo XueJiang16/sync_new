@@ -314,13 +314,13 @@ class RandomBlock(BaseModule):
         # out = topk_v.mean(dim=-1)
         mean_gap = x_gap.mean(dim=-1)
         mean_kap = out.mean(dim=-1)
-        max_gap = x_gap.max(dim=-1)[0]
-        min_gap = x_gap.min(dim=-1)[0]
-        max_kap = out.max(dim=-1)[0]
-        min_kap = out.min(dim=-1)[0]
-        # out = out * (mean_gap / mean_kap).unsqueeze(-1)
-        out = (out - min_kap.unsqueeze(dim=-1)) * ((max_gap - min_gap) / (max_kap - min_kap)).unsqueeze(dim=-1) \
-              + min_gap.unsqueeze(dim=-1)
+        # max_gap = x_gap.max(dim=-1)[0]
+        # min_gap = x_gap.min(dim=-1)[0]
+        # max_kap = out.max(dim=-1)[0]
+        # min_kap = out.min(dim=-1)[0]
+        out = out * (mean_gap / mean_kap).unsqueeze(-1)
+        # out = (out - min_kap.unsqueeze(dim=-1)) * ((max_gap - min_gap) / (max_kap - min_kap)).unsqueeze(dim=-1) \
+        #       + min_gap.unsqueeze(dim=-1)
         return out
 
     def forward(self, x, th_act=False):
