@@ -296,6 +296,27 @@ class RandomBlock(BaseModule):
         elif non_linear == 'l_relu':
             self.non_linear = partial(torch.nn.functional.leaky_relu, negative_slope=0)
 
+        self.gap = nn.AdaptiveAvgPool2d((1, 1))
+
+
+    def kap(self, x):
+        b, c, h, w = x.shape
+        x_gap = self.gap(x).view(b, c)
+
+        ## kap
+        x = x.view(b, c, -1)
+        ## h*w -> top k
+        num = int(self.k * (h * w))
+        # num = int(self.k * h)
+        topk_v, _ = x.topk(num, dim=-1)
+        out = topk_v.mean(dim=-1)
+        # topk_v, _ = out.topk(num, dim=-1)
+        # out = topk_v.mean(dim=-1)
+        mean_gap = x_gap.mean(dim=-1)
+        mean_kap = out.mean(dim=-1)
+        out = out * (mean_gap / mean_kap).unsqueeze(-1)
+        return out
+
     def forward(self, x, th_act=False):
         if th_act:
             # percentile_th = torch.quantile(x.flatten(1), self.k, dim=1)
@@ -306,7 +327,8 @@ class RandomBlock(BaseModule):
             # before_count = (x!=0).sum(dim=[1,2,3]).type_as(x)
 
             # out = x - self.k
-            out = x - x.mean(dim=(-1,-2)).unsqueeze(-1).unsqueeze(-1)
+            # k = x.mean(dim=(-1,-2)).unsqueeze(-1).unsqueeze(-1)
+            out = x - self.kap(x).unsqueeze(-1).unsqueeze(-1)
             out = self.non_linear(out)
             # after_sum = out.sum(dim=[1, 2, 3])
             # after_count = (out!=0).sum(dim=[1,2,3]).type_as(out)
