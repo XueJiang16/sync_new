@@ -314,7 +314,7 @@ class RandomBlock(BaseModule):
         # out = topk_v.mean(dim=-1)
         mean_gap = x_gap.mean(dim=-1)
         mean_kap = out.mean(dim=-1)
-        # out = out * (mean_gap / mean_kap).unsqueeze(-1)
+        out = out * (mean_gap / mean_kap).unsqueeze(-1)
         return out
 
     def forward(self, x, th_act=False):
