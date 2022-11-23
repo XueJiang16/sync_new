@@ -17,7 +17,7 @@ model = dict(
     threshold=0.4,
     order=1,
     k=k_c5,
-    mode='mean',
+    mode=None,
     ood_detector=dict(
         type=method_list[2],
         debug_mode=False,
@@ -41,9 +41,9 @@ model = dict(
                 random_block_k=[0.14],
                 random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
             ),
-            # neck=dict(type='GlobalAveragePooling'),
-            neck=dict(type='TopKAveragePooling',
-                      k=k_c5),
+            neck=dict(type='GlobalAveragePooling'),
+            # neck=dict(type='TopKAveragePooling',
+            #           k=k_c5),
             head=dict(
                 type='LinearClsHead',
                 num_classes=1000,
