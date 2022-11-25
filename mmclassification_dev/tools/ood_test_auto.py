@@ -163,7 +163,7 @@ def main(args, task_cfg):
         log_file = os.path.join(cfg.work_dir, '{}_{}.log'.format(cfg.readable_name, timestamp))
         os.makedirs(cfg.work_dir, exist_ok=True)
         logger = get_root_logger(log_file=log_file, log_level=cfg.log_level,
-                                 logger_name='mmcls' if len(multi_cfg) == 1 else cfg.readable_name)
+                                 logger_name='mmcls')
     if os.environ['LOCAL_RANK'] == '0':
         print()
         print("Processing in-distribution data...")
