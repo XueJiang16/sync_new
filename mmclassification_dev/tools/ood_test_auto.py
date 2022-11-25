@@ -18,6 +18,7 @@ from mmcls.apis import single_gpu_test_ood, single_gpu_test_ood_score, single_gp
 from mmcls.datasets import build_dataloader, build_dataset
 from mmcls.models import build_ood_model
 from mmcls.utils import get_root_logger, setup_multi_processes, gather_tensors, evaluate_all
+import torch.distributed as dist
 from tools.google_helper.google_sheets_reader import GoogleSheets
 
 def parse_args():
@@ -73,7 +74,7 @@ def parse_args():
         os.environ['LOCAL_RANK'] = str(args.local_rank)
     return args
 
-def init_eval(cfg, args):
+def init_eval(cfg, args, is_init=False):
     # set multi-process settings
     setup_multi_processes(cfg)
 
@@ -81,16 +82,15 @@ def init_eval(cfg, args):
     if cfg.get('cudnn_benchmark', False):
         torch.backends.cudnn.benchmark = True
     cfg.model.pretrained = None
-
     if args.launcher == 'none':
         distributed = False
     else:
         distributed = True
-        init_dist(args.launcher, **cfg.dist_params)
-
+        if not is_init:
+            init_dist(args.launcher, **cfg.dist_params)
     return cfg, distributed
 
-def main(args, task_cfg):
+def main(args, task_cfg, is_init=False, gs=None):
 
     cfg = mmcv.Config.fromfile(args.config)
 
@@ -105,13 +105,13 @@ def main(args, task_cfg):
             v = "'{}'".format(v)
         exec("{} = {}".format(k, v))
 
-    is_init = False
-
     if os.environ['LOCAL_RANK'] == '0':
         print("Evaluating {}...".format(cfg.readable_name))
-    if not is_init:
-        cfg, distributed = init_eval(cfg, args)
-        is_init = True
+    cfg, distributed = init_eval(cfg, args, is_init=is_init)
+    dist.barrier()
+    if os.environ['LOCAL_RANK'] == '0':
+        print("Get task: {}".format(task_cfg))
+        gs.process_lock()
 
     cfg.gpu_ids = [int(os.environ['LOCAL_RANK'])]
 
@@ -231,14 +231,13 @@ if __name__ == '__main__':
     gs_token = args.token
     local_rank = int(os.environ['LOCAL_RANK'])
     gs = GoogleSheets(SAMPLE_SPREADSHEET_ID, node_rank=local_rank)
+    is_init = False
     while True:
         task_cfg = gs.grab_task(SAMPLE_TAB_NAME, is_master=True if local_rank == 0 else False, token=gs_token)
         if len(task_cfg) == 0:
             break
-        print("Get task: {}".format(task_cfg))
-        if local_rank == 0:
-            gs.process_lock()
-        res = main(args, task_cfg)
+        res = main(args, task_cfg, is_init=is_init, gs=gs)
+        is_init = True
         print("Task {} finished with result {}".format(task_cfg, res))
         if local_rank == 0:
             gs.update_result(res)
