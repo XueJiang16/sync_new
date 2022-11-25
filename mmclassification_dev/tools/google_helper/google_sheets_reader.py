@@ -176,8 +176,8 @@ class GoogleSheets(object):
                         task_dict[cfg_kw] = cfg_val
                     self.content_ptr = [row_idx + 3, content_idx + 1]
                     get_task_flag = True
-                    if is_master:
-                        self.get_lock(0)
+                    # if is_master:
+                    #     self.get_lock(0)
                     break
                 elif status == -1 and is_master:
                     self.lock = [row_idx + 3, status_idx+1]
