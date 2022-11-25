@@ -94,7 +94,7 @@ def main(args, task_cfg):
 
     cfg = mmcv.Config.fromfile(args.config)
 
-    for k, v in task_cfg:
+    for k, v in task_cfg.items():
         try:
             rtv = eval(v)
             if type(rtv) in [list, int, float, dict, tuple]:
