@@ -144,8 +144,6 @@ def main(args, task_cfg, is_init=False, gs=None):
         except:
             v = "'{}'".format(v)
         exec("{} = {}".format(k, v))
-    print(cfg.model.neck.k)
-    assert False
 
 
 

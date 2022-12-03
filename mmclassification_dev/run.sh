@@ -30,4 +30,4 @@
 
 ## id acc
 #bash ./tools/dist_test.sh custom_config/id_acc/resnet50_topk.py /data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth 2 --metrics accuracy
-bash ./tools/dist_test_auto.sh custom_config/id_acc/resnet50_topk.py /data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth 2 --metrics accuracy
+bash ./tools/dist_test_auto.sh custom_config/id_acc/resnet50_topk.py /data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth 1 --metrics accuracy
