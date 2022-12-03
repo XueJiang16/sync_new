@@ -169,7 +169,7 @@ class GoogleSheets(object):
                 if status == token:
                     cfg_vals = t[:status_idx]
                     for cfg_kw, cfg_val in zip(cfg_kws, cfg_vals):
-                        task_dict[cfg_kw] = cfg_val
+                        task_dict[cfg_kw] = str(cfg_val)
                     self.content_ptr = [row_idx + 3, content_idx + 1]
                     get_task_flag = True
                     # if is_master:

@@ -58,26 +58,33 @@ class FeatureVis(BaseModule):
             _, C4_features = self.classifier(return_loss=False, softmax=False, post_process=False,
                                              require_backbone_features_idx='0', **input)
             k = 0.1
-            C4_features[C4_features<k] = 0
-            C4_features[C4_features>=k] = 1
-            C4_features = C4_features.mean(1).cpu().numpy()
-            C4_features_std = (C4_features - 0.079) / (0.1953-0.079)
-            C4_features_std[C4_features_std>1]=1
-            C4_features_std[C4_features_std<0]=0
+            # C4_features[C4_features<k] = 0
+            # C4_features[C4_features>=k] = 1
+            C4_features = C4_features.mean(1)
+            mean = C4_features.mean()
+            std = C4_features.std()
+            print("[{}] mean={}, std={}").format(mid_path, mean, std)
+            # C4_features_std = (C4_features - 0.079) / (0.1953-0.079)
+            # C4_features_std[C4_features_std>1]=1
+            # C4_features_std[C4_features_std<0]=0
+
             # C4_features_std = (C4_features - C4_features.min((1,2))[:,None,None]) / (C4_features.max((1,2))-C4_features.min((1,2)))[:,None,None]
-            for i in range(len(filenames)):
-                try:
-                    img = cv2.imread(filenames[i])
-                    res = show_heatmap(img, C4_features_std[i])
-                    # plt.matshow(C4_features[i])
-                    filename = os.path.splitext(os.path.basename(filenames[i]))[0]
-                    cv2.imwrite(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)), res)
-                except:
-                    print('Image Read Error!')
-                    continue
-                # plt.savefig(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)))
-                # plt.close()
-                # shutil.copy(filenames[i], out_dir)
+            # for i in range(len(filenames)):
+            #     try:
+            #         img = cv2.imread(filenames[i])
+            #         img_cam = img.copy()
+            #         img_larger = img.copy()
+            #         img_lower = img.copy()
+            #         res = show_heatmap(img, C4_features_std[i])
+            #         # plt.matshow(C4_features[i])
+            #         filename = os.path.splitext(os.path.basename(filenames[i]))[0]
+            #         cv2.imwrite(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)), res)
+            #     except:
+            #         print('Image Read Error!')
+            #         continue
+            #     # plt.savefig(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)))
+            #     # plt.close()
+            #     # shutil.copy(filenames[i], out_dir)
             confs = torch.tensor([0]*len(filenames)).to("cuda:{}".format(self.local_rank))
         return confs, type
 
