@@ -61,8 +61,7 @@ class TopKAveragePooling(nn.Module):
         super(TopKAveragePooling, self).__init__()
         self.k = k
         self.gap = nn.AdaptiveAvgPool2d((1, 1))
-        print(self.k)
-        assert False
+
 
     def init_weights(self):
         pass
@@ -74,6 +73,8 @@ class TopKAveragePooling(nn.Module):
         ## kap
         x = x.view(b, c, -1)
         ## h*w -> top k
+        print(self.k)
+        assert False
         num = int(self.k * (h * w))
         # num = int(self.k * h)
         topk_v, _ = x.topk(num, dim=-1)
