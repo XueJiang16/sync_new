@@ -10,7 +10,6 @@ model = dict(
         random_block_k=[0.2],
         random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
     ),
-    # neck=dict(type='GlobalAveragePooling'),
     neck=dict(type='TopKAveragePooling',
               k=0.65),
     head=dict(

@@ -9,7 +9,7 @@
 # bash ./tools/ood_dist_test.sh custom_config/resnet50.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/resnet50_official.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/meanstd.py foo 2
-bash ./tools/ood_dist_test.sh custom_config/patchsim.py foo 2
+#bash ./tools/ood_dist_test.sh custom_config/patchsim.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/inat_ib/resnet101.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/aug_contrast.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/cifar10.py foo 2
@@ -25,4 +25,8 @@ bash ./tools/ood_dist_test.sh custom_config/patchsim.py foo 2
 ## Cifar
 #bash ./tools/ood_dist_test.sh custom_config/cifar_benchmark/resnet50.py foo 1
 
+## google doc
 #bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2
+
+## id acc
+bash ./tools/dist_test.sh custom_config/id_acc/resnet50_topk.py /data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth 2
