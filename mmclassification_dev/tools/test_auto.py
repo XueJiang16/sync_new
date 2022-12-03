@@ -170,8 +170,7 @@ def main(args, task_cfg, is_init=False, gs=None):
 
     cfg, distributed = init_eval(cfg, args, is_init=is_init)
     dist.barrier()
-    print("Get task: {}".format(task_cfg))
-    assert False
+
     if os.environ['LOCAL_RANK'] == '0':
         print("Get task: {}".format(task_cfg))
         gs.process_lock()
