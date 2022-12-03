@@ -99,6 +99,11 @@ def parse_args():
         choices=['cpu', 'cuda', 'ipu'],
         default='cuda',
         help='device used for testing')
+    parser.add_argument(
+        '--token',
+        type=int,
+        default=42,
+        help='token for google sheets identification')
     args = parser.parse_args()
     if 'LOCAL_RANK' not in os.environ:
         os.environ['LOCAL_RANK'] = str(args.local_rank)
