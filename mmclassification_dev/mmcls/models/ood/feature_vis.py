@@ -73,7 +73,9 @@ class FeatureVis(BaseModule):
             C4_features_larger[C4_features_larger < k] = 0
             C4_features_larger = self.norm(C4_features_larger)
             C4_features_lower = C4_features.clone()
-            C4_features_lower[C4_features_lower > k] = 0.08
+            # C4_features_lower[C4_features_lower > k] = 0.08
+            # C4_features_lower = self.norm(C4_features_lower)
+            C4_features_lower = torch.clamp(C4_features_lower-k, min=0)
             C4_features_lower = self.norm(C4_features_lower)
 
             # C4_features_larger = C4_features_larger - k
