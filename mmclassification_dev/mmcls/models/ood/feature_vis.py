@@ -69,11 +69,9 @@ class FeatureVis(BaseModule):
             # C4_features[C4_features<k] = 0
             # C4_features[C4_features>=k] = 1
             C4_features_norm = self.norm(C4_features)
-            print(C4_features[C4_features>k].shape)
-            assert False
 
-            C4_features_larger = self.norm(C4_features[C4_features>k])
-            C4_features_lower = self.norm(C4_features[C4_features<k])
+            C4_features_larger = self.norm(torch.clamp(C4_features, min=k))
+            C4_features_lower = self.norm(torch.clamp(C4_features, max=k))
 
             # C4_features_larger = C4_features_larger - k
 
