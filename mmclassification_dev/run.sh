@@ -29,4 +29,4 @@
 #bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2
 
 ## id acc
-bash ./tools/dist_test.sh custom_config/id_acc/resnet50_topk.py /data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth 2
+bash ./tools/dist_test.sh custom_config/id_acc/resnet50_topk.py /data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth 2 --eval acc
