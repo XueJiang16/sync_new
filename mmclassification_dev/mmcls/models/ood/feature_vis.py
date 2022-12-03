@@ -43,6 +43,14 @@ class FeatureVis(BaseModule):
         self.classifier = build_classifier(classifier)
         self.classifier.eval()
 
+    def norm(self, features):
+        features_mean = features.mean(1)
+        features_norm = features_mean / 0.08
+        features_norm[features_norm > 1] = 1
+        features_norm[features_norm < 0] = 0
+        features_norm = features_norm.cpu().numpy()
+        return features_norm
+
     def forward(self, **input):
         if "type" in input:
             type = input['type']
@@ -53,38 +61,48 @@ class FeatureVis(BaseModule):
                 mid_path = 'OOD'
             else:
                 mid_path = 'ID'
-            out_dir = os.path.join('./vis_cam_features/', mid_path)
+            out_dir = os.path.join('./vis_cam_features_new/', mid_path)
             os.makedirs(out_dir, exist_ok=True)
             _, C4_features = self.classifier(return_loss=False, softmax=False, post_process=False,
                                              require_backbone_features_idx='0', **input)
             k = 0.1
             # C4_features[C4_features<k] = 0
             # C4_features[C4_features>=k] = 1
-            C4_features = C4_features.mean(1)
-            mean = C4_features.mean()
-            std = C4_features.std()
-            print("[{}] mean={}, std={}".format(mid_path, mean, std))
+            C4_features_norm = self.norm(C4_features)
+
+            C4_features_larger = self.norm(C4_features[C4_features>k])
+            C4_features_lower = self.norm(C4_features[C4_features<k])
+
+            # C4_features_larger = C4_features_larger - k
+
+
+            # print("[{}] mean={}, std={}".format(mid_path, mean, std))
             # C4_features_std = (C4_features - 0.079) / (0.1953-0.079)
             # C4_features_std[C4_features_std>1]=1
             # C4_features_std[C4_features_std<0]=0
 
             # C4_features_std = (C4_features - C4_features.min((1,2))[:,None,None]) / (C4_features.max((1,2))-C4_features.min((1,2)))[:,None,None]
-            # for i in range(len(filenames)):
-            #     try:
-            #         img = cv2.imread(filenames[i])
-            #         img_cam = img.copy()
-            #         img_larger = img.copy()
-            #         img_lower = img.copy()
-            #         res = show_heatmap(img, C4_features_std[i])
-            #         # plt.matshow(C4_features[i])
-            #         filename = os.path.splitext(os.path.basename(filenames[i]))[0]
-            #         cv2.imwrite(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)), res)
-            #     except:
-            #         print('Image Read Error!')
-            #         continue
-            #     # plt.savefig(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)))
-            #     # plt.close()
-            #     # shutil.copy(filenames[i], out_dir)
+            for i in range(len(filenames)):
+                try:
+                    img = cv2.imread(filenames[i])
+                    img_cam = img.copy()
+                    img_larger = img.copy()
+                    img_lower = img.copy()
+                    res_cam = show_heatmap(img_cam, C4_features_norm)
+                    res_larger = show_heatmap(img_larger, C4_features_larger)
+                    res_lower = show_heatmap(img_lower, C4_features_lower)
+                    res12 = np.hstack([img, res_cam])
+                    res34 = np.hstack([res_larger, res_lower])
+                    res = np.vstack([res12, res34])
+                    # plt.matshow(C4_features[i])
+                    filename = os.path.splitext(os.path.basename(filenames[i]))[0]
+                    cv2.imwrite(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)), res)
+                except:
+                    print('Image Read Error!')
+                    continue
+                # plt.savefig(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)))
+                # plt.close()
+                # shutil.copy(filenames[i], out_dir)
             confs = torch.tensor([0]*len(filenames)).to("cuda:{}".format(self.local_rank))
         return confs, type
 
