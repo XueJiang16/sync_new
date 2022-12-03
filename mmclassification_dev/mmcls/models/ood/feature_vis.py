@@ -63,8 +63,11 @@ class FeatureVis(BaseModule):
                 mid_path = 'ID'
             out_dir = os.path.join('./vis_cam_features_new/', mid_path)
             os.makedirs(out_dir, exist_ok=True)
-            _, C4_features = self.classifier(return_loss=False, softmax=False, post_process=False,
+            outputs, C4_features = self.classifier(return_loss=False, softmax=False, post_process=False,
                                              require_backbone_features_idx='0', **input)
+
+            energy_confs = torch.logsumexp(outputs, dim=1)
+
             k = 0.1
             # C4_features[C4_features<k] = 0
             # C4_features[C4_features>=k] = 1
@@ -96,12 +99,25 @@ class FeatureVis(BaseModule):
                     res_cam = show_heatmap(img_cam, C4_features_norm[i])
                     res_larger = show_heatmap(img_larger, C4_features_larger[i])
                     res_lower = show_heatmap(img_lower, C4_features_lower[i])
+                    # font
+                    font = cv2.FONT_HERSHEY_SIMPLEX
+                    # org
+                    org = (50, 50)
+                    # fontScale
+                    fontScale = 0.4
+                    # Blue color in BGR
+                    color = (255, 255, 255)
+                    # Line thickness of 2 px
+                    thickness = 2
+                    img = cv2.putText(img, 'Energy={}'.format(energy_confs), org, font,
+                                        fontScale, color, thickness, cv2.LINE_AA)
                     res12 = np.hstack([img, res_cam])
                     res34 = np.hstack([res_larger, res_lower])
                     res = np.vstack([res12, res34])
                     # plt.matshow(C4_features[i])
                     filename = os.path.splitext(os.path.basename(filenames[i]))[0]
                     cv2.imwrite(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)), res)
+
                 except:
                     print('Image Read Error!')
                     continue
