@@ -78,7 +78,7 @@ class PatchSim(BaseModule):
 
 @OOD.register_module()
 class FeatureMapSim(BaseModule):
-    def __init__(self, num_crop, img_size, threshold, k=1, order=1, ood_detector=None, mode='cosine',**kwargs):
+    def __init__(self, num_crop, img_size, threshold, fuse_const=0,k=1, order=1, ood_detector=None, mode='cosine',**kwargs):
         super(FeatureMapSim, self).__init__()
         self.local_rank = os.environ['LOCAL_RANK']
         self.has_ood_detector = True if ood_detector else False
@@ -93,6 +93,7 @@ class FeatureMapSim(BaseModule):
         self.mode = mode
         self.gap = nn.AdaptiveAvgPool2d((1, 1))
         self.k = k
+        self.fuse_const=fuse_const
 
 
     def kap(self, x):
@@ -206,7 +207,7 @@ class FeatureMapSim(BaseModule):
 
             # ood_scores = ood_scores * kl_sim * patch_sim
             # ood_scores += 1.4
-            ood_scores *= patch_sim
+            ood_scores *= (patch_sim + self.fuse_const)
             # print("mean:", ood_scores.mean())
             # print("std:", ood_scores.std())
             # exit()

@@ -18,6 +18,7 @@ model = dict(
     order=1,
     k=k_c5,
     mode='kap',
+    fuse_const=0,
     ood_detector=dict(
         type=method_list[2],
         debug_mode=False,
