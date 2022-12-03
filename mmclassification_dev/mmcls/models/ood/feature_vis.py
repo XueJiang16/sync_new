@@ -104,12 +104,12 @@ class FeatureVis(BaseModule):
                     # org
                     org = (50, 50)
                     # fontScale
-                    fontScale = 0.4
+                    fontScale = 0.8
                     # Blue color in BGR
                     color = (255, 255, 255)
                     # Line thickness of 2 px
-                    thickness = 2
-                    img = cv2.putText(img, 'Energy={}'.format(energy_confs), org, font,
+                    thickness = 1
+                    img = cv2.putText(img, 'Energy={}'.format(energy_confs[i]), org, font,
                                         fontScale, color, thickness, cv2.LINE_AA)
                     res12 = np.hstack([img, res_cam])
                     res34 = np.hstack([res_larger, res_lower])
