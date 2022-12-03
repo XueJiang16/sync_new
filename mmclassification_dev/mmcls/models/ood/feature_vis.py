@@ -86,23 +86,23 @@ class FeatureVis(BaseModule):
 
             # C4_features_std = (C4_features - C4_features.min((1,2))[:,None,None]) / (C4_features.max((1,2))-C4_features.min((1,2)))[:,None,None]
             for i in range(len(filenames)):
-                # try:
-                img = cv2.imread(filenames[i])
-                img_cam = img.copy()
-                img_larger = img.copy()
-                img_lower = img.copy()
-                res_cam = show_heatmap(img_cam, C4_features_norm[i])
-                res_larger = show_heatmap(img_larger, C4_features_larger[i])
-                res_lower = show_heatmap(img_lower, C4_features_lower[i])
-                res12 = np.hstack([img, res_cam])
-                res34 = np.hstack([res_larger, res_lower])
-                res = np.vstack([res12, res34])
-                # plt.matshow(C4_features[i])
-                filename = os.path.splitext(os.path.basename(filenames[i]))[0]
-                cv2.imwrite(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)), res)
-                # except:
-                #     print('Image Read Error!')
-                #     continue
+                try:
+                    img = cv2.imread(filenames[i])
+                    img_cam = img.copy()
+                    img_larger = img.copy()
+                    img_lower = img.copy()
+                    res_cam = show_heatmap(img_cam, C4_features_norm[i])
+                    res_larger = show_heatmap(img_larger, C4_features_larger[i])
+                    res_lower = show_heatmap(img_lower, C4_features_lower[i])
+                    res12 = np.hstack([img, res_cam])
+                    res34 = np.hstack([res_larger, res_lower])
+                    res = np.vstack([res12, res34])
+                    # plt.matshow(C4_features[i])
+                    filename = os.path.splitext(os.path.basename(filenames[i]))[0]
+                    cv2.imwrite(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)), res)
+                except:
+                    print('Image Read Error!')
+                    continue
                 # plt.savefig(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)))
                 # plt.close()
                 # shutil.copy(filenames[i], out_dir)
