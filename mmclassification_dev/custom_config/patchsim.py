@@ -19,18 +19,14 @@ model = dict(
     k=k_c5,
     mode='kap',
     ood_detector=dict(
-        type=method_list[0],
+        type=method_list[2],
         debug_mode=False,
         num_classes=1000,
         # temperature=1,
         target_file=None,
         classifier=dict(
             type='ImageClassifier',
-            # init_cfg=dict(type='Pretrained', checkpoint='/home/csxjiang/sync/mmclassification/ckpt/inat/epoch_80.pth'),
-            # init_cfg=None,
             init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
-            # init_cfg=dict(type='Pretrained',
-            #               checkpoint='/home/csxjiang/sync/mmclassification_dev/resnet50_random_block_rand_like_0.033.pth'),
             backbone=dict(
                 type='ResNet',
                 depth=50,
