@@ -63,7 +63,7 @@ class FeatureVis(BaseModule):
             C4_features = C4_features.mean(1)
             mean = C4_features.mean()
             std = C4_features.std()
-            print("[{}] mean={}, std={}").format(mid_path, mean, std)
+            print("[{}] mean={}, std={}".format(mid_path, mean, std))
             # C4_features_std = (C4_features - 0.079) / (0.1953-0.079)
             # C4_features_std[C4_features_std>1]=1
             # C4_features_std[C4_features_std<0]=0
