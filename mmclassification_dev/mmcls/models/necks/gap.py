@@ -73,8 +73,6 @@ class TopKAveragePooling(nn.Module):
         ## kap
         x = x.view(b, c, -1)
         ## h*w -> top k
-        print(self.k)
-        assert False
         num = int(self.k * (h * w))
         # num = int(self.k * h)
         topk_v, _ = x.topk(num, dim=-1)
