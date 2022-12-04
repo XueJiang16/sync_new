@@ -70,8 +70,8 @@ class FeatureVis(BaseModule):
             outputs_act, _ = self.classifier_act(return_loss=False, softmax=False, post_process=False,
                                              require_backbone_features_idx='0', **input)
             # energy_confs = torch.logsumexp(outputs, dim=1)
-            msp_confs = torch.max(torch.nn.functional.softmax(outputs, dim=1), dim=-1)
-            msp_confs_act = torch.max(torch.nn.functional.softmax(outputs_act, dim=1), dim=-1)
+            msp_confs, _ = torch.max(torch.nn.functional.softmax(outputs, dim=1), dim=-1)
+            msp_confs_act, _ = torch.max(torch.nn.functional.softmax(outputs_act, dim=1), dim=-1)
 
             k = 0.1
             # C4_features[C4_features<k] = 0
@@ -112,7 +112,7 @@ class FeatureVis(BaseModule):
                     thickness = 1
                     img = cv2.putText(img, 'Conf={}'.format(msp_confs[i]), (50, 50), font,
                                         fontScale, color, thickness, cv2.LINE_AA)
-                    res_lower = cv2.putText(res_lower, 'Conf={}'.format(msp_confs_act[i]), (50, 200), font,
+                    img = cv2.putText(img, 'Conf={}'.format(msp_confs_act[i]), (50, 80), font,
                                       fontScale, color, thickness, cv2.LINE_AA)
                     res12 = np.hstack([img, res_cam])
                     res34 = np.hstack([res_larger, res_lower])
