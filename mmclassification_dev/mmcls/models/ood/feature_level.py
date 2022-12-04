@@ -206,8 +206,8 @@ class FeatureMapSim(BaseModule):
             # with torch.no_grad():
 
             # ood_scores = ood_scores * kl_sim * patch_sim
-            # ood_scores += 1.4
-            ood_scores *= (patch_sim + self.fuse_const)
+            ood_scores += self.fuse_const
+            ood_scores *= patch_sim
             # print("mean:", ood_scores.mean())
             # print("std:", ood_scores.std())
             # exit()
