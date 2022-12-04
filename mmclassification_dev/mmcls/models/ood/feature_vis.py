@@ -67,7 +67,7 @@ class FeatureVis(BaseModule):
             os.makedirs(out_dir, exist_ok=True)
             outputs, C4_features = self.classifier(return_loss=False, softmax=False, post_process=False,
                                              require_backbone_features_idx='0', **input)
-            outputs_act, _ = self.classifier(return_loss=False, softmax=False, post_process=False,
+            outputs_act, _ = self.classifier_act(return_loss=False, softmax=False, post_process=False,
                                              require_backbone_features_idx='0', **input)
             # energy_confs = torch.logsumexp(outputs, dim=1)
             msp_confs = torch.max(torch.nn.functional.softmax(outputs, dim=1), dim=-1)
