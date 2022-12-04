@@ -37,11 +37,13 @@ def show_heatmap(img: np.ndarray,
 
 @OOD.register_module()
 class FeatureVis(BaseModule):
-    def __init__(self, classifier, num_classes, target_file=None, **kwargs):
+    def __init__(self, classifier, classifier_act, num_classes, target_file=None, **kwargs):
         super(FeatureVis, self).__init__()
         self.local_rank = os.environ['LOCAL_RANK']
         self.classifier = build_classifier(classifier)
         self.classifier.eval()
+        self.classifier_act = build_classifier(classifier_act)
+        self.classifier_act.eval()
 
     def norm(self, features):
         features_mean = features.mean(1)
@@ -65,8 +67,11 @@ class FeatureVis(BaseModule):
             os.makedirs(out_dir, exist_ok=True)
             outputs, C4_features = self.classifier(return_loss=False, softmax=False, post_process=False,
                                              require_backbone_features_idx='0', **input)
-
-            energy_confs = torch.logsumexp(outputs, dim=1)
+            outputs_act, _ = self.classifier(return_loss=False, softmax=False, post_process=False,
+                                             require_backbone_features_idx='0', **input)
+            # energy_confs = torch.logsumexp(outputs, dim=1)
+            msp_confs = torch.max(torch.nn.functional.softmax(outputs, dim=1), dim=-1)
+            msp_confs_act = torch.max(torch.nn.functional.softmax(outputs_act, dim=1), dim=-1)
 
             k = 0.1
             # C4_features[C4_features<k] = 0
@@ -101,16 +106,14 @@ class FeatureVis(BaseModule):
                     res_lower = show_heatmap(img_lower, C4_features_lower[i])
                     # font
                     font = cv2.FONT_HERSHEY_SIMPLEX
-                    # org
-                    org = (50, 50)
-                    # fontScale
+                    # org = (50, 50)
                     fontScale = 0.8
-                    # Blue color in BGR
                     color = (255, 255, 255)
-                    # Line thickness of 2 px
                     thickness = 1
-                    img = cv2.putText(img, 'Energy={}'.format(energy_confs[i]), org, font,
+                    img = cv2.putText(img, 'Conf={}'.format(msp_confs[i]), (50, 50), font,
                                         fontScale, color, thickness, cv2.LINE_AA)
+                    res_lower = cv2.putText(res_lower, 'Conf={}'.format(msp_confs_act[i]), (50, 200), font,
+                                      fontScale, color, thickness, cv2.LINE_AA)
                     res12 = np.hstack([img, res_cam])
                     res34 = np.hstack([res_larger, res_lower])
                     res = np.vstack([res12, res34])

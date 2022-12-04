@@ -30,7 +30,28 @@ model = dict(
             in_channels=2048,
             loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
             topk=(1, 5))
-    )
+    ),
+    classifier_act=dict(
+        type='ImageClassifier',
+        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
+        backbone=dict(
+            type='ResNet',
+            depth=50,
+            num_stages=4,
+            out_indices=(2,3,),
+            style='pytorch',
+            random_block=[1],
+            random_block_k=[0.4],
+            random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
+        ),
+        neck=dict(type='GlobalAveragePooling'),
+        head=dict(
+            type='LinearClsHead',
+            num_classes=1000,
+            in_channels=2048,
+            loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+            topk=(1, 5))
+    ),
 )
 pipline =[
           dict(type='Collect', keys=['img', 'type'])
