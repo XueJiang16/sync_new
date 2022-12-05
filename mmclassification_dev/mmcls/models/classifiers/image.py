@@ -1,4 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import torch
+
 from ..builder import CLASSIFIERS, build_backbone, build_head, build_neck
 from ..heads import MultiLabelClsHead
 from ..utils.augment import Augments
@@ -100,7 +102,7 @@ class ImageClassifier(BaseClassifier):
         assert stage in ['backbone', 'neck', 'pre_logits'], \
             (f'Invalid output stage "{stage}", please choose from "backbone", '
              '"neck" and "pre_logits"')
-        if th_act is True:
+        if th_act is True or isinstance(th_act, torch.Tensor):
             x = self.backbone(img, th_act=th_act)
         else:
             x = self.backbone(img)

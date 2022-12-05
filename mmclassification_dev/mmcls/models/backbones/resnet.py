@@ -324,7 +324,6 @@ class RandomBlock(BaseModule):
         return out
 
     def forward(self, x, th_act=False):
-        print(th_act)
         if th_act is True:
             # percentile_th = torch.quantile(x.flatten(1), self.k, dim=1)
             # print(percentile_th.shape)
