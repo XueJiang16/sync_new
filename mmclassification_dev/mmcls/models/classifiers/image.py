@@ -100,7 +100,7 @@ class ImageClassifier(BaseClassifier):
         assert stage in ['backbone', 'neck', 'pre_logits'], \
             (f'Invalid output stage "{stage}", please choose from "backbone", '
              '"neck" and "pre_logits"')
-        if th_act:
+        if th_act is True:
             x = self.backbone(img, th_act=th_act)
         else:
             x = self.backbone(img)
