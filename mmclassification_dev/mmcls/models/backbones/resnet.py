@@ -323,7 +323,7 @@ class RandomBlock(BaseModule):
         #       + min_gap.unsqueeze(dim=-1)
         return out
 
-    def forward(self, x, th_act=False):
+    def forward(self, x, th_act=False, update_k=None):
         if th_act:
             # percentile_th = torch.quantile(x.flatten(1), self.k, dim=1)
             # print(percentile_th.shape)
@@ -331,11 +331,14 @@ class RandomBlock(BaseModule):
             # out = x - percentile_th[:, None, None, None]
             # before_sum = x.sum(dim=[1, 2, 3])
             # before_count = (x!=0).sum(dim=[1,2,3]).type_as(x)
-
-            out = x - self.k
+            if update_k is None:
+                out = x - self.k
+            else:
+                out = x - update_k.unsqueeze(-1).unsqueeze(-1).unsqueeze(-1)
             # k = x.mean(dim=(-1,-2)).unsqueeze(-1).unsqueeze(-1)
             # out = x - self.kap(x).unsqueeze(-1).unsqueeze(-1)
             out = self.non_linear(out)
+            print("Th_act!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             # after_sum = out.sum(dim=[1, 2, 3])
             # after_count = (out!=0).sum(dim=[1,2,3]).type_as(out)
             # ratio = before_sum / after_sum
