@@ -40,6 +40,7 @@ model = dict(
                 topk=(1, 5))
         )
 )
+)
 # pipline =[dict(type='Collect', keys=['img'])]
 pipline =[dict(type='Collect', keys=['img', 'type'])]
 data = dict(
