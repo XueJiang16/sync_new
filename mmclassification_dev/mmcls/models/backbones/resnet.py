@@ -323,22 +323,20 @@ class RandomBlock(BaseModule):
         #       + min_gap.unsqueeze(dim=-1)
         return out
 
-    def forward(self, x, th_act=False, update_k=None):
-        if th_act:
+    def forward(self, x, th_act=False):
+        if th_act is True:
             # percentile_th = torch.quantile(x.flatten(1), self.k, dim=1)
             # print(percentile_th.shape)
             # assert False
             # out = x - percentile_th[:, None, None, None]
             # before_sum = x.sum(dim=[1, 2, 3])
             # before_count = (x!=0).sum(dim=[1,2,3]).type_as(x)
-            if update_k is None:
-                out = x - self.k
-            else:
-                out = x - update_k.unsqueeze(-1).unsqueeze(-1).unsqueeze(-1)
+
+            out = x - self.k
             # k = x.mean(dim=(-1,-2)).unsqueeze(-1).unsqueeze(-1)
             # out = x - self.kap(x).unsqueeze(-1).unsqueeze(-1)
             out = self.non_linear(out)
-            print("Th_act!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            # print("Th_act!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             # after_sum = out.sum(dim=[1, 2, 3])
             # after_count = (out!=0).sum(dim=[1,2,3]).type_as(out)
             # ratio = before_sum / after_sum
@@ -348,6 +346,9 @@ class RandomBlock(BaseModule):
             # print("Before: sum={}, count={}. After:sum={}, count={}".
             #       format(before_sum.mean(), before_count.mean(), after_sum.mean(), after_count.mean()))
             # out = out * count_ratio[:, None, None, None]
+        elif type(th_act) is torch.Tensor:
+            out = x - th_act
+            out = self.non_linear(out)
         else:
             out = x
         return out
