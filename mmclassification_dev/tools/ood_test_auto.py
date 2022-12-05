@@ -69,6 +69,11 @@ def parse_args():
         type=int,
         default=42,
         help='token for google sheets identification')
+    parser.add_argument(
+        '--tab_name',
+        default='auto',
+        help='tabel name to tab data'
+    )
     args = parser.parse_args()
     if 'LOCAL_RANK' not in os.environ:
         os.environ['LOCAL_RANK'] = str(args.local_rank)
@@ -225,9 +230,11 @@ def main(args, task_cfg, is_init=False, gs=None):
 
 if __name__ == '__main__':
     import random
-    SAMPLE_SPREADSHEET_ID = '1znF0Bjncjk6SSrMOWxMSKstkTrusFg4ETkygLQgMyAc'
-    SAMPLE_TAB_NAME = 'auto'
+
     args = parse_args()
+    SAMPLE_SPREADSHEET_ID = '1znF0Bjncjk6SSrMOWxMSKstkTrusFg4ETkygLQgMyAc'
+    # SAMPLE_TAB_NAME = 'auto'
+    SAMPLE_TAB_NAME = args.tab_name
     gs_token = args.token
     local_rank = int(os.environ['LOCAL_RANK'])
     gs = GoogleSheets(SAMPLE_SPREADSHEET_ID, node_rank=local_rank)
