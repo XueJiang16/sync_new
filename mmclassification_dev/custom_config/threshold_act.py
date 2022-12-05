@@ -11,6 +11,7 @@ quick_test = True
 
 model = dict(
     type=method_name,
+    num_classes=1000,
     classifier=dict(
         type='ImageClassifier',
         init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
