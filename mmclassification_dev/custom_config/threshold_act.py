@@ -1,5 +1,5 @@
-method_name = 'ThresholdActivation'
-# method_name = 'Energy'
+method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch', 'ThresholdActivation']
+method_name = method_list[3]
 model_name = 'resnet50'
 train_dataset = 'Balance'
 custom_name = None
