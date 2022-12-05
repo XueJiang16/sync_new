@@ -35,6 +35,8 @@ class DynamicThresholdActivation(BaseModule):
             pred_conf, pred_class = torch.max(outputs,dim=-1)
             # update_k = self.k
             update_k = 1*self.k*pred_conf+0.5*self.k
+            print(type(update_k))
+            assert False
             new_outputs = self.ood_detector.classifier(return_loss=False, softmax=True, post_process=False,
                                                     require_backbone_features=False, th_act=update_k, **input)
             # ood_scores = self.ood_detector(**input)
