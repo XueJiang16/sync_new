@@ -348,7 +348,7 @@ class RandomBlock(BaseModule):
             # out = out * count_ratio[:, None, None, None]
             print("111111111111111111111111111111111111")
         elif isinstance(th_act, torch.Tensor):
-            out = x - th_act
+            out = x - th_act.unsqueeze(-1).unsqueeze(-1).unsqueeze(-1)
             out = self.non_linear(out)
             print('222222222222222222222222222222222')
         else:
