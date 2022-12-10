@@ -140,6 +140,7 @@ class ODINCustom(BaseModule):
             tempInputs = torch.add(x.data, -self.epsilon, gradient)
             input['img'] = tempInputs
             outputs = self.classifier(return_loss=False, softmax=False, post_process=False, **input)
+            out_softmax = torch.nn.functional.softmax(outputs, dim=1)
             outputs = outputs / self.temperature
 
             # Calculating the confidence after adding perturbations
@@ -148,7 +149,7 @@ class ODINCustom(BaseModule):
             nnOutputs = torch.exp(nnOutputs) / torch.sum(torch.exp(nnOutputs), dim=1, keepdim=True)
 
             targets = self.target
-            out_softmax = torch.nn.functional.softmax(outputs, dim=1)
+
             sim = - out_softmax * targets
             sim = torch.sum(sim, dim=1) / (torch.norm(out_softmax, dim=1) * torch.norm(targets, dim=1))
             sim = sim.unsqueeze(1)
