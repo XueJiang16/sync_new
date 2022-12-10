@@ -10,3 +10,6 @@ checkpoints
 *.tar.gz
 *.log
 *.npy
+mmclassification_dev/vis_cam_features_new/*
+*.jpg
+*.png
