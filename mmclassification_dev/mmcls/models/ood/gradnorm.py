@@ -127,7 +127,7 @@ class GradNormBatch(BaseModule):
         with torch.no_grad():
             if "dataset_name" in input:
                 dataset_name = input['dataset_name']
-                dump_path = "results/gradnorm_dump/{}".format(dataset_name)
+                dump_path = "softmax_dump/{}".format(dataset_name)
                 os.makedirs(dump_path, exist_ok=True)
                 del input['dataset_name']
             if "type" in input:
