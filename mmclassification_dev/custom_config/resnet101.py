@@ -2,7 +2,7 @@ import os
 
 # method_list = ["GradNormBatch", "MSP", "Energy", "ODIN"]
 method_list = ["GradNormBatch", "MSPCustom", "EnergyCustom", "ODINCustom"]
-method_name = method_list[0]
+method_name = method_list[-1]
 model_name = 'resnet101'
 train_dataset = 'a8'
 # info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_res101_{}_feature_stat.pth'.format(train_dataset))
@@ -18,7 +18,7 @@ training_file = '/data/csxjiang/meta/train_LT_{}.txt'.format(train_dataset)
 model = dict(
     type=method_name,
     num_classes=1000,
-    debug_mode = True,
+    debug_mode = False,
     # temperature=1,
     target_file=training_file,
     # target_noise=2,
