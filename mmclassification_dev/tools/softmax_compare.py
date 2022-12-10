@@ -39,5 +39,6 @@ with open("sim_samples.txt", mode="w") as f:
         ind = ind[0][1]
         if dist < eps:
             print("({}){} <==> ({}){}, dist={}.".format(type, name, full_types[ind], full_names[ind], dist))
-            f.write("{},{},{},{},{}\n".format(type, name, full_types[ind], full_names[ind], dist))
+            f.write("{},{},{},{},{},{}\n".format(type, name, full_types[ind], full_names[ind], dist, sample.max()))
             matched[name] = None
+            matched[full_names[ind]]=None
