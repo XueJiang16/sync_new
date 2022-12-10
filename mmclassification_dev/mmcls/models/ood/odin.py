@@ -153,7 +153,7 @@ class ODINCustom(BaseModule):
             sim = - out_softmax * targets
             sim = torch.sum(sim, dim=1) / (torch.norm(out_softmax, dim=1) * torch.norm(targets, dim=1))
             sim = sim.unsqueeze(1)
-            # sim = sim+1
+            sim = sim+1
             nnOutputs = sim * nnOutputs
 
             # tmp = -targets * torch.nn.functional.log_softmax(outputs)
