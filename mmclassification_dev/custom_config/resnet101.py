@@ -24,11 +24,12 @@ model = dict(
     # target_noise=2,
     classifier=dict(
         type='ImageClassifier',
-        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ood_ckpt_other/LT_{}/epoch_100.pth'.format(train_dataset)),
+        # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ood_ckpt_other/LT_{}/epoch_100.pth'.format(train_dataset)),
+        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ckpt/resnet50_LT_a8/epoch_100.pth'),
         # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ood_ckpt_other/resnet101_imagnet10%_100e.pth'),
         backbone=dict(
             type='ResNet',
-            depth=101,
+            depth=50,
             num_stages=4,
             out_indices=(3,),
             style='pytorch'),
