@@ -17,7 +17,7 @@
 #bash ./tools/ood_dist_test.sh custom_config/vis_features.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/multi_modal/clip.py foo 2 
 #bash ./tools/dist_precompute.sh custom_config/dice_precompute.py /data/csxjiang/ood_ckpt/ckpt/LT_repeat3_a8/epoch_100.pth 2 --metrics accuracy
-bash ./tools/ood_dist_test.sh custom_config/resnet101.py foo 2
+#bash ./tools/ood_dist_test.sh custom_config/resnet101.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/mobilenet3_large.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/vit_lt.py foo 2
 
@@ -26,7 +26,7 @@ bash ./tools/ood_dist_test.sh custom_config/resnet101.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/cifar_benchmark/resnet50.py foo 1
 
 ## google doc
-#bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2 --tab_name auto4
+bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2 --tab_name auto4
 #bash ./tools/ood_dist_test_auto.sh custom_config/threshold_act.py foo 2 --tab_name auto2
 
 ## id acc
