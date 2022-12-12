@@ -26,7 +26,7 @@
 #bash ./tools/ood_dist_test.sh custom_config/cifar_benchmark/resnet50.py foo 1
 
 ## google doc
-bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2 --tab_name auto4
+bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2 --tab_name auto3
 #bash ./tools/ood_dist_test_auto.sh custom_config/threshold_act.py foo 2 --tab_name auto2
 
 ## id acc
