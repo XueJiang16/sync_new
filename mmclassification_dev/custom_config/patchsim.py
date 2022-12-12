@@ -1,5 +1,6 @@
 method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch', 'ThresholdActivation']
-method_name = 'FeatureMapSim'
+# method_name = 'FeatureMapSim'
+method_name = 'FeatureReweight'
 model_name = 'resnet50'
 train_dataset = 'Balance'
 custom_name = 'fc_th_act'
