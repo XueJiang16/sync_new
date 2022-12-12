@@ -1,6 +1,6 @@
 method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch', 'ThresholdActivation']
-method_name = 'FeatureMapSim'
-# method_name = 'FeatureReweight'
+# method_name = 'FeatureMapSim'
+method_name = 'FeatureReweight'
 model_name = 'resnet50'
 train_dataset = 'Balance'
 custom_name = 'fc_th_act'
@@ -18,7 +18,7 @@ model = dict(
     threshold=0.4,
     order=1,
     k=k_c5,
-    mode='kap',
+    mode='mean',
     fuse_const=0,
     ood_detector=dict(
         type=method_list[2],
