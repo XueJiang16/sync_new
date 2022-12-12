@@ -65,7 +65,12 @@ class FeatureReweight(BaseModule):
                 channel_mean = self.kap(feature_c5).unsqueeze(-1)
                 channel_sim = torch.abs(feature_c5.flatten(2) - channel_mean).mean(dim=-1)  # for ID: .mean(dim=-2)
                 print("mean:{}, std:{}".format(channel_sim[0].mean(), channel_sim[0].std()))
+                patch_sim = channel_sim.mean(-1)
+            elif self.mode == 'mean':
+                feature_crops = feature_c5.flatten(2)
+                patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
+                patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
             else:
                 raise NotImplementedError
 
-        return channel_sim.mean(-1), type
+        return patch_sim, type
