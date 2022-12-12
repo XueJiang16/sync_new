@@ -95,9 +95,9 @@ def init_eval(cfg, args, is_init=False):
             init_dist(args.launcher, **cfg.dist_params)
     return cfg, distributed
 
-def main(args, task_cfg, is_init=False, gs=None):
-
-    cfg = mmcv.Config.fromfile(args.config)
+def main(args, task_cfg, is_init=False, gs=None, cfg=None):
+    if cfg is None:
+        cfg = mmcv.Config.fromfile(args.config)
 
     for k, v in task_cfg.items():
         try:
@@ -230,6 +230,7 @@ def main(args, task_cfg, is_init=False, gs=None):
 
 if __name__ == '__main__':
     import random
+    import copy
 
     args = parse_args()
     SAMPLE_SPREADSHEET_ID = '1znF0Bjncjk6SSrMOWxMSKstkTrusFg4ETkygLQgMyAc'
@@ -239,11 +240,12 @@ if __name__ == '__main__':
     local_rank = int(os.environ['LOCAL_RANK'])
     gs = GoogleSheets(SAMPLE_SPREADSHEET_ID, node_rank=local_rank)
     is_init = False
+    cfg = mmcv.Config.fromfile(args.config)
     while True:
         task_cfg = gs.grab_task(SAMPLE_TAB_NAME, is_master=True if local_rank == 0 else False, token=gs_token)
         if len(task_cfg) == 0:
             break
-        res = main(args, task_cfg, is_init=is_init, gs=gs)
+        res = main(args, task_cfg, is_init=is_init, gs=gs, cfg=copy.deepcopy(cfg))
         is_init = True
         print("Task {} finished with result {}".format(task_cfg, res))
         if local_rank == 0:
