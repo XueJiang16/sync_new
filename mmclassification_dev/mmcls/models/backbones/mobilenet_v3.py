@@ -169,7 +169,7 @@ class MobileNetV3(BaseBackbone):
 
         return layers
 
-    def forward(self, x):
+    def forward(self, x, th_act=False):
         outs = []
         for i, layer_name in enumerate(self.layers):
             layer = getattr(self, layer_name)
