@@ -33,9 +33,9 @@ model = dict(
                           checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/mobilenet_v3_large-3ea3c186.pth'),
             backbone=dict(type='MobileNetV3',
                           arch='large',
-                          # random_block=[1],
-                          # random_block_k=[0.1],
-                          # random_block_location=[14],  # 0:C2 1:C3 2:C4 3:C5
+                          random_block=[1],
+                          random_block_k=[0.1],
+                          random_block_location=[14],  # 0:C2 1:C3 2:C4 3:C5
                           ),
             neck=dict(type='GlobalAveragePooling'),
             head=dict(
