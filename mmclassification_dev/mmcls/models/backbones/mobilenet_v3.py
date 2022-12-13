@@ -1,6 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from mmcv.cnn import ConvModule
 from torch.nn.modules.batchnorm import _BatchNorm
+import torch
 
 from ..builder import BACKBONES
 from ..utils import InvertedResidual
@@ -187,7 +188,10 @@ class MobileNetV3(BaseBackbone):
                 if i in self.random_block_location:
                     idx = self.random_block_location.index(i)
                     x = x-self.random_block_k[idx]
-                    x[x<0] = 0
+                    if i >= 7:
+                        x = torch.nn.functional.hardswish(x)
+                    else:
+                        x = torch.nn.functional.relu(x)
             if i in self.out_indices:
                 outs.append(x)
         return tuple(outs)
