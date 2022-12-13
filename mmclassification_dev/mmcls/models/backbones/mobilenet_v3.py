@@ -186,7 +186,7 @@ class MobileNetV3(BaseBackbone):
             if self.random_block_location is not None:
                 if i in self.random_block_location:
                     idx = self.random_block_location.index(i)
-                    x = x-self.random_block[idx]
+                    x = x-self.random_block_k[idx]
                     x[x<0] = 0
             if i in self.out_indices:
                 outs.append(x)
