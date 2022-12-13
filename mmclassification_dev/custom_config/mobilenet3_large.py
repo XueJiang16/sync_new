@@ -38,7 +38,8 @@ model = dict(
         act_cfg=dict(type='HSwish'),
         loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
         topk=(1, 5),
-    )))
+    )
+    ))
 
 pipline =[dict(type='Collect', keys=['img', 'type'])]
 data = dict(
@@ -53,21 +54,6 @@ data = dict(
         len_limit=5000 if quick_test else -1,
         # train_label=training_file,
     ),
-    # id_data=dict(
-    #     type='JsonDataset',
-    #     path='/data/csxjiang/',
-    #     data_ann='/data/csxjiang/ood_data/inat/val2018.json',
-    #     pipeline=[
-    #         dict(type='LoadImageFromFile'),
-    #         dict(type='Resize', size=480),
-    #         dict(
-    #             type='Normalize',
-    #             mean=[123.675, 116.28, 103.53],
-    #             std=[58.395, 57.12, 57.375],
-    #             to_rgb=True),
-    #         dict(type='ImageToTensor', keys=['img']),
-    #         dict(type='Collect', keys=['img'])
-    #     ]),
     ood_data=[
         dict(
             name='iNaturalist',
