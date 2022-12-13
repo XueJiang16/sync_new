@@ -75,7 +75,11 @@ class MobileNetV3(BaseBackbone):
                          nonlinearity='leaky_relu'),
                      dict(type='Normal', layer=['Linear'], std=0.01),
                      dict(type='Constant', layer=['BatchNorm2d'], val=1)
-                 ]):
+                 ],
+                 random_block=None,
+                 random_block_k=None,
+                 random_block_location=None,  # 0:C2 1:C3 2:C4 3:C5
+                 ):
         super(MobileNetV3, self).__init__(init_cfg)
         assert arch in self.arch_settings
         if out_indices is None:
@@ -101,6 +105,10 @@ class MobileNetV3(BaseBackbone):
 
         self.layers = self._make_layer()
         self.feat_dim = self.arch_settings[arch][-1][1]
+
+        self.random_block = random_block
+        self.random_block_k = random_block_k
+        self.random_block_location = random_block_location
 
     def _make_layer(self):
         layers = []
@@ -172,11 +180,15 @@ class MobileNetV3(BaseBackbone):
     def forward(self, x, th_act=False):
         outs = []
         for i, layer_name in enumerate(self.layers):
+
             layer = getattr(self, layer_name)
             x = layer(x)
+            if i in self.random_block_location:
+                idx = self.random_block_location.index(i)
+                x = x-self.random_block[idx]
+                x[x<0] = 0
             if i in self.out_indices:
                 outs.append(x)
-
         return tuple(outs)
 
     def _freeze_stages(self):

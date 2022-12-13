@@ -22,7 +22,7 @@ model = dict(
     # mode='mean',
     fuse_const=0,
     ood_detector=dict(
-        type=method_list[3],
+        type=method_list[2],
         debug_mode=False,
         num_classes=1000,
         # temperature=1,
@@ -31,7 +31,12 @@ model = dict(
             type='ImageClassifier',
             init_cfg=dict(type='Pretrained',
                           checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/mobilenet_v3_large-3ea3c186.pth'),
-            backbone=dict(type='MobileNetV3', arch='large'),
+            backbone=dict(type='MobileNetV3',
+                          arch='large',
+                          random_block=[1],
+                          random_block_k=[0.2],
+                          random_block_location=[15],  # 0:C2 1:C3 2:C4 3:C5
+                          ),
             neck=dict(type='GlobalAveragePooling'),
             head=dict(
                 type='StackedLinearClsHead',
