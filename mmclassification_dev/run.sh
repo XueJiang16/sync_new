@@ -20,7 +20,7 @@
 #bash ./tools/ood_dist_test.sh custom_config/resnet101.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/mobilenet3_large.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/vit_lt.py foo 2
-
+#bash ./tools/ood_dist_test.sh custom_config/patchsim_mobile.py foo 2
 
 ## Cifar
 #bash ./tools/ood_dist_test.sh custom_config/cifar_benchmark/resnet50.py foo 1
