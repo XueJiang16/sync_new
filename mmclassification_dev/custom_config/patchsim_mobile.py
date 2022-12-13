@@ -45,6 +45,7 @@ model = dict(
             )
     )
 )
+)
 pipline =[dict(type='Collect', keys=['img', 'type'])]
 # aug = ['fog']
 aug = None
