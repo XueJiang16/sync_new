@@ -183,10 +183,11 @@ class MobileNetV3(BaseBackbone):
 
             layer = getattr(self, layer_name)
             x = layer(x)
-            if i in self.random_block_location:
-                idx = self.random_block_location.index(i)
-                x = x-self.random_block[idx]
-                x[x<0] = 0
+            if self.random_block_location is not None:
+                if i in self.random_block_location:
+                    idx = self.random_block_location.index(i)
+                    x = x-self.random_block[idx]
+                    x[x<0] = 0
             if i in self.out_indices:
                 outs.append(x)
         return tuple(outs)
