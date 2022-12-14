@@ -676,7 +676,7 @@ class ResNetActivation(BaseBackbone):
             else:
                 th_act_parameter = -1
             if i == self.feature_sim_stage:
-                feature_sim_parameter = self.feature_sim_stage
+                feature_sim_parameter = self.feature_sim_location
             else:
                 feature_sim_parameter = -1
             res_layer = getattr(self, layer_name)
