@@ -400,7 +400,7 @@ class ResLayer(nn.Sequential):
                     norm_cfg=norm_cfg,
                     **kwargs))
         self.layers = layers
-        super(ResLayer, self).__init__(*layers)
+        super(ResLayer, self).__init__(*self.layers)
 
     # def __getitem__(self, item):
     #     return self.layers[item]
