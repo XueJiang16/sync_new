@@ -401,6 +401,9 @@ class ResLayer(nn.Module):
                     **kwargs))
         self.layers = layers
 
+    def __getitem__(self, item):
+        return self.layers[item]
+
     def forward(self, x, th_act_para, th_act_k, feature_sim_para):
         for i, layer in enumerate(self.layers):
             x = layer(x)
