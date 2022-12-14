@@ -22,7 +22,7 @@ model = dict(
     num_classes=1000,
     # temperature=1,
     target_file=training_file,
-    # target_noise=0.1,
+    mode='mean',
     classifier=dict(
         type='ImageClassifier',
         init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
@@ -38,13 +38,13 @@ model = dict(
             feature_sim_stage=3,  ## 0:C2 1:C3 2:C4 3:C5
             feature_sim_location=2,  ## No. of conv layer
         ),
-        neck=dict(type='GlobalAveragePooling'),
-        head=dict(
-            type='LinearClsHead',
-            num_classes=1000,
-            in_channels=2048,
-            loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-            topk=(1, 5))
+        # neck=dict(type='GlobalAveragePooling'),
+        # head=dict(
+        #     type='LinearClsHead',
+        #     num_classes=1000,
+        #     in_channels=2048,
+        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        #     topk=(1, 5))
     )
 )
 # pipline =[dict(type='Collect', keys=['img'])]
