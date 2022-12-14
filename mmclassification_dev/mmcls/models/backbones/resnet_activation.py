@@ -693,6 +693,7 @@ class ResNetActivation(BaseBackbone):
                     m.eval()
 
 
-
+if __name__ == '__main__':
+    model = ResNetActivation(depth=50)
 
 
