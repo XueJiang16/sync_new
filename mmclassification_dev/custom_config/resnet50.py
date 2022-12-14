@@ -10,6 +10,12 @@ else:
 quick_test = True
 training_file = None
 
+# 18: (BasicBlock, (2, 2, 2, 2)),
+#         34: (BasicBlock, (3, 4, 6, 3)),
+#         50: (Bottleneck, (3, 4, 6, 3)),
+#         101: (Bottleneck, (3, 4, 23, 3)),
+#         152: (Bottleneck, (3, 8, 36, 3))
+
 model = dict(
     type=method_name,
     debug_mode=False,
@@ -26,11 +32,11 @@ model = dict(
             num_stages=4,
             out_indices=(3,),
             style='pytorch',
-            th_act_k=0.1,
+            th_act_k=0.2,
             th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
-            th_act_location=1, ## No. of conv layer
-            feature_sim_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
-            feature_sim_location=1,  ## No. of conv layer
+            th_act_location=5, ## No. of conv layer
+            feature_sim_stage=3,  ## 0:C2 1:C3 2:C4 3:C5
+            feature_sim_location=2,  ## No. of conv layer
         ),
         neck=dict(type='GlobalAveragePooling'),
         head=dict(
