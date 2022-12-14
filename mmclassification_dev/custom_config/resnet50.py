@@ -23,6 +23,7 @@ model = dict(
     # temperature=1,
     target_file=training_file,
     mode='mean',
+    ood_detector=dict(
     classifier=dict(
         type='ImageClassifier',
         init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
@@ -45,6 +46,7 @@ model = dict(
         #     in_channels=2048,
         #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
         #     topk=(1, 5))
+    )
     )
 )
 # pipline =[dict(type='Collect', keys=['img'])]
