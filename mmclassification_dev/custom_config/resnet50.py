@@ -24,7 +24,8 @@ model = dict(
     target_file=training_file,
     mode='mean',
     ood_detector=dict(
-    classifier=dict(
+        type=method_list[0],
+        classifier=dict(
         type='ImageClassifier',
         init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
         backbone=dict(
