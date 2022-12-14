@@ -166,14 +166,17 @@ class ImageClassifier(BaseClassifier):
         elif require_backbone_features_idx:
             # assert th_act==False
             x_ = self.extract_feat(img, stage='backbone')[int(require_backbone_features_idx)].detach().clone()
-        x = self.extract_feat(img, th_act=th_act, sum_scale=True)
 
-        if isinstance(self.head, MultiLabelClsHead):
-            assert 'softmax' not in kwargs, (
-                'Please use `sigmoid` instead of `softmax` '
-                'in multi-label tasks.')
-        res = self.head.simple_test(x, require_features=require_features, **kwargs)
-        if require_backbone_features or require_backbone_features_idx:
-            return res, x_
+        if not self.with_head:
+            return None, x_
         else:
-            return res
+            x = self.extract_feat(img, th_act=th_act, sum_scale=True)
+            if isinstance(self.head, MultiLabelClsHead):
+                assert 'softmax' not in kwargs, (
+                    'Please use `sigmoid` instead of `softmax` '
+                    'in multi-label tasks.')
+            res = self.head.simple_test(x, require_features=require_features, **kwargs)
+            if require_backbone_features or require_backbone_features_idx:
+                return res, x_
+            else:
+                return res

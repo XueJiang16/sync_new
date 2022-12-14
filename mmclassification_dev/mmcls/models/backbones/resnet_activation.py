@@ -282,235 +282,6 @@ class Bottleneck(BaseModule):
         return out
 
 
-class RandomBlock(BaseModule):
-
-    def __init__(self, k, non_linear='relu'):
-        super(RandomBlock, self).__init__()
-        import os
-        self.k = k
-        self.local_rank = os.environ['LOCAL_RANK']
-        if non_linear == 'identity':
-            self.non_linear = torch.nn.Identity()
-        elif non_linear == 'relu':
-            self.non_linear = torch.nn.functional.relu
-        elif non_linear == 'l_relu':
-            self.non_linear = partial(torch.nn.functional.leaky_relu, negative_slope=0)
-
-        self.gap = nn.AdaptiveAvgPool2d((1, 1))
-
-
-    def kap(self, x):
-        b, c, h, w = x.shape
-        x_gap = self.gap(x).view(b, c)
-
-        ## kap
-        x = x.view(b, c, -1)
-        ## h*w -> top k
-        num = int(self.k * (h * w))
-        # num = int(self.k * h)
-        topk_v, _ = x.topk(num, dim=-1)
-        out = topk_v.mean(dim=-1)
-        # topk_v, _ = out.topk(num, dim=-1)
-        # out = topk_v.mean(dim=-1)
-        mean_gap = x_gap.mean(dim=-1)
-        mean_kap = out.mean(dim=-1)
-        # max_gap = x_gap.max(dim=-1)[0]
-        # min_gap = x_gap.min(dim=-1)[0]
-        # max_kap = out.max(dim=-1)[0]
-        # min_kap = out.min(dim=-1)[0]
-        out = out * (mean_gap / mean_kap).unsqueeze(-1)
-        # out = (out - min_kap.unsqueeze(dim=-1)) * ((max_gap - min_gap) / (max_kap - min_kap)).unsqueeze(dim=-1) \
-        #       + min_gap.unsqueeze(dim=-1)
-        return out
-
-    def forward(self, x, th_act=False):
-        if th_act is True:
-            # percentile_th = torch.quantile(x.flatten(1), self.k, dim=1)
-            # print(percentile_th.shape)
-            # assert False
-            # out = x - percentile_th[:, None, None, None]
-            # before_sum = x.sum(dim=[1, 2, 3])
-            # before_count = (x!=0).sum(dim=[1,2,3]).type_as(x)
-
-            out = x - self.k
-            # k = x.mean(dim=(-1,-2)).unsqueeze(-1).unsqueeze(-1)
-            # out = x - self.kap(x).unsqueeze(-1).unsqueeze(-1)
-            out = self.non_linear(out)
-            # print("Th_act!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            # after_sum = out.sum(dim=[1, 2, 3])
-            # after_count = (out!=0).sum(dim=[1,2,3]).type_as(out)
-            # ratio = before_sum / after_sum
-            # ratio = after_sum / (before_sum + 1e-5)
-            # count_ratio = after_count / before_count
-            # count_ratio = (before_sum - 30000) / 10000
-            # print("Before: sum={}, count={}. After:sum={}, count={}".
-            #       format(before_sum.mean(), before_count.mean(), after_sum.mean(), after_count.mean()))
-            # out = out * count_ratio[:, None, None, None]resnet.py
-        elif isinstance(th_act, torch.Tensor):
-            out = x - th_act.unsqueeze(-1).unsqueeze(-1).unsqueeze(-1)
-            out = self.non_linear(out)
-        else:
-            out = x
-        return out
-
-
-class RandomBlockOrig(BaseModule):
-    """RandomBlock block for ResNet.
-
-    Args:
-        in_channels (int): Input channels of this block.
-        out_channels (int): Output channels of this block.
-        expansion (int): The ratio of ``out_channels/mid_channels`` where
-            ``mid_channels`` is the input/output channels of conv2. Default: 4.
-        stride (int): stride of the block. Default: 1
-        dilation (int): dilation of convolution. Default: 1
-        downsample (nn.Module, optional): downsample operation on identity
-            branch. Default: None.
-        style (str): ``"pytorch"`` or ``"caffe"``. If set to "pytorch", the
-            stride-two layer is the 3x3 conv layer, otherwise the stride-two
-            layer is the first 1x1 conv layer. Default: "pytorch".
-        with_cp (bool): Use checkpoint or not. Using checkpoint will save some
-            memory while slowing down the training speed.
-        conv_cfg (dict, optional): dictionary to construct and config conv
-            layer. Default: None
-        norm_cfg (dict): dictionary to construct and config norm layer.
-            Default: dict(type='BN')
-    """
-
-    def __init__(self,
-                 in_channels,
-                 out_channels,
-                 expansion=4,
-                 stride=1,
-                 dilation=1,
-                 downsample=None,
-                 style='pytorch',
-                 with_cp=False,
-                 conv_cfg=None,
-                 with_bn=True,
-                 norm_cfg=dict(type='BN'),
-                 act_cfg=dict(type='ReLU', inplace=True),
-                 drop_path_rate=0.0,
-                 init_cfg=None):
-        super(RandomBlockOrig, self).__init__(init_cfg=init_cfg)
-        assert style in ['pytorch', 'caffe']
-
-        self.in_channels = in_channels
-        self.out_channels = out_channels
-        self.expansion = expansion
-        assert out_channels % expansion == 0
-        self.mid_channels = out_channels // expansion
-        self.stride = stride
-        self.dilation = dilation
-        self.style = style
-        self.with_cp = with_cp
-        self.conv_cfg = conv_cfg
-        self.norm_cfg = norm_cfg
-        self.with_bn = with_bn
-
-        if self.style == 'pytorch':
-            self.conv1_stride = 1
-            self.conv2_stride = stride
-        else:
-            self.conv1_stride = stride
-            self.conv2_stride = 1
-
-        if self.with_bn:
-            self.norm1_name, norm1 = build_norm_layer(
-                norm_cfg, self.mid_channels, postfix=1)
-            self.norm2_name, norm2 = build_norm_layer(
-                norm_cfg, self.mid_channels, postfix=2)
-            self.norm3_name, norm3 = build_norm_layer(
-                norm_cfg, out_channels, postfix=3)
-
-        self.conv1 = build_conv_layer(
-            conv_cfg,
-            in_channels,
-            self.mid_channels,
-            kernel_size=1,
-            stride=self.conv1_stride,
-            bias=False)
-        if self.with_bn:
-            self.add_module(self.norm1_name, norm1)
-        self.conv2 = build_conv_layer(
-            conv_cfg,
-            self.mid_channels,
-            self.mid_channels,
-            kernel_size=3,
-            stride=self.conv2_stride,
-            padding=dilation,
-            dilation=dilation,
-            bias=False)
-        if self.with_bn:
-            self.add_module(self.norm2_name, norm2)
-        self.conv3 = build_conv_layer(
-            conv_cfg,
-            self.mid_channels,
-            out_channels,
-            kernel_size=1,
-            bias=False)
-        if self.with_bn:
-            self.add_module(self.norm3_name, norm3)
-
-        self.relu = build_activation_layer(act_cfg)
-        self.downsample = downsample
-        self.drop_path = DropPath(drop_prob=drop_path_rate
-                                  ) if drop_path_rate > eps else nn.Identity()
-
-    @property
-    def norm1(self):
-        return getattr(self, self.norm1_name)
-
-    @property
-    def norm2(self):
-        return getattr(self, self.norm2_name)
-
-    @property
-    def norm3(self):
-        return getattr(self, self.norm3_name)
-
-    def forward(self, x):
-
-        def _inner_forward(x):
-            identity = x
-
-            out = self.conv1(x)
-            if self.with_bn:
-                out = self.norm1(out)
-            out = self.relu(out)
-
-            out = self.conv2(out)
-            if self.with_bn:
-                out = self.norm2(out)
-            out = self.relu(out)
-
-            out = self.conv3(out)
-            if self.with_bn:
-                out = self.norm3(out)
-
-            if self.downsample is not None:
-                identity = self.downsample(x)
-
-            out = self.drop_path(out)
-            print("Block val:", out.abs().mean())
-
-            out += identity
-            print("After Block:", out.mean())
-            assert False
-
-            return out
-
-        print("Before Block:", x.mean())
-
-        if self.with_cp and x.requires_grad:
-            out = cp.checkpoint(_inner_forward, x)
-        else:
-            out = _inner_forward(x)
-
-        out = self.relu(out)
-        return out
-
-
 def get_expansion(block, expansion=None):
     """Get the expansion of a residual block.
 
@@ -546,7 +317,7 @@ def get_expansion(block, expansion=None):
     return expansion
 
 
-class ResLayer(nn.Sequential):
+class ResLayer(nn.Module):
     """ResLayer to build ResNet style backbone.
 
     Args:
@@ -581,7 +352,7 @@ class ResLayer(nn.Sequential):
                  **kwargs):
         self.block = block
         self.expansion = get_expansion(block, expansion)
-
+        super(ResLayer, self).__init__()
         downsample = None
         if stride != 1 or in_channels != out_channels:
             downsample = []
@@ -628,11 +399,21 @@ class ResLayer(nn.Sequential):
                     conv_cfg=conv_cfg,
                     norm_cfg=norm_cfg,
                     **kwargs))
-        super(ResLayer, self).__init__(*layers)
+        self.layers = layers
+
+    def forward(self, x, th_act_para, th_act_k, feature_sim_para):
+        for i, layer in enumerate(self.layers):
+            x = layer(x)
+            if i == th_act_para:
+                x = x - th_act_k
+                x = torch.nn.functional.relu(x)
+            if i == feature_sim_para:
+                return x
+        return x
 
 
 @BACKBONES.register_module()
-class ResNet(BaseBackbone):
+class ResNetActivation(BaseBackbone):
     """ResNet backbone.
 
     Please refer to the `paper <https://arxiv.org/abs/1512.03385>`__ for
@@ -703,9 +484,11 @@ class ResNet(BaseBackbone):
                  dilations=(1, 1, 1, 1),
                  out_indices=(3, ),
                  style='pytorch',
-                 random_block=[0],
-                 random_block_k=[2.5],
-                 random_block_location=[2],
+                 th_act_k=0.1,
+                 th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
+                 th_act_location=1,  ## No. of conv layer
+                 feature_sim_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
+                 feature_sim_location=1,  ## No. of conv layer
                  deep_stem=False,
                  avg_down=False,
                  frozen_stages=-1,
@@ -723,7 +506,7 @@ class ResNet(BaseBackbone):
                  ],
                  drop_path_rate=0.0
                  ):
-        super(ResNet, self).__init__(init_cfg)
+        super(ResNetActivation, self).__init__(init_cfg)
         if depth not in self.arch_settings:
             raise KeyError(f'invalid depth {depth} for resnet')
         self.depth = depth
@@ -748,16 +531,13 @@ class ResNet(BaseBackbone):
         self.block, stage_blocks = self.arch_settings[depth]
         self.stage_blocks = stage_blocks[:num_stages]
         self.expansion = get_expansion(self.block, expansion)
-        if isinstance(random_block, int):
-            random_block = [random_block]
-        if isinstance(random_block_k, (int, float)):
-            random_block_k = [random_block_k]
-        if isinstance(random_block_location, int):
-            random_block_location = [random_block_location]
-        assert len(random_block) == len(random_block_k) == len(random_block_location)
-        self.num_random_block = random_block
-        self.random_block_k = random_block_k
-        self.random_block_location = random_block_location
+
+        self.th_act_k = th_act_k
+        self.th_act_stage = th_act_stage
+        self.th_act_location = th_act_location
+        self.feature_sim_stage = feature_sim_stage
+        self.feature_sim_location = feature_sim_location
+
 
         self._make_stem_layer(in_channels, stem_channels)
 
@@ -784,34 +564,12 @@ class ResNet(BaseBackbone):
             layer_name = f'layer{i + 1}'
             self.add_module(layer_name, res_layer)
             self.res_layers.append(layer_name)
-            # add random block
-            if i in self.random_block_location:
-                idx = self.random_block_location.index(i)
-                if self.num_random_block[idx] > 0:
-                    for j in range(self.num_random_block[idx]):
-                        random_layer = RandomBlock(k=self.random_block_k[idx])
-                        layer_name = f'random_block{i}_{j+1}'
-                        self.add_module(layer_name, random_layer)
             _in_channels = _out_channels
             _out_channels *= 2
 
         self._freeze_stages()
 
         self.feat_dim = res_layer[-1].out_channels
-
-    def change_weights(self):
-        with torch.no_grad():
-            # noise = (torch.rand_like(self.layer3[5].conv2.weight) - 0.5) * 0.02
-            self.layer3[5].conv2.weight *= 0.9
-            # print(self.layer3[5].conv3.weight.std())
-            # exit()
-            # noise = (torch.rand_like(self.layer4[0].conv1.weight) - 0.5) / 2.5
-            # self.layer4[0].conv1.weight.data += noise
-            # state_dict = self.state_dict()
-            # for name, param in state_dict.items():
-            #     if name == 'layer4.0.conv1.weight':
-            #         tmp = param + (torch.rand_like(param) - 0.5) / 2.5
-            #         param.copy_(tmp)
 
     def make_res_layer(self, **kwargs):
         return ResLayer(**kwargs)
@@ -884,7 +642,7 @@ class ResNet(BaseBackbone):
                 param.requires_grad = False
 
     def init_weights(self):
-        super(ResNet, self).init_weights()
+        super(ResNetActivation, self).init_weights()
 
         if (isinstance(self.init_cfg, dict)
                 and self.init_cfg['type'] == 'Pretrained'):
@@ -908,25 +666,25 @@ class ResNet(BaseBackbone):
         x = self.maxpool(x)
         outs = []
         for i, layer_name in enumerate(self.res_layers):
+            if i == self.th_act_stage:
+                th_act_parameter = self.th_act_location
+            else:
+                th_act_parameter = -1
+            if i == self.feature_sim_stage:
+                feature_sim_parameter = self.feature_sim_stage
+            else:
+                feature_sim_parameter = -1
             res_layer = getattr(self, layer_name)
-            x = res_layer(x)
-            if i in self.random_block_location:
-                idx = self.random_block_location.index(i)
-                if self.num_random_block[idx] != 0:
-                    # print("Before Random Block:", x.mean())
-                    if self.num_random_block[idx] > 0:
-                        for j in range(self.num_random_block[idx]):
-                            random_layer = getattr(self, f'random_block{i}_{j+1}')
-                            x = random_layer(x, th_act)
-                            # print(f"After Random Block {j+1}:", x.mean())
-                    else:
-                        raise NotImplementedError
+            x = res_layer(x, th_act_para=th_act_parameter,
+                          feature_sim_para=feature_sim_parameter, th_act_k=self.th_act_k)
+            if i == self.feature_sim_stage:
+                return tuple([x])
             if i in self.out_indices:
                 outs.append(x)
         return tuple(outs)
 
     def train(self, mode=True):
-        super(ResNet, self).train(mode)
+        super(ResNetActivation, self).train(mode)
         self._freeze_stages()
         if mode and self.norm_eval:
             for m in self.modules():
@@ -935,34 +693,6 @@ class ResNet(BaseBackbone):
                     m.eval()
 
 
-@BACKBONES.register_module()
-class ResNetV1c(ResNet):
-    """ResNetV1c backbone.
-
-    This variant is described in `Bag of Tricks.
-    <https://arxiv.org/pdf/1812.01187.pdf>`_.
-
-    Compared with default ResNet(ResNetV1b), ResNetV1c replaces the 7x7 conv
-    in the input stem with three 3x3 convs.
-    """
-
-    def __init__(self, **kwargs):
-        super(ResNetV1c, self).__init__(
-            deep_stem=True, avg_down=False, **kwargs)
 
 
-@BACKBONES.register_module()
-class ResNetV1d(ResNet):
-    """ResNetV1d backbone.
 
-    This variant is described in `Bag of Tricks.
-    <https://arxiv.org/pdf/1812.01187.pdf>`_.
-
-    Compared with default ResNet(ResNetV1b), ResNetV1d replaces the 7x7 conv in
-    the input stem with three 3x3 convs. And in the downsampling block, a 2x2
-    avg_pool with stride 2 is added before conv, whose stride is changed to 1.
-    """
-
-    def __init__(self, **kwargs):
-        super(ResNetV1d, self).__init__(
-            deep_stem=True, avg_down=True, **kwargs)

@@ -1,5 +1,5 @@
-method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch']
-method_name = method_list[3]
+method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch', 'FeatureReweight']
+method_name = method_list[-1]
 model_name = 'resnet50'
 train_dataset = 'Balance'
 custom_name = None
@@ -21,14 +21,16 @@ model = dict(
         type='ImageClassifier',
         init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
         backbone=dict(
-            type='ResNet',
+            type='ResNetActivation',
             depth=50,
             num_stages=4,
             out_indices=(3,),
             style='pytorch',
-            random_block=[1],
-            random_block_k=[0.1],
-            random_block_location=[2],  ## 0:C2 1:C3 2:C4 3:C5
+            th_act_k=0.1,
+            th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
+            th_act_location=1, ## No. of conv layer
+            feature_sim_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
+            feature_sim_location=1,  ## No. of conv layer
         ),
         neck=dict(type='GlobalAveragePooling'),
         head=dict(
