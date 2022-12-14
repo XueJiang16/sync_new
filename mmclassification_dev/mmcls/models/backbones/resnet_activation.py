@@ -352,7 +352,7 @@ class ResLayer(nn.Sequential):
                  **kwargs):
         self.block = block
         self.expansion = get_expansion(block, expansion)
-        super(ResLayer, self).__init__()
+
         downsample = None
         if stride != 1 or in_channels != out_channels:
             downsample = []
@@ -400,6 +400,7 @@ class ResLayer(nn.Sequential):
                     norm_cfg=norm_cfg,
                     **kwargs))
         self.layers = layers
+        super(ResLayer, self).__init__(*layers)
 
     # def __getitem__(self, item):
     #     return self.layers[item]
