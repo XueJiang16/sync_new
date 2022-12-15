@@ -297,7 +297,7 @@ def main(args, task_cfg, is_init=False, gs=None):
 if __name__ == '__main__':
     import random
     SAMPLE_SPREADSHEET_ID = '1znF0Bjncjk6SSrMOWxMSKstkTrusFg4ETkygLQgMyAc'
-    SAMPLE_TAB_NAME = 'auto'
+    SAMPLE_TAB_NAME = 'id_acc'
     args = parse_args()
     gs_token = args.token
     local_rank = int(os.environ['LOCAL_RANK'])
