@@ -2,7 +2,7 @@ model = dict(
     type='ImageClassifier',
     backbone=dict(
         type='ResNet',
-        depth=50,
+        depth=34,
         num_stages=4,
         out_indices=(3,),
         style='pytorch',
@@ -10,11 +10,12 @@ model = dict(
         random_block_k=[0.2],
         random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
     ),
-    neck=dict(type='TopKAveragePooling',
-              k=0.65),
+    # neck=dict(type='TopKAveragePooling',
+    #           k=0.65),
+    neck=dict(type='GlobalAveragePooling'),
     head=dict(
         type='LinearClsHead',
-        num_classes=1000,
+        num_classes=512,
         in_channels=2048,
         loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
         topk=(1, 5)))
