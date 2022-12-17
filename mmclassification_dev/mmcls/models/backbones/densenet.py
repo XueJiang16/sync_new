@@ -117,10 +117,15 @@ class DenseBlock(nn.Module):
                 memory_efficient=memory_efficient) for i in range(num_layers)
         ])
 
-    def forward(self, init_features):
+    def forward(self, init_features, th_act_para, th_act_k, feature_sim_para):
         features = [init_features]
-        for layer in self.block:
+        for i, layer in enumerate(self.block):
             new_features = layer(features)
+            if i == th_act_para:
+                new_features = new_features - th_act_k
+                new_features = torch.nn.functional.relu(new_features)
+            if i == feature_sim_para:
+                return new_features
             features.append(new_features)
         return torch.cat(features, 1)
 
@@ -214,6 +219,11 @@ class DenseNet(BaseBackbone):
                  in_channels=3,
                  bn_size=4,
                  drop_rate=0,
+                 th_act_k=-1,
+                 th_act_stage=-1,  ## 0:C2 1:C3 2:C4 3:C5
+                 th_act_location=-1,  ## No. of conv layer
+                 feature_sim_stage=-1,  ## 0:C2 1:C3 2:C4 3:C5
+                 feature_sim_location=-1,  ## No. of conv layer
                  compression_factor=0.5,
                  memory_efficient=False,
                  norm_cfg=dict(type='BN'),
@@ -252,6 +262,12 @@ class DenseNet(BaseBackbone):
                 assert out_indices[i] >= 0, f'Invalid out_indices {index}'
         self.out_indices = out_indices
         self.frozen_stages = frozen_stages
+
+        self.th_act_k = th_act_k
+        self.th_act_stage = th_act_stage
+        self.th_act_location = th_act_location
+        self.feature_sim_stage = feature_sim_stage
+        self.feature_sim_location = feature_sim_location
 
         # Set stem layers
         self.stem = nn.Sequential(
@@ -310,7 +326,18 @@ class DenseNet(BaseBackbone):
         x = self.stem(x)
         outs = []
         for i in range(self.num_stages):
-            x = self.stages[i](x)
+            if i == self.th_act_stage:
+                th_act_parameter = self.th_act_location
+            else:
+                th_act_parameter = -1
+            if i == self.feature_sim_stage:
+                feature_sim_parameter = self.feature_sim_location
+            else:
+                feature_sim_parameter = -1
+            x = self.stages[i](x, th_act_para=th_act_parameter,
+                               feature_sim_para=feature_sim_parameter, th_act_k=self.th_act_k)
+            if i == self.feature_sim_stage:
+                return tuple([x])
             x = self.transitions[i](x)
             if i in self.out_indices:
                 outs.append(x)
