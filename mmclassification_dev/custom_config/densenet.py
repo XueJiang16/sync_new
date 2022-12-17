@@ -41,7 +41,7 @@ model = dict(
     type=method_name,
     debug_mode=False,
     num_classes=1000,
-    temperature=1,
+    temperature=1000,
     classifier=dict(
         type='ImageClassifier',
         init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/densenet121_4xb256_in1k_20220426-07450f99.pth'),
