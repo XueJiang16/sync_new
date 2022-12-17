@@ -322,7 +322,7 @@ class DenseNet(BaseBackbone):
 
         self._freeze_stages()
 
-    def forward(self, x):
+    def forward(self, x, th_act=False):
         x = self.stem(x)
         outs = []
         for i in range(self.num_stages):
