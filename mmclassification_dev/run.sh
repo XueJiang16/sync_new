@@ -21,6 +21,7 @@
 #bash ./tools/ood_dist_test.sh custom_config/mobilenet3_large.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/vit_lt.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/patchsim_mobile.py foo 2
+bash ./tools/ood_dist_test.sh custom_config/densenet.py foo 2
 
 ## Cifar
 #bash ./tools/ood_dist_test.sh custom_config/cifar_benchmark/resnet50.py foo 1
@@ -35,4 +36,4 @@
 #bash ./tools/dist_test.sh custom_config/id_acc/resnet50_topk.py /data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth 2 --metrics accuracy
 #bash ./tools/dist_test_auto.sh custom_config/id_acc/resnet50_topk.py /data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth 2 --metrics accuracy
 #bash ./tools/dist_test_auto.sh custom_config/id_acc/resnet50_topk.py /data/csxjiang/ood_ckpt/mmcls_offical/resnet34_8xb32_in1k_20210831-f257d4e6.pth 2 --metrics accuracy
-bash ./tools/dist_test_auto.sh custom_config/id_acc/resnet50_topk.py /data/csxjiang/ood_ckpt/mmcls_offical/resnet101_8xb32_in1k_20210831-539c63f8.pth 2 --metrics accuracy
+#bash ./tools/dist_test_auto.sh custom_config/id_acc/resnet50_topk.py /data/csxjiang/ood_ckpt/mmcls_offical/resnet101_8xb32_in1k_20210831-539c63f8.pth 2 --metrics accuracy
