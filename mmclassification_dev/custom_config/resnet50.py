@@ -27,12 +27,12 @@ model = dict(
         type=method_list[0],
         classifier=dict(
         type='ImageClassifier',
-        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
+        # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
         # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/resnet34_8xb32_in1k_20210831-f257d4e6.pth'),
-        # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/resnet101_8xb32_in1k_20210831-539c63f8.pth'),
+        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/resnet101_8xb32_in1k_20210831-539c63f8.pth'),
         backbone=dict(
             type='ResNetActivation',
-            depth=50,
+            depth=101,
             num_stages=4,
             out_indices=(3,),
             style='pytorch',
