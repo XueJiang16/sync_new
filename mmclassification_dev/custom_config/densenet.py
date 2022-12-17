@@ -1,5 +1,5 @@
 method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch', 'FeatureReweight']
-method_name = method_list[2]
+method_name = method_list[3]
 model_name = 'resnet50'
 train_dataset = 'Balance'
 custom_name = None
