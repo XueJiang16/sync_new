@@ -27,20 +27,20 @@ model = dict(
         type=method_list[0],
         classifier=dict(
         type='ImageClassifier',
-        # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
+        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
         # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/resnet34_8xb32_in1k_20210831-f257d4e6.pth'),
-        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/resnet101_8xb32_in1k_20210831-539c63f8.pth'),
+        # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/resnet101_8xb32_in1k_20210831-539c63f8.pth'),
         backbone=dict(
             type='ResNetActivation',
-            depth=101,
+            depth=50,
             num_stages=4,
             out_indices=(3,),
             style='pytorch',
-            th_act_k=0.2,
-            th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
-            th_act_location=7, ## No. of conv layer
+            # th_act_k=0.2,
+            # th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
+            # th_act_location=7, ## No. of conv layer
             feature_sim_stage=3,  ## 0:C2 1:C3 2:C4 3:C5
-            feature_sim_location=0,  ## No. of conv layer
+            feature_sim_location=2,  ## No. of conv layer
         ),
         # neck=dict(type='GlobalAveragePooling'),
         # head=dict(

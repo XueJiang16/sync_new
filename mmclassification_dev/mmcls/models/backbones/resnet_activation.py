@@ -405,9 +405,10 @@ class ResLayer(nn.Sequential):
     # def __getitem__(self, item):
     #     return self.layers[item]
 
-    def forward(self, x, th_act_para, th_act_k, feature_sim_para):
+    def forward(self, x, th_act_para, th_act_k, feature_sim_para, stage=None):
         for i, layer in enumerate(self.layers):
             x = layer(x)
+            print("Block {}/Stage {}: mean={}, std={}".format(i, stage, x.mean(), x.std()))
             if i == th_act_para:
                 x = x - th_act_k
                 x = torch.nn.functional.relu(x)
@@ -680,7 +681,7 @@ class ResNetActivation(BaseBackbone):
                 feature_sim_parameter = -1
             res_layer = getattr(self, layer_name)
             x = res_layer(x, th_act_para=th_act_parameter,
-                          feature_sim_para=feature_sim_parameter, th_act_k=self.th_act_k)
+                          feature_sim_para=feature_sim_parameter, th_act_k=self.th_act_k, stage=i)
             if i == self.feature_sim_stage:
                 return tuple([x])
             if i in self.out_indices:
