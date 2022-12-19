@@ -37,7 +37,6 @@ class FeatureReweight(BaseModule):
                                                          require_backbone_features=True, **input)
             input['type'] = type
             if self.mode == 'mean':
-                feature_c5 = (feature_c5 - 0.46) / 0.78 * 0.42 + 0.23
                 feature_crops = feature_c5.flatten(2)
                 # feature_crops = feature_crops[:,::4].contiguous()
                 # value, index = feature_crops.mean(-1).max(dim=-1)  # (N, C, H*W) -> (N, C)
@@ -54,6 +53,8 @@ class FeatureReweight(BaseModule):
                 feature_crops = feature_c5.flatten(2)
                 patch_median = feature_crops.median(-1)[0].unsqueeze(-1)  # (N, C, H*W) -> (N, C)
                 patch_sim = torch.abs(feature_crops - patch_median).flatten(1).median(dim=-1)[0]  # for ID: .mean(dim=-2)
+            elif self.mode =='std':
+                patch_sim = feature_c5.std(dim=(-1,-2,-3))
             else:
                 raise NotImplementedError
 
