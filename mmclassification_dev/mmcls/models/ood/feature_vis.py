@@ -190,10 +190,10 @@ class FeatureVisBlock(BaseModule):
                 img2 = img.copy()
                 img3 = img.copy()
                 img4 = img.copy()
-                res1 = show_heatmap(img, feature_norm1)
-                res2 = show_heatmap(img2, feature_diff1)
-                res3 = show_heatmap(img3, feature_norm2)
-                res4 = show_heatmap(img4, feature_diff2)
+                res1 = show_heatmap(img, feature_norm1[i])
+                res2 = show_heatmap(img2, feature_diff1[i])
+                res3 = show_heatmap(img3, feature_norm2[i])
+                res4 = show_heatmap(img4, feature_diff2[i])
 
                 # font
                 font = cv2.FONT_HERSHEY_SIMPLEX
