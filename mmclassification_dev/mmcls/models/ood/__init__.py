@@ -7,12 +7,12 @@ from .image_level import MeanStdDetector
 from .feature_level import PatchSim, FeatureMapSim
 from .aug_contrast import AugContrast
 from .th_act import ThresholdActivation
-from .feature_vis import FeatureVis
+from .feature_vis import FeatureVis, FeatureVisBlock
 from .dynamic_th_act import DynamicThresholdActivation
 from .feature_sim import FeatureReweight
 
 __all__ = [
     'GradNorm', 'GradNormBatch', 'GradNormBatchScore', 'MSP', 'MSPCustom', 'PatchSim', 'FeatureMapSim', 'KLDiv',
     'GradNormCos', 'ODIN', 'ODINCustom', 'Energy', 'EnergyCustom', 'Cosine', 'MeanStdDetector', 'AugContrast',
-    'ThresholdActivation', 'FeatureVis', 'DynamicThresholdActivation', 'FeatureReweight'
+    'ThresholdActivation', 'FeatureVis', 'DynamicThresholdActivation', 'FeatureReweight', 'FeatureVisBlock'
 ]

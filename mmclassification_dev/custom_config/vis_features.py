@@ -1,4 +1,5 @@
-method_name = 'FeatureVis'
+# method_name = 'FeatureVis'
+method_name = 'FeatureVisBlock'
 model_name = 'resnet50'
 train_dataset = 'Balance'
 custom_name = "Official"
@@ -18,39 +19,47 @@ model = dict(
         type='ImageClassifier',
         init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
         backbone=dict(
-            type='ResNet',
+            type='ResNetActivation',
             depth=50,
             num_stages=4,
-            out_indices=(2,3,),
-            style='pytorch'),
-        neck=dict(type='GlobalAveragePooling'),
-        head=dict(
-            type='LinearClsHead',
-            num_classes=1000,
-            in_channels=2048,
-            loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-            topk=(1, 5))
+            out_indices=(3,),
+            style='pytorch',
+            # th_act_k=0.2,
+            # th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
+            # th_act_location=7,  ## No. of conv layer
+            feature_sim_stage=3,  ## 0:C2 1:C3 2:C4 3:C5
+            feature_sim_location=1,  ## No. of conv layer
+        ),
+        # neck=dict(type='GlobalAveragePooling'),
+        # head=dict(
+        #     type='LinearClsHead',
+        #     num_classes=1000,
+        #     in_channels=2048,
+        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        #     topk=(1, 5))
     ),
     classifier_act=dict(
         type='ImageClassifier',
         init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
         backbone=dict(
-            type='ResNet',
+            type='ResNetActivation',
             depth=50,
             num_stages=4,
-            out_indices=(2,3,),
+            out_indices=(3,),
             style='pytorch',
-            random_block=[1],
-            random_block_k=[0.4],
-            random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
+            # th_act_k=0.2,
+            # th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
+            # th_act_location=7,  ## No. of conv layer
+            feature_sim_stage=3,  ## 0:C2 1:C3 2:C4 3:C5
+            feature_sim_location=2,  ## No. of conv layer
         ),
-        neck=dict(type='GlobalAveragePooling'),
-        head=dict(
-            type='LinearClsHead',
-            num_classes=1000,
-            in_channels=2048,
-            loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-            topk=(1, 5))
+        # neck=dict(type='GlobalAveragePooling'),
+        # head=dict(
+        #     type='LinearClsHead',
+        #     num_classes=1000,
+        #     in_channels=2048,
+        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        #     topk=(1, 5))
     ),
 )
 pipline =[

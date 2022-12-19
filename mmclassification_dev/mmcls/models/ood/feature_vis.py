@@ -130,3 +130,84 @@ class FeatureVis(BaseModule):
             confs = torch.tensor([0]*len(filenames)).to("cuda:{}".format(self.local_rank))
         return confs, type
 
+@OOD.register_module()
+class FeatureVisBlock(BaseModule):
+    def __init__(self, classifier, classifier_act, num_classes, target_file=None, **kwargs):
+        super(FeatureVisBlock, self).__init__()
+        self.local_rank = os.environ['LOCAL_RANK']
+        self.classifier = build_classifier(classifier)
+        self.classifier.eval()
+        self.classifier_act = build_classifier(classifier_act)
+        self.classifier_act.eval()
+
+    def norm(self, features):
+        features_mean = features.mean(1)
+        features_norm = features_mean / 0.08
+        features_norm[features_norm > 1] = 1
+        features_norm[features_norm < 0] = 0
+        features_norm = features_norm.cpu().numpy()
+        return features_norm
+
+    def feature_sim(self, feature):
+        feature_crops = feature.flatten(2)
+        patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
+        patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
+        return patch_sim
+
+    def forward(self, **input):
+        if "type" in input:
+            type = input['type']
+            del input['type']
+        with torch.no_grad():
+            filenames = [x['filename'] for x in input['img_metas']]
+            if 'ood_data' in filenames[0]:
+                mid_path = 'OOD'
+            else:
+                mid_path = 'ID'
+            out_dir = os.path.join('./vis_cam_features_new/', mid_path)
+            os.makedirs(out_dir, exist_ok=True)
+            _, features1 = self.classifier(return_loss=False, softmax=False, post_process=False,
+                                            require_backbone_features=True, **input)
+            _, features2 = self.classifier_act(return_loss=False, softmax=False, post_process=False,
+                                                require_backbone_features=True, **input)
+            feature_sim1 = self.feature_sim(features1)
+            feature_sim2 = self.feature_sim(features2)
+            print("Loc1: mean={}, std={}".format(features1.mean(), features1.std()))
+            print("Loc2: mean={}, std={}".format(features2.mean(), features2.std()))
+            assert False
+
+            for i in range(len(filenames)):
+                try:
+                    img = cv2.imread(filenames[i])
+                    img_cam = img.copy()
+                    img_larger = img.copy()
+                    img_lower = img.copy()
+                    res_cam = show_heatmap(img_cam, C4_features_norm[i])
+                    res_larger = show_heatmap(img_larger, C4_features_larger[i])
+                    res_lower = show_heatmap(img_lower, C4_features_lower[i])
+                    # font
+                    font = cv2.FONT_HERSHEY_SIMPLEX
+                    # org = (50, 50)
+                    fontScale = 0.8
+                    color = (255, 255, 255)
+                    thickness = 1
+                    img = cv2.putText(img, 'Conf={}'.format(msp_confs[i]), (50, 50), font,
+                                      fontScale, color, thickness, cv2.LINE_AA)
+                    img = cv2.putText(img, 'Conf={}'.format(msp_confs_act[i]), (50, 80), font,
+                                      fontScale, color, thickness, cv2.LINE_AA)
+                    res12 = np.hstack([img, res_cam])
+                    res34 = np.hstack([res_larger, res_lower])
+                    res = np.vstack([res12, res34])
+                    # plt.matshow(C4_features[i])
+                    filename = os.path.splitext(os.path.basename(filenames[i]))[0]
+                    cv2.imwrite(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)), res)
+
+                except:
+                    print('Image Read Error!')
+                    continue
+                # plt.savefig(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)))
+                # plt.close()
+                # shutil.copy(filenames[i], out_dir)
+            confs = torch.tensor([0] * len(filenames)).to("cuda:{}".format(self.local_rank))
+        return confs, type
+
