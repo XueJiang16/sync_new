@@ -40,7 +40,7 @@ class FeatureReweight(BaseModule):
                 feature_crops = feature_c5.flatten(2)
                 # feature_crops = feature_crops[:,::4].contiguous()
                 value, index = feature_crops.mean(-1).max(dim=-1)  # (N, C, H*W) -> (N, C)
-                tmp_feature = torch.gather(feature_crops, dim=1, index=index.unsqueeze(-1))
+                tmp_feature = torch.gather(feature_crops, dim=1, index=index.unsqueeze(-1).unsqueeze(-1))
                 print(tmp_feature.shape)
                 assert False
                 patch_sim = torch.abs(feature_crops[index] - value.unsqueeze(-1)).mean(dim=-1)
