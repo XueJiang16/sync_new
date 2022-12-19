@@ -140,9 +140,9 @@ class FeatureVisBlock(BaseModule):
         self.classifier_act = build_classifier(classifier_act)
         self.classifier_act.eval()
 
-    def norm(self, features):
+    def norm(self, features, mean):
         features_mean = features.mean(1)
-        features_norm = features_mean / 0.08
+        features_norm = features_mean / mean
         features_norm[features_norm > 1] = 1
         features_norm[features_norm < 0] = 0
         features_norm = features_norm.cpu().numpy()
@@ -172,9 +172,11 @@ class FeatureVisBlock(BaseModule):
                                                 require_backbone_features=True, **input)
             feature_sim1 = self.feature_sim(features1)
             feature_sim2 = self.feature_sim(features2)
-            print("Loc1: mean={}, std={}".format(features1.mean(), features1.std()))
-            print("Loc2: mean={}, std={}".format(features2.mean(), features2.std()))
+            print("Loc1: 95%={}".format(torch.quantile(features1, 0.95)))
+            print("Loc2: 95%={}".format(torch.quantile(features2, 0.95)))
             assert False
+
+            feature_norm1 = self.norm(features1, )
 
             for i in range(len(filenames)):
                 try:
