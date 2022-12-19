@@ -39,16 +39,16 @@ class FeatureReweight(BaseModule):
             if self.mode == 'mean':
                 feature_crops = feature_c5.flatten(2)
                 # feature_crops = feature_crops[:,::4].contiguous()
-                # value, index = feature_crops.mean(-1).max(dim=-1)  # (N, C, H*W) -> (N, C)
-                # patch_sim = 0
-                # for i,j in enumerate(index):
-                #     item = torch.abs(feature_crops[i,j] - value[i]).mean()
-                #     print(item.shape)
-                #     assert False
-                #     patch_sim += item
-                # patch_sim = patch_sim / index.shape[0]
-                patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
-                patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
+                value, index = feature_crops.mean(-1).max(dim=-1)  # (N, C, H*W) -> (N, C)
+                patch_sim = 0
+                for i,j in enumerate(index):
+                    item = torch.abs(feature_crops[i,j] - value[i]).mean()
+                    print(item.shape)
+                    assert False
+                    patch_sim += item
+                patch_sim = patch_sim / index.shape[0]
+                # patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
+                # patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
             elif self.mode == 'channel_mean':
                 feature_crops = feature_c5.flatten(2)
                 patch_mean = feature_crops.mean(1).unsqueeze(1)  # (N, C, H*W) -> (N, C)
