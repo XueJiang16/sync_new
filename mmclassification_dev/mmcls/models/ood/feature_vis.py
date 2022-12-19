@@ -172,9 +172,9 @@ class FeatureVisBlock(BaseModule):
                                                 require_backbone_features=True, **input)
             feature_sim1, feature_mean1 = self.feature_sim(features1)
             feature_sim2, feature_mean2 = self.feature_sim(features2)
-            # print("Loc1: 95%={}".format(torch.quantile(features1, 0.95)))
-            # print("Loc2: 95%={}".format(torch.quantile(features2, 0.95)))
-            # assert False
+            print("Loc1: 95%={}".format(torch.quantile(features1.mean(1), 0.95)))
+            print("Loc2: 95%={}".format(torch.quantile(features2.mean(1), 0.95)))
+            assert False
 
             feature_norm1 = self.norm(features1, 1.06)
             feature_norm2 = self.norm(features2, 1.94)
