@@ -178,7 +178,7 @@ class FeatureVisBlock(BaseModule):
 
             feature_norm1 = self.norm(features1, 1.06)
             feature_norm2 = self.norm(features2, 1.94)
-            print(features1.shape)
+            print(feature_mean1.shape)
             assert False
 
             feature_diff1 = torch.abs(features1 - feature_mean1.unsqueeze(-1).unsqueeze(-1))
