@@ -172,17 +172,17 @@ class FeatureVisBlock(BaseModule):
                                                 require_backbone_features=True, **input)
             feature_sim1, feature_mean1 = self.feature_sim(features1)
             feature_sim2, feature_mean2 = self.feature_sim(features2)
-            print("Loc1: 95%={}".format(torch.quantile(features1.mean(1), 0.95)))
-            print("Loc2: 95%={}".format(torch.quantile(features2.mean(1), 0.95)))
-            assert False
+            # print("Loc1: 95%={}".format(torch.quantile(features1.mean(1), 0.95)))
+            # print("Loc2: 95%={}".format(torch.quantile(features2.mean(1), 0.95)))
+            # assert False
 
-            feature_norm1 = self.norm(features1, 1.06)
-            feature_norm2 = self.norm(features2, 1.94)
+            feature_norm1 = self.norm(features1, 0.34)
+            feature_norm2 = self.norm(features2, 0.78)
 
             feature_diff1 = torch.abs(features1 - feature_mean1.unsqueeze(-1))
             feature_diff2 = torch.abs(features2 - feature_mean2.unsqueeze(-1))
-            feature_diff1 = self.norm(feature_diff1, 1.06)
-            feature_diff2 = self.norm(feature_diff2, 1.94)
+            feature_diff1 = self.norm(feature_diff1, 0.34)
+            feature_diff2 = self.norm(feature_diff2, 0.78)
 
             for i in range(len(filenames)):
                 # try:
