@@ -152,7 +152,7 @@ class FeatureVisBlock(BaseModule):
         feature_crops = feature.flatten(2)
         patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
         patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
-        return patch_sim
+        return patch_sim, patch_mean
 
     def forward(self, **input):
         if "type" in input:
@@ -164,41 +164,49 @@ class FeatureVisBlock(BaseModule):
                 mid_path = 'OOD'
             else:
                 mid_path = 'ID'
-            out_dir = os.path.join('./vis_cam_features_new/', mid_path)
+            out_dir = os.path.join('./vis_feature_sim/', mid_path)
             os.makedirs(out_dir, exist_ok=True)
             _, features1 = self.classifier(return_loss=False, softmax=False, post_process=False,
                                             require_backbone_features=True, **input)
             _, features2 = self.classifier_act(return_loss=False, softmax=False, post_process=False,
                                                 require_backbone_features=True, **input)
-            feature_sim1 = self.feature_sim(features1)
-            feature_sim2 = self.feature_sim(features2)
-            print("Loc1: 95%={}".format(torch.quantile(features1, 0.95)))
-            print("Loc2: 95%={}".format(torch.quantile(features2, 0.95)))
-            assert False
+            feature_sim1, feature_mean1 = self.feature_sim(features1)
+            feature_sim2, feature_mean2 = self.feature_sim(features2)
+            # print("Loc1: 95%={}".format(torch.quantile(features1, 0.95)))
+            # print("Loc2: 95%={}".format(torch.quantile(features2, 0.95)))
+            # assert False
 
-            feature_norm1 = self.norm(features1, )
+            feature_norm1 = self.norm(features1, 1.06)
+            feature_norm2 = self.norm(features2, 1.94)
+
+            feature_diff1 = torch.abs(features1 - feature_mean1.unsqueeze(-1).unsqueeze(-1))
+            feature_diff2 = torch.abs(features2 - feature_mean2.unsqueeze(-1).unsqueeze(-1))
+            feature_diff1 = self.norm(feature_diff1, 1.06)
+            feature_diff2 = self.norm(feature_diff2, 1.94)
 
             for i in range(len(filenames)):
                 try:
                     img = cv2.imread(filenames[i])
-                    img_cam = img.copy()
-                    img_larger = img.copy()
-                    img_lower = img.copy()
-                    res_cam = show_heatmap(img_cam, C4_features_norm[i])
-                    res_larger = show_heatmap(img_larger, C4_features_larger[i])
-                    res_lower = show_heatmap(img_lower, C4_features_lower[i])
+                    img2 = img.copy()
+                    img3 = img.copy()
+                    img4 = img.copy()
+                    res1 = show_heatmap(img, feature_norm1)
+                    res2 = show_heatmap(img2, feature_diff1)
+                    res3 = show_heatmap(img3, feature_norm2)
+                    res4 = show_heatmap(img4, feature_diff2)
+
                     # font
                     font = cv2.FONT_HERSHEY_SIMPLEX
                     # org = (50, 50)
                     fontScale = 0.8
-                    color = (255, 255, 255)
+                    color = (0, 255, 0)
                     thickness = 1
-                    img = cv2.putText(img, 'Conf={}'.format(msp_confs[i]), (50, 50), font,
+                    res1 = cv2.putText(res1, 'Conf1={}'.format(feature_sim1[i]), (50, 50), font,
                                       fontScale, color, thickness, cv2.LINE_AA)
-                    img = cv2.putText(img, 'Conf={}'.format(msp_confs_act[i]), (50, 80), font,
+                    res3 = cv2.putText(res3, 'Conf2={}'.format(feature_sim2[i]), (50, 50), font,
                                       fontScale, color, thickness, cv2.LINE_AA)
-                    res12 = np.hstack([img, res_cam])
-                    res34 = np.hstack([res_larger, res_lower])
+                    res12 = np.hstack([res1, res2])
+                    res34 = np.hstack([res3, res4])
                     res = np.vstack([res12, res34])
                     # plt.matshow(C4_features[i])
                     filename = os.path.splitext(os.path.basename(filenames[i]))[0]
