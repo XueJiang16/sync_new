@@ -185,39 +185,37 @@ class FeatureVisBlock(BaseModule):
             feature_diff2 = self.norm(feature_diff2, 0.78)
 
             for i in range(len(filenames)):
-                # try:
-                img = cv2.imread(filenames[i])
-                img2 = img.copy()
-                img3 = img.copy()
-                img4 = img.copy()
-                res1 = show_heatmap(img, feature_norm1[i])
-                res2 = show_heatmap(img2, feature_diff1[i])
-                res3 = show_heatmap(img3, feature_norm2[i])
-                res4 = show_heatmap(img4, feature_diff2[i])
+                try:
+                    img = cv2.imread(filenames[i])
+                    img2 = img.copy()
+                    img3 = img.copy()
+                    img4 = img.copy()
+                    res1 = show_heatmap(img, feature_norm1[i])
+                    res2 = show_heatmap(img2, feature_diff1[i])
+                    res3 = show_heatmap(img3, feature_norm2[i])
+                    res4 = show_heatmap(img4, feature_diff2[i])
 
-                # font
-                font = cv2.FONT_HERSHEY_SIMPLEX
-                # org = (50, 50)
-                fontScale = 0.8
-                color = (0, 255, 0)
-                thickness = 1
-                res1 = cv2.putText(res1, 'Conf1={}'.format(feature_sim1[i]), (50, 50), font,
-                                  fontScale, color, thickness, cv2.LINE_AA)
-                res3 = cv2.putText(res3, 'Conf2={}'.format(feature_sim2[i]), (50, 50), font,
-                                  fontScale, color, thickness, cv2.LINE_AA)
-                res12 = np.hstack([res1, res2])
-                res34 = np.hstack([res3, res4])
-                res = np.vstack([res12, res34])
-                # plt.matshow(C4_features[i])
-                filename = os.path.splitext(os.path.basename(filenames[i]))[0]
-                cv2.imwrite(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)), res)
+                    # font
+                    font = cv2.FONT_HERSHEY_SIMPLEX
+                    # org = (50, 50)
+                    fontScale = 0.8
+                    color = (0, 255, 0)
+                    thickness = 1
+                    res1 = cv2.putText(res1, 'Conf1={}'.format(feature_sim1[i]), (50, 50), font,
+                                      fontScale, color, thickness, cv2.LINE_AA)
+                    res3 = cv2.putText(res3, 'Conf2={}'.format(feature_sim2[i]), (50, 50), font,
+                                      fontScale, color, thickness, cv2.LINE_AA)
+                    res12 = np.hstack([res1, res2])
+                    res34 = np.hstack([res3, res4])
+                    res = np.vstack([res12, res34])
+                    # plt.matshow(C4_features[i])
+                    filename = os.path.splitext(os.path.basename(filenames[i]))[0]
+                    cv2.imwrite(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)), res)
 
-                # except:
-                #     print('Image Read Error!')
-                #     continue
-                # plt.savefig(os.path.join(out_dir, '{}_heatmap.jpg'.format(filename)))
-                # plt.close()
-                # shutil.copy(filenames[i], out_dir)
+                except:
+                    print('Image Read Error!')
+                    continue
+
             confs = torch.tensor([0] * len(filenames)).to("cuda:{}".format(self.local_rank))
         return confs, type
 
