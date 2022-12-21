@@ -202,7 +202,13 @@ def main():
                         logger.critical('AUPR (Out): {}'.format(aupr_out))
                         logger.critical('FPR95: {}'.format(fpr95))
                         logger.critical('quick data: {},{},{},{}'.format(auroc, aupr_in, aupr_out, fpr95))
+        avg_auroc = 0
+        avg_fpr95 = 0
         if os.environ['LOCAL_RANK'] == '0':
+            for idx in range(len(data_loader_ood)):
+                avg_auroc += result_list[4 * idx + 0] / len(data_loader_ood)
+                avg_fpr95 += result_list[4 * idx + 3] / len(data_loader_ood)
+            result_list.extend([avg_auroc, avg_fpr95])
             logger.critical('all quick data: '+",".join(list(map(str, result_list))))
 
 if __name__ == '__main__':
