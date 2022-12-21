@@ -54,6 +54,7 @@ class CIFAR10OOD(OODBaseDataset):
         self.data_prefix = data_prefix
         self.test_mode = test_mode
         self.load_annotations()
+        self.parse_datainfo()
 
     def load_annotations(self):
 
