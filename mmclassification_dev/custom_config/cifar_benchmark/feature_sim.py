@@ -36,13 +36,13 @@ model = dict(
                 feature_sim_location=5,  ## No. of conv layer
                 out_indices=(3,),
                 style='pytorch'),
-            neck=dict(type='GlobalAveragePooling'),
-            head=dict(
-                type='LinearClsHead',
-                num_classes=num_classes,
-                in_channels=2048,
-                loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-                topk=(1, 5))
+            # neck=dict(type='GlobalAveragePooling'),
+            # head=dict(
+            #     type='LinearClsHead',
+            #     num_classes=num_classes,
+            #     in_channels=2048,
+            #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+            #     topk=(1, 5))
         )
     )
 )
