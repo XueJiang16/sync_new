@@ -49,9 +49,10 @@ class CIFAR10OOD(OODBaseDataset):
         'horse', 'ship', 'truck'
     ]
 
-    def __init__(self, data_prefix, **kwargs):
+    def __init__(self, data_prefix, test_mode, **kwargs):
         super().__init__(**kwargs)
         self.data_prefix = data_prefix
+        self.test_mode = test_mode
         self.load_annotations()
 
     def load_annotations(self):
