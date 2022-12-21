@@ -32,8 +32,8 @@ model = dict(
                 # th_act_k=0.05,
                 # th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
                 # th_act_location=5, ## No. of conv layer
-                feature_sim_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
-                feature_sim_location=5,  ## No. of conv layer
+                feature_sim_stage=3,  ## 0:C2 1:C3 2:C4 3:C5
+                feature_sim_location=2,  ## No. of conv layer
                 out_indices=(3,),
                 style='pytorch'),
             # neck=dict(type='GlobalAveragePooling'),
