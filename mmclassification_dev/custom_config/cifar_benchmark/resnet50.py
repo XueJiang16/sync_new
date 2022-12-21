@@ -11,18 +11,14 @@ if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
 else:
     readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
-quick_test = False
-# training_file = '/data/csxjiang/meta/train_labeled.txt'
 model = dict(
     type=method_name,
     debug_mode=False,
     num_classes=num_classes,
-    temperature=1,
-    # target_file='/data/csxjiang/meta/train_LT_a8.txt',
     classifier=dict(
         type='ImageClassifier',
         init_cfg=dict(type='Pretrained',
-                      checkpoint='~/sync/mmclassification/ckpt/res50_pretrain21k_cifar10/epoch_200.pth'),
+                      checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet50_b16x8_cifar10_20210528-f54bfad9.pth'),
         backbone=dict(
             type='ResNet_CIFAR',
             depth=50,
@@ -36,30 +32,14 @@ model = dict(
             in_channels=2048,
             loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
             topk=(1, 5))
-        # head=dict(
-        #     type='DiceHead',
-        #     num_classes=1000,
-        #     in_channels=2048,
-        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-        #     topk=(1, 5),
-        #     info=info,
-        #     p=0.7,)
     )
 )
-img_norm_cfg = dict(
-    mean=[125.307, 122.961, 113.8575],
-    std=[51.5865, 50.847, 51.255],
-    to_rgb=False)
-pipeline = [
-    dict(type='Normalize', **img_norm_cfg),
-    dict(type='ImageToTensor', keys=['img']),
-    dict(type='Collect', keys=['img', 'type'])
-]
+
 ood_pipeline = [
     dict(type='Collect', keys=['img', 'type'])
 ]
 
-transform = 'Cifar'
+transform = "Cifar"
 
 data = dict(
     samples_per_gpu=256,
@@ -68,7 +48,8 @@ data = dict(
         name='cifar{}'.format(num_classes),
         type='CIFAR{}'.format(num_classes),
         data_prefix='/data/csxjiang/cifar{}'.format(num_classes),
-        pipeline=pipeline,
+        transform=transform,
+        pipeline=ood_pipeline,
         test_mode=True),
     ood_data=[
         # dict(
@@ -85,7 +66,6 @@ data = dict(
             path='/data/csxjiang/cifar_benchmark/LSUN/test',
             pipeline=ood_pipeline,
             transform=transform,
-            len_limit=1000 if quick_test else -1,
         ),
         dict(
             name='iSUN',
@@ -93,7 +73,6 @@ data = dict(
             path='/data/csxjiang/cifar_benchmark/iSUN/iSUN_patches',
             pipeline=ood_pipeline,
             transform=transform,
-            len_limit=1000 if quick_test else -1,
         ),
         dict(
             name='Places',
@@ -101,7 +80,6 @@ data = dict(
             path='/data/csxjiang/ood_data/Places/images',
             pipeline=ood_pipeline,
             transform=transform,
-            len_limit=1000 if quick_test else -1,
         ),
         dict(
             name='Textures',
@@ -109,7 +87,6 @@ data = dict(
             path='/data/csxjiang/ood_data/Textures/dtd/images_collate',
             pipeline=ood_pipeline,
             transform=transform,
-            len_limit=1000 if quick_test else -1,
         ),
     ],
 
