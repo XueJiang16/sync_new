@@ -51,6 +51,8 @@ class CIFAR10OOD(OODBaseDataset):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        assert 'data_prefix' in kwargs
+        self.base_folder = kwargs['data_prefix']
         self.load_annotations()
 
     def load_annotations(self):
