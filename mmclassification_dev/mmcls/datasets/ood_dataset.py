@@ -65,7 +65,7 @@ class OODBaseDataset(Dataset):
             self.data_infos.append(info)
 
     def __len__(self):
-        return self.len_limit if self.len_limit!=-1 else len(self.file_list)
+        return self.len_limit if self.len_limit!=-1 else len(self.data_infos)
         # return len(self.file_list)
 
     def prepare_data(self, idx):
