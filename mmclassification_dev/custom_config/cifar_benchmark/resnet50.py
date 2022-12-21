@@ -2,7 +2,7 @@
 #
 # info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_a8_feature_stat.pth')
 
-method_name = 'Energy'
+method_name = 'GradNormBatch'
 model_name = 'resnet50'
 custom_name = "Official"
 train_dataset = 'cifar_10'
