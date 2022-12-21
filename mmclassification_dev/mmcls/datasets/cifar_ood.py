@@ -49,6 +49,10 @@ class CIFAR10OOD(OODBaseDataset):
         'horse', 'ship', 'truck'
     ]
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.load_annotations()
+
     def load_annotations(self):
 
         rank, world_size = get_dist_info()
