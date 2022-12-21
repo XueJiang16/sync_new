@@ -3,11 +3,11 @@ import torch.nn as nn
 from mmcv.cnn import build_conv_layer, build_norm_layer
 
 from ..builder import BACKBONES
-from .resnet import ResNet
+from .resnet_activation import ResNetActivation
 
 
 @BACKBONES.register_module()
-class ResNet_CIFAR(ResNet):
+class ResNet_CIFAR(ResNetActivation):
     """ResNet backbone for CIFAR.
 
     Compared to standard ResNet, it uses `kernel_size=3` and `stride=1` in
@@ -73,9 +73,25 @@ class ResNet_CIFAR(ResNet):
         x = self.norm1(x)
         x = self.relu(x)
         outs = []
+        # for i, layer_name in enumerate(self.res_layers):
+        #     res_layer = getattr(self, layer_name)
+        #     x = res_layer(x)
+        #     if i in self.out_indices:
+        #         outs.append(x)
         for i, layer_name in enumerate(self.res_layers):
+            if i == self.th_act_stage:
+                th_act_parameter = self.th_act_location
+            else:
+                th_act_parameter = -1
+            if i == self.feature_sim_stage:
+                feature_sim_parameter = self.feature_sim_location
+            else:
+                feature_sim_parameter = -1
             res_layer = getattr(self, layer_name)
-            x = res_layer(x)
+            x = res_layer(x, th_act_para=th_act_parameter,
+                          feature_sim_para=feature_sim_parameter, th_act_k=self.th_act_k, stage=i)
+            if i == self.feature_sim_stage:
+                return tuple([x])
             if i in self.out_indices:
                 outs.append(x)
         return tuple(outs)
