@@ -52,14 +52,13 @@ data = dict(
         pipeline=ood_pipeline,
         test_mode=True),
     ood_data=[
-        # dict(
-        #     name='SVHN',
-        #     type='SVHN',
-        #     path='/data/csxjiang/cifar_benchmark/svhn',
-        #     split='test',
-        #     pipeline=pipeline,
-        #     download=False,
-        # ),
+        dict(
+            name='SVHN',
+            type='FolderDataset',
+            path='/data/csxjiang/cifar_benchmark/svhn/images',
+            pipeline=ood_pipeline,
+            transform=transform,
+        ),
         dict(
             name='LSUN',
             type='FolderDataset',
