@@ -46,7 +46,7 @@ data = dict(
     workers_per_gpu=4,
     id_data=dict(
         name='cifar{}'.format(num_classes),
-        type='CIFAR{}'.format(num_classes),
+        type='CIFAR{}OOD'.format(num_classes),
         data_prefix='/data/csxjiang/cifar{}'.format(num_classes),
         transform=transform,
         pipeline=ood_pipeline,
@@ -94,4 +94,4 @@ data = dict(
 dist_params = dict(backend='nccl')
 log_level = 'CRITICAL'
 # log_level = 'INFO'
-work_dir = './results'
+work_dir = './results/cifar'
