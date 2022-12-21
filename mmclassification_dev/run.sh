@@ -29,9 +29,11 @@
 ## google doc
 #bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2 --tab_name auto3
 #bash ./tools/ood_dist_test_auto.sh custom_config/patchsim_mobile.py foo 2 --tab_name mobile
-bash ./tools/ood_dist_test_auto.sh custom_config/resnet50.py foo 2 --tab_name pure_feature_sim_loc
+#bash ./tools/ood_dist_test_auto.sh custom_config/resnet50.py foo 2 --tab_name pure_feature_sim_loc
 #bash ./tools/ood_dist_test_auto.sh custom_config/threshold_act.py foo 2 --tab_name auto2
 #bash ./tools/ood_dist_test_auto.sh custom_config/densenet.py foo 2 --tab_name densenet
+bash ./tools/ood_dist_test_auto.sh custom_config/validation/resnet50.py foo 2 --tab_name val_set
+
 
 ## id acc
 #bash ./tools/dist_test.sh custom_config/id_acc/resnet50_topk.py /data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth 2 --metrics accuracy
