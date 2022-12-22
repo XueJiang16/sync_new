@@ -44,8 +44,8 @@ class FeatureReweight(BaseModule):
                 # for i,j in enumerate(index):
                 #     patch_sim[i] = torch.abs(feature_crops[i,j] - value[i]).mean(dim=-1)
                 patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
-                # patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
-                patch_sim = torch.clamp((feature_crops - patch_mean), min=0).mean(dim=(-1, -2))
+                patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
+                # patch_sim = torch.clamp((feature_crops - patch_mean), min=0).mean(dim=(-1, -2))
                 # feature_crops[(feature_crops-patch_mean) < 0] = 0
                 # patch_sim = feature_crops.mean(dim=(-1,-2))
             elif self.mode == 'clamp':
