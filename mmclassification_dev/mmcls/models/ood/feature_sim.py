@@ -48,6 +48,14 @@ class FeatureReweight(BaseModule):
                 patch_sim = torch.clamp(feature_crops - patch_mean, min=0).mean(dim=(-1, -2))
                 # feature_crops[(feature_crops-patch_mean) < 0] = 0
                 # patch_sim = feature_crops.mean(dim=(-1,-2))
+            elif self.mode == 'clamp':
+                feature_crops = feature_c5.flatten(2)
+                feature_crops = torch.clamp(feature_crops, min=0, max=1.2)
+                patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
+                # patch_mean = (0.4 / (feature_crops.std(dim=-1)+0.05)).unsqueeze(-1)
+                patch_sim = torch.clamp((feature_crops - patch_mean), min=0, max=0.5).mean(
+                    dim=(-1, -2))  # for ID: .mean(dim=-2)
+                # patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
             elif self.mode == 'channel_mean':
                 feature_crops = feature_c5.flatten(2)
                 patch_mean = feature_crops.mean(1).unsqueeze(1)  # (N, C, H*W) -> (N, C)
