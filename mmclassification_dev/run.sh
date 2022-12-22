@@ -32,6 +32,7 @@
 #bash ./tools/ood_dist_test_auto.sh custom_config/resnet50.py foo 2 --tab_name pure_feature_sim_loc
 #bash ./tools/ood_dist_test_auto.sh custom_config/threshold_act.py foo 2 --tab_name auto2
 #bash ./tools/ood_dist_test_auto.sh custom_config/densenet.py foo 2 --tab_name densenet
+bash ./tools/ood_dist_test_auto.sh custom_config/cifar_benchmark/feature_sim.py foo 2 --tab_name cifar
 
 
 ## id acc
