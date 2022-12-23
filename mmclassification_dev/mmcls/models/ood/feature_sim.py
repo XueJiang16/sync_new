@@ -104,7 +104,7 @@ class FeatureReweight(BaseModule):
                     bacg_std = np.sqrt(float(covs[bacg_idx][0][0]))
                     bacg_weight = weights[bacg_idx]
 
-                    single_score = forg_mean - bacg_mean
+                    single_score = (forg_mean - bacg_mean) * forg_weight / bacg_weight
                     score.append(single_score)
 
                     # print('Dis1 mean={}, std={}, weight={}'.
