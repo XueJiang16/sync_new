@@ -96,7 +96,7 @@ class FeatureReweight(BaseModule):
                         plt.xlabel(r"X")
                         plt.ylabel(r"Density")
                         plt.legend()
-                        plt.savefig("test_pic{}_channel{}.png".format(i,j))
+                        plt.savefig("test_{}.png".format(self.local_rank))
                         plt.close('all')
                         # print(x.shape)
                         assert False
