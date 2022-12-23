@@ -78,6 +78,9 @@ class FeatureReweight(BaseModule):
                         mean = gmm.fit(x).means_
                         covs = gmm.fit(x).covariances_
                         weights = gmm.fit(x).weights_
+                        print(mean.shape)
+                        print(covs.shape)
+                        print(weights.shape)
                         print('Dis1 mean={}, std={}, weight={}'.
                               format(float(mean[0][0]), np.sqrt(float(covs[0][0][0]))), weights[0])
                         print('Dis2 mean={}, std={}, weight={}'.
