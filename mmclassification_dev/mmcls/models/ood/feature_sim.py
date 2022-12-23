@@ -2,6 +2,7 @@ from mmcv.runner import BaseModule    # noqa
 import torch  # noqa
 import torch.nn as nn
 import time
+import warnings
 
 import os
 import numpy as np  # noqa
@@ -38,9 +39,12 @@ class FeatureReweight(BaseModule):
         x = x.reshape(-1, 1)
         gmm = GMM(n_components=2, max_iter=100, random_state=10, covariance_type='full')
         # find useful parameters
-        mean = gmm.fit(x).means_
-        covs = gmm.fit(x).covariances_
-        weights = gmm.fit(x).weights_
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            model = gmm.fit(x)
+        mean = model.means_
+        covs = model.covariances_
+        weights = model.weights_
 
         # print('Dis1 mean={}, std={}, weight={}'.
         #       format(float(mean[0][0]), np.sqrt(float(covs[0][0][0])), weights[0]))
