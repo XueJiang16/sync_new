@@ -78,13 +78,15 @@ class FeatureReweight(BaseModule):
                         mean = gmm.fit(x).means_
                         covs = gmm.fit(x).covariances_
                         weights = gmm.fit(x).weights_
+                        print('Dis1 mean={}, std={}, weight={}'.
+                              format(float(mean[0][0]), np.sqrt(float(covs[0][0][0]))), weights[0])
+                        print('Dis2 mean={}, std={}, weight={}'.
+                              format(float(mean[1][0]), np.sqrt(float(covs[1][0][0]))), weights[1])
 
                         # create necessary things to plot
                         x_axis = np.arange(-20, 30, 0.1)
-                        y_axis0 = norm.pdf(x_axis, float(mean[0][0]), np.sqrt(float(covs[0][0][0]))) * weights[
-                            0]  # 1st gaussian
-                        y_axis1 = norm.pdf(x_axis, float(mean[1][0]), np.sqrt(float(covs[1][0][0]))) * weights[
-                            1]  # 2nd gaussian
+                        y_axis0 = norm.pdf(x_axis, float(mean[0][0]), np.sqrt(float(covs[0][0][0]))) * weights[0]  # 1st gaussian
+                        y_axis1 = norm.pdf(x_axis, float(mean[1][0]), np.sqrt(float(covs[1][0][0]))) * weights[1]  # 2nd gaussian
                         plt.hist(x, density=True, color='black', bins=np.arange(-100, 100, 1))
                         plt.plot(x_axis, y_axis0, label='Dis 1')
                         plt.plot(x_axis, y_axis1, label='Dis 2')
