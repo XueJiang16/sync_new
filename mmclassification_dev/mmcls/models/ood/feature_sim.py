@@ -78,10 +78,10 @@ class FeatureReweight(BaseModule):
                         mean = gmm.fit(x).means_
                         covs = gmm.fit(x).covariances_
                         weights = gmm.fit(x).weights_
-                        print('Dis1 mean={}, std={}, weight={}'.
-                              format(float(mean[0][0]), np.sqrt(float(covs[0][0][0])), weights[0]))
-                        print('Dis2 mean={}, std={}, weight={}'.
-                              format(float(mean[1][0]), np.sqrt(float(covs[1][0][0])), weights[1]))
+                        # print('Dis1 mean={}, std={}, weight={}'.
+                        #       format(float(mean[0][0]), np.sqrt(float(covs[0][0][0])), weights[0]))
+                        # print('Dis2 mean={}, std={}, weight={}'.
+                        #       format(float(mean[1][0]), np.sqrt(float(covs[1][0][0])), weights[1]))
 
                         # create necessary things to plot
                         x_axis = np.arange(-20, 30, 0.1)
@@ -91,7 +91,7 @@ class FeatureReweight(BaseModule):
                         plt.plot(x_axis, y_axis0, label='Dis 1')
                         plt.plot(x_axis, y_axis1, label='Dis 2')
                         plt.plot(x_axis, y_axis0 + y_axis1, ls='dashed', label='Mixed Dis')
-                        # plt.xlim(-10, 20)
+                        plt.xlim(-20, 30)
                         # plt.ylim(0.0, 2.0)
                         plt.xlabel(r"X")
                         plt.ylabel(r"Density")
