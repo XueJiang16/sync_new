@@ -6,6 +6,17 @@ import os
 import numpy as np  # noqa
 from collections import Counter  # noqa
 
+#for gmm
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy import stats
+from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLocator)
+import astropy
+from scipy.stats import norm
+from sklearn.mixture import GaussianMixture as GMM
+import matplotlib as mpl
+
+
 from ..builder import OOD
 from mmcls.models import build_classifier, build_ood_model    # noqa
 
@@ -49,6 +60,9 @@ class FeatureReweight(BaseModule):
                 # feature_crops = feature_crops-patch_mean
                 # feature_crops[feature_crops < 0] = 0
                 # patch_sim = feature_crops.mean(dim=(-1,-2))
+            # elif self.mode == 'cosine':
+            #     feature_target = torch.ones_like(feature_c5)
+            #     patch_sim =
             elif self.mode == 'clamp':
                 feature_crops = feature_c5.flatten(2)
                 feature_crops = torch.clamp(feature_crops, min=0, max=1.2)
@@ -57,6 +71,17 @@ class FeatureReweight(BaseModule):
                 patch_sim = torch.clamp((feature_crops - patch_mean), min=0, max=0.5).mean(
                     dim=(-1, -2))  # for ID: .mean(dim=-2)
                 # patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
+            elif self.mode == 'gmm':
+                feature_crops = feature_c5.flatten(2)
+                batch_size, channel, _ = feature_crops.shape
+                for i in range(batch_size):
+                    for j in range(channel):
+                        x = feature_crops(i, j)
+                        print(x.shape)
+                        assert False
+
+
+
             elif self.mode == 'channel_mean':
                 feature_crops = feature_c5.flatten(2)
                 patch_mean = feature_crops.mean(1).unsqueeze(1)  # (N, C, H*W) -> (N, C)
