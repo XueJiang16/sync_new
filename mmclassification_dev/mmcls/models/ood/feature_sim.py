@@ -1,6 +1,7 @@
 from mmcv.runner import BaseModule    # noqa
 import torch  # noqa
 import torch.nn as nn
+import time
 
 import os
 import numpy as np  # noqa
@@ -100,10 +101,10 @@ class FeatureReweight(BaseModule):
                     plt.xlabel(r"X")
                     plt.ylabel(r"Density")
                     plt.legend()
-                    plt.savefig("test_{}.png".format(self.local_rank))
+                    plt.savefig("test_{}.png".format(int(time.time()*1000)))
                     plt.close('all')
                     # print(x.shape)
-                    assert False
+                    # assert False
 
 
 
