@@ -7,13 +7,13 @@ import numpy as np  # noqa
 from collections import Counter  # noqa
 
 #for gmm
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 # import numpy as np
 # from scipy import stats
 # from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLocator)
 # import astropy
-# from scipy.stats import norm
-# from sklearn.mixture import GaussianMixture as GMM
+from scipy.stats import norm
+from sklearn.mixture import GaussianMixture as GMM
 # import matplotlib as mpl
 
 
@@ -77,7 +77,29 @@ class FeatureReweight(BaseModule):
                 for i in range(batch_size):
                     for j in range(channel):
                         x = feature_crops[i,j]
-                        print(x.shape)
+                        gmm = GMM(n_components=2, max_iter=1000, random_state=10, covariance_type='full')
+                        # find useful parameters
+                        mean = gmm.fit(x).means_
+                        covs = gmm.fit(x).covariances_
+                        weights = gmm.fit(x).weights_
+
+                        # create necessary things to plot
+                        x_axis = np.arange(-20, 30, 0.1)
+                        y_axis0 = norm.pdf(x_axis, float(mean[0][0]), np.sqrt(float(covs[0][0][0]))) * weights[
+                            0]  # 1st gaussian
+                        y_axis1 = norm.pdf(x_axis, float(mean[1][0]), np.sqrt(float(covs[1][0][0]))) * weights[
+                            1]  # 2nd gaussian
+                        plt.hist(x, density=True, color='black', bins=np.arange(-100, 100, 1))
+                        plt.plot(x_axis, y_axis0, lw=3, c='C0')
+                        plt.plot(x_axis, y_axis1, lw=3, c='C1')
+                        plt.plot(x_axis, y_axis0 + y_axis1, lw=3, c='C2', ls='dashed')
+                        plt.xlim(-10, 20)
+                        # plt.ylim(0.0, 2.0)
+                        plt.xlabel(r"X", fontsize=20)
+                        plt.ylabel(r"Density", fontsize=20)
+                        plt.savefig("test.png")
+                        plt.close('all')
+                        # print(x.shape)
                         assert False
 
 
