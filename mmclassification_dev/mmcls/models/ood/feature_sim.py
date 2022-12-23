@@ -71,6 +71,7 @@ class FeatureReweight(BaseModule):
                 feature_crops = feature_c5.flatten(2)
                 batch_size, channel, _ = feature_crops.shape
                 sub_channel = 128
+                folder = './GMM/'
                 for i in range(batch_size):
                     x = feature_crops[i]
                     x = x.reshape(int(channel/sub_channel), sub_channel, -1)
@@ -91,7 +92,6 @@ class FeatureReweight(BaseModule):
                     x_axis = np.arange(-0.1, 1.1, 0.001)
                     y_axis0 = norm.pdf(x_axis, float(mean[0][0]), np.sqrt(float(covs[0][0][0]))) * weights[0]  # 1st gaussian
                     y_axis1 = norm.pdf(x_axis, float(mean[1][0]), np.sqrt(float(covs[1][0][0]))) * weights[1]  # 2nd gaussian
-                    print(y_axis0.max())
                     plt.hist(x, density=True, color='black', bins=60)
                     plt.plot(x_axis, y_axis0, label='Dis 1')
                     plt.plot(x_axis, y_axis1, label='Dis 2')
@@ -101,7 +101,7 @@ class FeatureReweight(BaseModule):
                     plt.xlabel(r"X")
                     plt.ylabel(r"Density")
                     plt.legend()
-                    plt.savefig("test_{}.png".format(int(time.time()*1000)))
+                    plt.savefig("{}test_{}.png".format(folder, int(time.time()*1000)))
                     plt.close('all')
                     # print(x.shape)
                     # assert False
