@@ -94,7 +94,7 @@ class FeatureReweight(BaseModule):
                     # plt.plot(x_axis, y_axis0, label='Dis 1')
                     # plt.plot(x_axis, y_axis1, label='Dis 2')
                     # plt.plot(x_axis, y_axis0 + y_axis1, ls='dashed', label='Mixed Dis')
-                    plt.xlim(-0.05, 0.05)
+                    # plt.xlim(-0.05, 0.05)
                     # plt.ylim(0.0, 2.0)
                     plt.xlabel(r"X")
                     plt.ylabel(r"Density")
