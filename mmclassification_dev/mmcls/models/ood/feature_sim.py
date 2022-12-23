@@ -70,36 +70,37 @@ class FeatureReweight(BaseModule):
                 feature_crops = feature_c5.flatten(2)
                 batch_size, channel, _ = feature_crops.shape
                 for i in range(batch_size):
-                    for j in range(channel):
-                        x = feature_crops[i,j].cpu().detach().numpy()
-                        x = x.reshape(-1,1)
-                        gmm = GMM(n_components=2, max_iter=1000, random_state=10, covariance_type='full')
-                        # find useful parameters
-                        mean = gmm.fit(x).means_
-                        covs = gmm.fit(x).covariances_
-                        weights = gmm.fit(x).weights_
-                        # print('Dis1 mean={}, std={}, weight={}'.
-                        #       format(float(mean[0][0]), np.sqrt(float(covs[0][0][0])), weights[0]))
-                        # print('Dis2 mean={}, std={}, weight={}'.
-                        #       format(float(mean[1][0]), np.sqrt(float(covs[1][0][0])), weights[1]))
+                    x = feature_crops[i].mean(0).cpu().detach().numpy()
+                    # for j in range(channel):
+                    #     x = feature_crops[i,j].cpu().detach().numpy()
+                    x = x.reshape(-1,1)
+                    gmm = GMM(n_components=2, max_iter=1000, random_state=10, covariance_type='full')
+                    # find useful parameters
+                    mean = gmm.fit(x).means_
+                    covs = gmm.fit(x).covariances_
+                    weights = gmm.fit(x).weights_
+                    # print('Dis1 mean={}, std={}, weight={}'.
+                    #       format(float(mean[0][0]), np.sqrt(float(covs[0][0][0])), weights[0]))
+                    # print('Dis2 mean={}, std={}, weight={}'.
+                    #       format(float(mean[1][0]), np.sqrt(float(covs[1][0][0])), weights[1]))
 
-                        # create necessary things to plot
-                        x_axis = np.arange(-20, 30, 0.1)
-                        y_axis0 = norm.pdf(x_axis, float(mean[0][0]), np.sqrt(float(covs[0][0][0]))) * weights[0]  # 1st gaussian
-                        y_axis1 = norm.pdf(x_axis, float(mean[1][0]), np.sqrt(float(covs[1][0][0]))) * weights[1]  # 2nd gaussian
-                        plt.hist(x, density=True, color='black', bins=np.arange(-100, 100, 1))
-                        plt.plot(x_axis, y_axis0, label='Dis 1')
-                        plt.plot(x_axis, y_axis1, label='Dis 2')
-                        plt.plot(x_axis, y_axis0 + y_axis1, ls='dashed', label='Mixed Dis')
-                        plt.xlim(-20, 30)
-                        # plt.ylim(0.0, 2.0)
-                        plt.xlabel(r"X")
-                        plt.ylabel(r"Density")
-                        plt.legend()
-                        plt.savefig("test_{}.png".format(self.local_rank))
-                        plt.close('all')
-                        # print(x.shape)
-                        assert False
+                    # create necessary things to plot
+                    x_axis = np.arange(-20, 30, 0.1)
+                    y_axis0 = norm.pdf(x_axis, float(mean[0][0]), np.sqrt(float(covs[0][0][0]))) * weights[0]  # 1st gaussian
+                    y_axis1 = norm.pdf(x_axis, float(mean[1][0]), np.sqrt(float(covs[1][0][0]))) * weights[1]  # 2nd gaussian
+                    plt.hist(x, density=True, color='black', bins=np.arange(-100, 100, 1))
+                    plt.plot(x_axis, y_axis0, label='Dis 1')
+                    plt.plot(x_axis, y_axis1, label='Dis 2')
+                    plt.plot(x_axis, y_axis0 + y_axis1, ls='dashed', label='Mixed Dis')
+                    plt.xlim(-20, 30)
+                    # plt.ylim(0.0, 2.0)
+                    plt.xlabel(r"X")
+                    plt.ylabel(r"Density")
+                    plt.legend()
+                    plt.savefig("test_{}.png".format(self.local_rank))
+                    plt.close('all')
+                    # print(x.shape)
+                    assert False
 
 
 
