@@ -86,7 +86,7 @@ class FeatureReweight(BaseModule):
                         #       format(float(mean[1][0]), np.sqrt(float(covs[1][0][0])), weights[1]))
 
                         # create necessary things to plot
-                        x_axis = np.arange(-0.05, 0.05, 0.0000001)
+                        x_axis = np.arange(-0.1, 1.1, 0.001)
                         y_axis0 = norm.pdf(x_axis, float(mean[0][0]), np.sqrt(float(covs[0][0][0]))) * weights[0]  # 1st gaussian
                         y_axis1 = norm.pdf(x_axis, float(mean[1][0]), np.sqrt(float(covs[1][0][0]))) * weights[1]  # 2nd gaussian
                         print(y_axis0.max())
@@ -94,7 +94,7 @@ class FeatureReweight(BaseModule):
                         plt.plot(x_axis, y_axis0, label='Dis 1')
                         plt.plot(x_axis, y_axis1, label='Dis 2')
                         plt.plot(x_axis, y_axis0 + y_axis1, ls='dashed', label='Mixed Dis')
-                        # plt.xlim(-0.05, 0.05)
+                        plt.xlim(-0.1, 1.1)
                         # plt.ylim(0.0, 2.0)
                         plt.xlabel(r"X")
                         plt.ylabel(r"Density")
