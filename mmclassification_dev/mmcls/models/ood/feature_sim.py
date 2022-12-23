@@ -140,6 +140,7 @@ class FeatureReweight(BaseModule):
                     # val, idx = torch.topk(x.mean(dim=-1), k=2048)
                     # x = x[idx].flatten()
                     x = x.flatten()
+                    x = x[::256].contiguous()
                     # x = x.reshape(int(channel/sub_channel), sub_channel, -1)
                     # x = x.mean(1)
                     # single_score = np.mean(list(map(self.gmm_score, x)))
