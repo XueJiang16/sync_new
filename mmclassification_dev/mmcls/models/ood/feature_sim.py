@@ -72,6 +72,7 @@ class FeatureReweight(BaseModule):
                 for i in range(batch_size):
                     for j in range(channel):
                         x = feature_crops[i,j].cpu().detach().numpy()
+                        x = x.reshape(-1,1)
                         gmm = GMM(n_components=2, max_iter=1000, random_state=10, covariance_type='full')
                         # find useful parameters
                         mean = gmm.fit(x).means_
