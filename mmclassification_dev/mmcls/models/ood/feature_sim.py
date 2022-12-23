@@ -105,6 +105,7 @@ class FeatureReweight(BaseModule):
                     plt.close('all')
                     # print(x.shape)
                     # assert False
+                patch_sim=1
 
 
 
