@@ -86,13 +86,14 @@ class FeatureReweight(BaseModule):
                         y_axis1 = norm.pdf(x_axis, float(mean[1][0]), np.sqrt(float(covs[1][0][0]))) * weights[
                             1]  # 2nd gaussian
                         plt.hist(x, density=True, color='black', bins=np.arange(-100, 100, 1))
-                        plt.plot(x_axis, y_axis0, lw=3, c='C0')
-                        plt.plot(x_axis, y_axis1, lw=3, c='C1')
-                        plt.plot(x_axis, y_axis0 + y_axis1, lw=3, c='C2', ls='dashed')
+                        plt.plot(x_axis, y_axis0)
+                        plt.plot(x_axis, y_axis1)
+                        plt.plot(x_axis, y_axis0 + y_axis1, ls='dashed')
                         # plt.xlim(-10, 20)
                         # plt.ylim(0.0, 2.0)
                         plt.xlabel(r"X")
                         plt.ylabel(r"Density")
+                        plt.legend()
                         plt.savefig("test.png")
                         plt.close('all')
                         # print(x.shape)
