@@ -73,7 +73,7 @@ class FeatureReweight(BaseModule):
                 for i in range(batch_size):
                     # x = feature_crops[i].mean(0)
                     x = []
-                    for j in range(channel/sub_channel):
+                    for j in range(int(channel/sub_channel)):
                         tmp = feature_crops[i,j:sub_channel*(j+1)].flatten(0)
                         x.append(tmp)
                     x = torch.cat(x, dim=-1)
