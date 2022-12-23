@@ -74,8 +74,6 @@ class FeatureReweight(BaseModule):
                     x = feature_crops[i]
                     x = x.reshape(int(channel/sub_channel), sub_channel, -1)
                     x = x.mean(1)
-                    print(x.shape)
-                    assert False
                     x = x.cpu().detach().numpy()
                     x = x.reshape(-1,1)
                     gmm = GMM(n_components=2, max_iter=1000, random_state=10, covariance_type='full')
