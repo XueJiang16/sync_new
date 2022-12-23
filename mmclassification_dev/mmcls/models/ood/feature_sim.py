@@ -76,7 +76,7 @@ class FeatureReweight(BaseModule):
                 batch_size, channel, _ = feature_crops.shape
                 for i in range(batch_size):
                     for j in range(channel):
-                        x = feature_crops(i, j)
+                        x = feature_crops[i,j]
                         print(x.shape)
                         assert False
 
