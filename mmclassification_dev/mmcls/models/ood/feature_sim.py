@@ -37,7 +37,7 @@ class FeatureReweight(BaseModule):
     def gmm_score(self, x):
         x = x.cpu().detach().numpy()
         x = x.reshape(-1, 1)
-        gmm = GMM(n_components=2, max_iter=100, random_state=10, covariance_type='full')
+        gmm = GMM(n_components=2, max_iter=10, random_state=10, covariance_type='full')
         # find useful parameters
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
