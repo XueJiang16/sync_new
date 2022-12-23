@@ -7,14 +7,14 @@ import numpy as np  # noqa
 from collections import Counter  # noqa
 
 #for gmm
-import matplotlib.pyplot as plt
-import numpy as np
-from scipy import stats
-from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLocator)
-import astropy
-from scipy.stats import norm
-from sklearn.mixture import GaussianMixture as GMM
-import matplotlib as mpl
+# import matplotlib.pyplot as plt
+# import numpy as np
+# from scipy import stats
+# from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLocator)
+# import astropy
+# from scipy.stats import norm
+# from sklearn.mixture import GaussianMixture as GMM
+# import matplotlib as mpl
 
 
 from ..builder import OOD
