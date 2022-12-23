@@ -108,8 +108,8 @@ class FeatureReweight(BaseModule):
                     x_mean = x.mean()
                     gmm_mean = forg_weight * forg_mean + bacg_weight * bacg_mean
                     print(x_mean - gmm_mean)
-                    single_score = np.abs(forg_mean - x_mean) * forg_weight \
-                                   + np.abs(bacg_mean - x_mean) * bacg_weight
+                    single_score = np.abs(forg_mean - gmm_mean) * forg_weight
+                                   # + np.abs(bacg_mean - gmm_mean) * bacg_weight
                     score.append(single_score)
 
                     # print('Dis1 mean={}, std={}, weight={}'.
