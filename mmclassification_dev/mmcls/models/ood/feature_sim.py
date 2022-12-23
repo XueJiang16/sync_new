@@ -70,7 +70,7 @@ class FeatureReweight(BaseModule):
                 feature_crops = feature_c5.flatten(2)
                 batch_size, channel, _ = feature_crops.shape
                 for i in range(batch_size):
-                    x = feature_crops[i].mean(1)
+                    x = feature_crops[i].mean(0)
                     x = x.cpu().detach().numpy()
                     # for j in range(channel):
                     #     x = feature_crops[i,j].cpu().detach().numpy()
