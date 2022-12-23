@@ -139,12 +139,12 @@ class FeatureReweight(BaseModule):
                     x = feature_crops[i]
                     # val, idx = torch.topk(x.mean(dim=-1), k=2048)
                     # x = x[idx].flatten()
-                    x = x.flatten()
-                    # x = x[::64].contiguous()
+                    # x = x.flatten()
+                    x = x[::64].contiguous()
                     # x = x.reshape(int(channel/sub_channel), sub_channel, -1)
                     # x = x.mean(1)
-                    # single_score = np.mean(list(map(self.gmm_score, x)))
-                    single_score = self.gmm_score(x)
+                    single_score = np.mean(list(map(self.gmm_score, x)))
+                    # single_score = self.gmm_score(x)
                     score.append(single_score)
                 patch_sim = torch.tensor(score).to("cuda:{}".format(self.local_rank))
 
