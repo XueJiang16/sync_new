@@ -85,7 +85,7 @@ class FeatureReweight(BaseModule):
                     x = x.mean(1)
                     x = x.cpu().detach().numpy()
                     x = x.reshape(-1,1)
-                    gmm = GMM(n_components=2, max_iter=20, random_state=10, covariance_type='full')
+                    gmm = GMM(n_components=2, max_iter=200, random_state=10, covariance_type='full')
                     # find useful parameters
                     mean = gmm.fit(x).means_
                     covs = gmm.fit(x).covariances_
