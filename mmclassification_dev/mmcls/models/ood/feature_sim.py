@@ -71,6 +71,7 @@ class FeatureReweight(BaseModule):
                 batch_size, channel, _ = feature_crops.shape
                 for i in range(batch_size):
                     x = feature_crops[i].flatten(0).cpu().detach().numpy()
+                    print(x.shape)
                     # for j in range(channel):
                     #     x = feature_crops[i,j].cpu().detach().numpy()
                     x = x.reshape(-1,1)
@@ -85,14 +86,14 @@ class FeatureReweight(BaseModule):
                     #       format(float(mean[1][0]), np.sqrt(float(covs[1][0][0])), weights[1]))
 
                     # create necessary things to plot
-                    x_axis = np.arange(-1, 1.5, 0.001)
+                    x_axis = np.arange(-0.2, 1.2, 0.001)
                     y_axis0 = norm.pdf(x_axis, float(mean[0][0]), np.sqrt(float(covs[0][0][0]))) * weights[0]  # 1st gaussian
                     y_axis1 = norm.pdf(x_axis, float(mean[1][0]), np.sqrt(float(covs[1][0][0]))) * weights[1]  # 2nd gaussian
                     plt.hist(x, density=True, color='black')
                     plt.plot(x_axis, y_axis0, label='Dis 1')
                     plt.plot(x_axis, y_axis1, label='Dis 2')
                     plt.plot(x_axis, y_axis0 + y_axis1, ls='dashed', label='Mixed Dis')
-                    plt.xlim(-1, 1.5)
+                    plt.xlim(-0.2, 1.2)
                     # plt.ylim(0.0, 2.0)
                     plt.xlabel(r"X")
                     plt.ylabel(r"Density")
