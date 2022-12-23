@@ -68,10 +68,16 @@ class FeatureReweight(BaseModule):
                     dim=(-1, -2))  # for ID: .mean(dim=-2)
                 # patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
             elif self.mode == 'gmm':
+                filenames = [x['filename'] for x in input['img_metas']]
+                if 'ood_data' in filenames[0]:
+                    mid_path = 'OOD'
+                else:
+                    mid_path = 'ID'
+                out_dir = os.path.join('./vis_gmm/', mid_path)
+                os.makedirs(out_dir, exist_ok=True)
                 feature_crops = feature_c5.flatten(2)
                 batch_size, channel, _ = feature_crops.shape
                 sub_channel = 128
-                folder = './GMM/'
                 for i in range(batch_size):
                     x = feature_crops[i]
                     x = x.reshape(int(channel/sub_channel), sub_channel, -1)
@@ -101,11 +107,12 @@ class FeatureReweight(BaseModule):
                     plt.xlabel(r"X")
                     plt.ylabel(r"Density")
                     plt.legend()
-                    plt.savefig("{}test_{}.png".format(folder, int(time.time()*1000)))
+                    filename = os.path.splitext(os.path.basename(filenames[i]))[0]
+                    plt.savefig(os.path.join(out_dir, '{}.jpg'.format(filename)))
                     plt.close('all')
                     # print(x.shape)
                     # assert False
-                patch_sim=1
+                patch_sim=torch.ones(batch_size)
 
 
 
