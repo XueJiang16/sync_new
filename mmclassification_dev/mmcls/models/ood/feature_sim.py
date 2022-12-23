@@ -139,8 +139,8 @@ class FeatureReweight(BaseModule):
                     x = feature_crops[i]
                     x = x.reshape(int(channel/sub_channel), sub_channel, -1)
                     x = x.mean(1)
-                    single_score = np.mean(list(map(self.gmm_score, x)))
-                    # single_score = self.gmm_score(x)
+                    # single_score = np.mean(list(map(self.gmm_score, x)))
+                    single_score = self.gmm_score(x)
                     score.append(single_score)
                 patch_sim = torch.tensor(score).to("cuda:{}".format(self.local_rank))
 
