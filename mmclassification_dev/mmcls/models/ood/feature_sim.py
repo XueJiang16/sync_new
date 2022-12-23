@@ -81,10 +81,10 @@ class FeatureReweight(BaseModule):
         bacg_std = np.sqrt(float(covs[bacg_idx][0][0]))
         bacg_weight = weights[bacg_idx]
 
-        # single_score = (forg_mean - bacg_mean) * forg_weight / bacg_weight
-        x_mean = x.mean()
-        gmm_mean = forg_weight * forg_mean + bacg_weight * bacg_mean
-        single_score = np.abs(forg_mean - gmm_mean) * forg_weight
+        single_score = (forg_mean - bacg_mean) * forg_weight / bacg_weight
+        # x_mean = x.mean()
+        # gmm_mean = forg_weight * forg_mean + bacg_weight * bacg_mean
+        # single_score = np.abs(forg_mean - gmm_mean) * forg_weight
         # + np.abs(bacg_mean - gmm_mean) * bacg_weight
         return single_score
 
