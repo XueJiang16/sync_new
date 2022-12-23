@@ -34,7 +34,7 @@ class FeatureReweight(BaseModule):
             self.ood_detector = no_ood_detector
         self.mode = mode
 
-    def gmm_score(self, x):
+    def gmm_score(self, x, out_dir='./'):
         x = x.cpu().detach().numpy()
         x = x.reshape(-1, 1)
         gmm = GMM(n_components=2, max_iter=100, random_state=10, covariance_type='full')
@@ -137,8 +137,10 @@ class FeatureReweight(BaseModule):
                 score = []
                 for i in range(batch_size):
                     x = feature_crops[i]
-                    x = x.reshape(int(channel/sub_channel), sub_channel, -1)
-                    x = x.mean(1)
+                    val, idx = torch.topk(x.mean(dim=-1), k=16)
+                    x = x[idx].flatten()
+                    # x = x.reshape(int(channel/sub_channel), sub_channel, -1)
+                    # x = x.mean(1)
                     # single_score = np.mean(list(map(self.gmm_score, x)))
                     single_score = self.gmm_score(x)
                     score.append(single_score)
