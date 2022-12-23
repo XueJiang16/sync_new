@@ -37,7 +37,7 @@ class FeatureReweight(BaseModule):
     def gmm_score(self, x):
         x = x.cpu().detach().numpy()
         x = x.reshape(-1, 1)
-        gmm = GMM(n_components=2, max_iter=10, random_state=10, covariance_type='full')
+        gmm = GMM(n_components=2, max_iter=100, random_state=10, covariance_type='full')
         # find useful parameters
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
@@ -133,12 +133,12 @@ class FeatureReweight(BaseModule):
                 os.makedirs(out_dir, exist_ok=True)
                 feature_crops = feature_c5.flatten(2)
                 batch_size, channel, _ = feature_crops.shape
-                sub_channel = 128
+                sub_channel = 64
                 score = []
                 for i in range(batch_size):
                     x = feature_crops[i]
-                    # x = x.reshape(int(channel/sub_channel), sub_channel, -1)
-                    # x = x.mean(1)
+                    x = x.reshape(int(channel/sub_channel), sub_channel, -1)
+                    x = x.mean(1)
                     single_score = np.mean(list(map(self.gmm_score, x)))
                     # single_score = self.gmm_score(x)
                     score.append(single_score)
