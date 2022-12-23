@@ -137,7 +137,7 @@ class FeatureReweight(BaseModule):
                 score = []
                 for i in range(batch_size):
                     x = feature_crops[i]
-                    val, idx = torch.topk(x.mean(dim=-1), k=16)
+                    val, idx = torch.topk(x.mean(dim=-1), k=128)
                     x = x[idx].flatten()
                     # x = x.reshape(int(channel/sub_channel), sub_channel, -1)
                     # x = x.mean(1)
