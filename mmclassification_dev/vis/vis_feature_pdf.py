@@ -52,6 +52,8 @@ def oversample(x, k):
     # x = x.mean(0).flatten()
     x_mean = x.mean(dim=(1,2))
     value, idx = torch.topk(x_mean, k)
+    print(x.shape)
+    exit()
     x = x[idx[-1]]
     x = torch.nn.functional.interpolate(x, (128,128))
     return x
