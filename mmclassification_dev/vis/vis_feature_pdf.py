@@ -53,7 +53,7 @@ def oversample(x, k):
     x_mean = x.mean(dim=(1,2))
     value, idx = torch.topk(x_mean, k)
     x = x[idx[-1]].unsqueeze(0).unsqueeze(0)
-    x = torch.nn.functional.interpolate(x, (128,128))
+    x = torch.nn.functional.interpolate(x, (128,128),mode="bilinear")
     x = x.reshape(-1)
     return x
 
