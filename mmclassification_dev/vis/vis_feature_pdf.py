@@ -83,13 +83,13 @@ for i in range(len(img_paths)):
             c5_th_act = oversample(c5_th_act, 100).cpu().numpy()
 
             ax1 = plt.subplot(221)
-            ax1.hist(c4, density=True, bins=10)
+            ax1.hist(c4, density=True, bins=100)
             ax2 = plt.subplot(222)
-            ax2.hist(c4_th_act, density=True, bins=10)
+            ax2.hist(c4_th_act, density=True, bins=100)
             ax3 = plt.subplot(223)
-            ax3.hist(c5, density=True, bins=10)
+            ax3.hist(c5, density=True, bins=100)
             ax4 = plt.subplot(224)
-            ax4.hist(c5_th_act, density=True, bins=10)
+            ax4.hist(c5_th_act, density=True, bins=100)
             plt.savefig("{}.jpg".format(os.path.join(dst_path, os.path.splitext(img_name)[0])))
             plt.close()
 
