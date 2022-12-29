@@ -45,10 +45,15 @@ img_paths = ["/data/csxjiang/val", '/data/csxjiang/ood_data/iNaturalist/images',
             '/data/csxjiang/ood_data/Places/images', '/data/csxjiang/ood_data/Textures/dtd/images_collate']
 img_names = ['ID', 'iNaturalist', 'SUN', 'Places', 'Textures']
 
-def oversample(x, group):
+def oversample(x, k):
     _, c, h, w = x.shape
-    x = x.reshape((int(c/group), group, -1))
-    x = x.mean(0).flatten()
+    x = x[0]
+    # x = x.reshape((int(c/group), group, -1))
+    # x = x.mean(0).flatten()
+    x_mean = x.mean(dim=(1,2))
+    value, idx = torch.topk(x_mean, k)
+    x = x[idx[-1]]
+    x = torch.nn.functional.interpolate(x, (128,128))
     return x
 
 for i in range(len(img_paths)):
@@ -71,10 +76,10 @@ for i in range(len(img_paths)):
         with torch.no_grad():
             c4, c5 = net(img)
             c4_th_act, c5_th_act = net_th_act(img)
-            c4 = oversample(c4, 1).cpu().numpy()
-            c5 = oversample(c5, 1).cpu().numpy()
-            c4_th_act = oversample(c4_th_act, 1).cpu().numpy()
-            c5_th_act = oversample(c5_th_act, 1).cpu().numpy()
+            c4 = oversample(c4, 100).cpu().numpy()
+            c5 = oversample(c5, 100).cpu().numpy()
+            c4_th_act = oversample(c4_th_act, 100).cpu().numpy()
+            c5_th_act = oversample(c5_th_act, 100).cpu().numpy()
 
             ax1 = plt.subplot(221)
             ax1.hist(c4, density=True, bins=10)
