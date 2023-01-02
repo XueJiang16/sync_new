@@ -9,6 +9,7 @@ from io import BytesIO
 import PIL
 import tqdm
 import os
+import shutil
 
 model_path = "/data/csxjiang/ood_ckpt/pytorch_official/resnet50-19c8e357.pth"
 
@@ -45,16 +46,16 @@ img_paths = ["/data/csxjiang/val", '/data/csxjiang/ood_data/iNaturalist/images',
             '/data/csxjiang/ood_data/Places/images', '/data/csxjiang/ood_data/Textures/dtd/images_collate']
 img_names = ['ID', 'iNaturalist', 'SUN', 'Places', 'Textures']
 
-def oversample(x, k):
+def oversample(x, group):
     _, c, h, w = x.shape
     x = x[0]
-    # x = x.reshape((int(c/group), group, -1))
-    # x = x.mean(0).flatten()
-    x_mean = x.mean(dim=(1,2))
-    value, idx = torch.topk(x_mean, k)
-    x = x[idx[-1]].unsqueeze(0).unsqueeze(0)
-    x = torch.nn.functional.interpolate(x, (128,128),mode="bilinear")
-    x = x.reshape(-1)
+    x = x.reshape((int(c/group), group, -1))
+    x = x.mean(0).flatten()
+    # x_mean = x.mean(dim=(1,2))
+    # value, idx = torch.topk(x_mean, k)
+    # x = x[idx[-1]].unsqueeze(0).unsqueeze(0)
+    # x = torch.nn.functional.interpolate(x, (128,128),mode="bilinear")
+    # x = x.reshape(-1)
     return x
 
 for i in range(len(img_paths)):
@@ -65,6 +66,8 @@ for i in range(len(img_paths)):
     os.makedirs(dst_path, exist_ok=True)
     for img_name in tqdm.tqdm(img_list):
         img = cv2.imread(os.path.join(img_path, img_name))
+        shutil.copy(os.path.join(img_path, img_name),
+                    "{}_orig.jpg".format(os.path.join(dst_path, os.path.splitext(img_name)[0])))
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         train_transform = transforms.Compose([
             transforms.ToTensor(),
@@ -77,10 +80,10 @@ for i in range(len(img_paths)):
         with torch.no_grad():
             c4, c5 = net(img)
             c4_th_act, c5_th_act = net_th_act(img)
-            c4 = oversample(c4, 100).cpu().numpy()
-            c5 = oversample(c5, 100).cpu().numpy()
-            c4_th_act = oversample(c4_th_act, 100).cpu().numpy()
-            c5_th_act = oversample(c5_th_act, 100).cpu().numpy()
+            c4 = oversample(c4, 128).cpu().numpy()
+            c5 = oversample(c5, 128).cpu().numpy()
+            c4_th_act = oversample(c4_th_act, 128).cpu().numpy()
+            c5_th_act = oversample(c5_th_act, 128).cpu().numpy()
 
             ax1 = plt.subplot(221)
             ax1.hist(c4, density=True, bins=100)
