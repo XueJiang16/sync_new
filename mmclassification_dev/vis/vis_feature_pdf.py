@@ -50,7 +50,7 @@ def oversample(x, group):
     _, c, h, w = x.shape
     x = x[0]
     x = x.reshape((int(c/group), group, -1))
-    x = x.mean(0).flatten()
+    x = x.mean(1).flatten()
     # x_mean = x.mean(dim=(1,2))
     # value, idx = torch.topk(x_mean, k)
     # x = x[idx[-1]].unsqueeze(0).unsqueeze(0)
