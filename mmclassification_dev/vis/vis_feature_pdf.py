@@ -151,11 +151,10 @@ for i in range(len(img_paths)):
             # print("Loc1: 95%={}".format(torch.quantile(features1.mean(1), 0.95)))
             # print("Loc2: 95%={}".format(torch.quantile(features2.mean(1), 0.95)))
             # assert False
-            print('c4={}, c4_the_act={}'.format(c4.mean(), c4_th_act.mean()))
             c4_norm = norm(c4, 0.08)
             c4_th_act_norm = norm(c4_th_act, 0.08)
-            c5_norm = norm(c5, 0.34)
-            c5_th_act_norm = norm(c5_th_act, 0.78)
+            c5_norm = norm(c5, 1)
+            c5_th_act_norm = norm(c5_th_act, 1)
 
 
 
@@ -169,14 +168,14 @@ for i in range(len(img_paths)):
             fontScale = 0.8
             color = (0, 0, 0)
             thickness = 1
-            res1 = cv2.putText(res1, 'Conf1={}'.format(feature_sim1), (50, 50), font,
+            res1 = cv2.putText(res1, 'Conf1={}'.format(feature_sim1[0]), (50, 50), font,
                                fontScale, color, thickness, cv2.LINE_AA)
-            res3 = cv2.putText(res3, 'Conf2={}'.format(feature_sim2), (50, 50), font,
+            res3 = cv2.putText(res3, 'Conf2={}'.format(feature_sim2[0]), (50, 50), font,
                                fontScale, color, thickness, cv2.LINE_AA)
             res12 = np.hstack([res1, res2])
             res34 = np.hstack([res3, res4])
             res = np.vstack([res12, res34])
             # plt.matshow(C4_features[i])
-            # cv2.imwrite("{}.jpg".format(os.path.join(dst_path, os.path.splitext(img_name)[0])), res)
+            cv2.imwrite("{}.jpg".format(os.path.join(dst_path, os.path.splitext(img_name)[0])), res)
 
 
