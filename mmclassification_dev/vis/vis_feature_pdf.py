@@ -1,3 +1,5 @@
+import random
+
 import torch
 import torch.nn as nn
 from mmcls.models.builder import build_backbone
@@ -10,6 +12,7 @@ import PIL
 import tqdm
 import os
 import shutil
+
 
 model_path = "/data/csxjiang/ood_ckpt/pytorch_official/resnet50-19c8e357.pth"
 
@@ -64,7 +67,7 @@ for i in range(len(img_paths)):
     img_list = os.listdir(img_path)
     dst_path = "./feature_vis_selected/{}".format(img_type)
     os.makedirs(dst_path, exist_ok=True)
-    for img_name in tqdm.tqdm(img_list):
+    for img_name in tqdm.tqdm(random.sample(img_list, 20)):
         img = cv2.imread(os.path.join(img_path, img_name))
         shutil.copy(os.path.join(img_path, img_name),
                     "{}_orig.jpg".format(os.path.join(dst_path, os.path.splitext(img_name)[0])))
