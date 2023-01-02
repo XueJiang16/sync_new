@@ -63,7 +63,7 @@ def oversample(x, group):
 
 
 def norm(features, mean):
-    features_mean = features.mean(0)
+    features_mean = features.mean(1).squeeze(0)
     features_norm = features_mean / mean
     features_norm[features_norm > 1] = 1
     features_norm[features_norm < 0] = 0
@@ -156,6 +156,7 @@ for i in range(len(img_paths)):
             c4_th_act_norm = norm(c4_th_act, 0.08)
             c5_norm = norm(c5, 0.34)
             c5_th_act_norm = norm(c5_th_act, 0.78)
+
 
 
             res1 = show_heatmap(img1, c4_norm)
