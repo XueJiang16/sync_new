@@ -151,7 +151,7 @@ for i in range(len(img_paths)):
             # print("Loc1: 95%={}".format(torch.quantile(features1.mean(1), 0.95)))
             # print("Loc2: 95%={}".format(torch.quantile(features2.mean(1), 0.95)))
             # assert False
-            print('c5={}, c5_the_act={}'.format(c5.mean(), c5_th_act.mean()))
+            print('c4={}, c4_the_act={}'.format(c4.mean(), c4_th_act.mean()))
             c4_norm = norm(c4, 0.08)
             c4_th_act_norm = norm(c4_th_act, 0.08)
             c5_norm = norm(c5, 0.34)
