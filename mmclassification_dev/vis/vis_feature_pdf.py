@@ -113,8 +113,8 @@ for i in range(len(img_paths)):
         img2 = img.copy()
         img3 = img.copy()
         img4 = img.copy()
-        shutil.copy(os.path.join(img_path, img_name),
-                    "{}_orig.jpg".format(os.path.join(dst_path, os.path.splitext(img_name)[0])))
+        # shutil.copy(os.path.join(img_path, img_name),
+        #             "{}_orig.jpg".format(os.path.join(dst_path, os.path.splitext(img_name)[0])))
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         train_transform = transforms.Compose([
             transforms.ToTensor(),
@@ -158,7 +158,7 @@ for i in range(len(img_paths)):
             c5_th_act_norm = norm(c5_th_act, 0.78)
 
 
-            res1 = show_heatmap(img, c4_norm)
+            res1 = show_heatmap(img1, c4_norm)
             res2 = show_heatmap(img2, c4_th_act_norm)
             res3 = show_heatmap(img3, c5_norm)
             res4 = show_heatmap(img4, c5_th_act_norm)
