@@ -177,6 +177,6 @@ for i in range(len(img_paths)):
             res34 = np.hstack([res3, res4])
             res = np.vstack([res12, res34])
             # plt.matshow(C4_features[i])
-            cv2.imwrite(os.path.join(dst_path, os.path.splitext(img_name)[0]), res)
+            cv2.imwrite("{}.jpg".format(os.path.join(dst_path, os.path.splitext(img_name)[0])), res)
 
 
