@@ -80,10 +80,10 @@ for i in range(len(img_paths)):
         with torch.no_grad():
             c4, c5 = net(img)
             c4_th_act, c5_th_act = net_th_act(img)
-            c4 = oversample(c4, 128).cpu().numpy()
-            c5 = oversample(c5, 128).cpu().numpy()
-            c4_th_act = oversample(c4_th_act, 128).cpu().numpy()
-            c5_th_act = oversample(c5_th_act, 128).cpu().numpy()
+            c4 = oversample(c4, 256).cpu().numpy()
+            c5 = oversample(c5, 256).cpu().numpy()
+            c4_th_act = oversample(c4_th_act, 256).cpu().numpy()
+            c5_th_act = oversample(c5_th_act, 256).cpu().numpy()
 
             ax1 = plt.subplot(221)
             ax1.hist(c4, density=True, bins=100)
