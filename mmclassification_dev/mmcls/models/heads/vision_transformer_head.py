@@ -80,7 +80,7 @@ class VisionTransformerClsHead(ClsHead):
             x = self.layers.pre_logits(cls_token)
             return self.layers.act(x)
 
-    def simple_test(self, x, softmax=True, post_process=True):
+    def simple_test(self, x, softmax=True, post_process=True, **kwargs):
         """Inference without augmentation.
 
         Args:
