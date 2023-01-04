@@ -338,7 +338,7 @@ class VisionTransformer(BaseBackbone):
         """Interface for backward-compatibility."""
         return resize_pos_embed(*args, **kwargs)
 
-    def forward(self, x):
+    def forward(self, x, th_act=False):
         B = x.shape[0]
         x, patch_resolution = self.patch_embed(x)
 
