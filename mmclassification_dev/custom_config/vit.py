@@ -1,7 +1,7 @@
 import os
 
 method_list = ["GradNorm", "MSP", "Energy", "ODIN"]
-method_name = method_list[0]
+method_name = method_list[-1]
 model_name = 'vit'
 # info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_res101_{}_feature_stat.pth'.format(train_dataset))
 
@@ -10,7 +10,7 @@ if custom_name is not None:
     readable_name = '{}_{}_{}'.format(method_name, model_name, custom_name)
 else:
     readable_name ='{}_{}'.format(method_name, model_name)
-quick_test = True
+quick_test = False
 # training_file = None
 model = dict(
     type=method_name,
