@@ -25,6 +25,7 @@ model = dict(
     img_size=224,
     patch_size=16,
     # drop_rate=0.1,
+    ),
     neck=None,
     head=dict(
         type='VisionTransformerClsHead',
@@ -34,8 +35,8 @@ model = dict(
             type='LabelSmoothLoss', label_smooth_val=0.1,
             mode='classy_vision'),
     ))
-    )
 )
+
 # pipline =[dict(type='Collect', keys=['img'])]
 pipline =[dict(type='Collect', keys=['img', 'type'])]
 data = dict(
