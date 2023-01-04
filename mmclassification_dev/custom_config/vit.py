@@ -2,7 +2,7 @@ import os
 
 method_list = ["GradNorm", "MSP", "Energy", "ODIN"]
 method_name = method_list[1]
-model_name = 'resnet101'
+model_name = 'vit'
 train_dataset = 'a8'
 # info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_res101_{}_feature_stat.pth'.format(train_dataset))
 
@@ -34,6 +34,7 @@ model = dict(
             type='LabelSmoothLoss', label_smooth_val=0.1,
             mode='classy_vision'),
     ))
+    )
 )
 # pipline =[dict(type='Collect', keys=['img'])]
 pipline =[dict(type='Collect', keys=['img', 'type'])]
