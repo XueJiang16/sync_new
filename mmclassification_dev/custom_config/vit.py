@@ -3,7 +3,6 @@ import os
 method_list = ["GradNorm", "MSP", "Energy", "ODIN"]
 method_name = method_list[1]
 model_name = 'vit'
-train_dataset = 'a8'
 # info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_res101_{}_feature_stat.pth'.format(train_dataset))
 
 custom_name = None
