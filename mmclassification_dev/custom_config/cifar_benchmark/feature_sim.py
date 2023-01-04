@@ -1,5 +1,5 @@
 method_name = 'FeatureReweight'
-model_name = 'resnet50'
+model_name = 'resnet18'
 custom_name = "Official"
 train_dataset = 'cifar_10'
 num_classes = int(train_dataset.split('_')[-1])
@@ -24,14 +24,15 @@ model = dict(
         classifier=dict(
             type='ImageClassifier',
             init_cfg=dict(type='Pretrained',
-                          checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet50_b16x8_cifar10_20210528-f54bfad9.pth'),
+                          # checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet50_b16x8_cifar10_20210528-f54bfad9.pth'),
+                          checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet18_b16x8_cifar10_20210528-bd6371c8.pth'),
             backbone=dict(
                 type='ResNet_CIFAR',
                 depth=50,
                 num_stages=4,
-                # th_act_k=0.05,
-                # th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
-                # th_act_location=5, ## No. of conv layer
+                th_act_k=0.05,
+                th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
+                th_act_location=5, ## No. of conv layer
                 feature_sim_stage=3,  ## 0:C2 1:C3 2:C4 3:C5
                 feature_sim_location=2,  ## No. of conv layer
                 out_indices=(3,),
