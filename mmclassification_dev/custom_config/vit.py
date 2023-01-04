@@ -11,7 +11,7 @@ if custom_name is not None:
     readable_name = '{}_{}_{}'.format(method_name, model_name, custom_name)
 else:
     readable_name ='{}_{}'.format(method_name, model_name)
-quick_test = True
+quick_test = False
 # training_file = None
 model = dict(
     type=method_name,
