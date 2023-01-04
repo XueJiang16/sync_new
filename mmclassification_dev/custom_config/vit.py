@@ -1,6 +1,6 @@
 import os
 
-method_list = ["GradNorm", "MSP", "Energy", "ODIN"]
+method_list = ["GradNorm", "MSP", "Energy", "ODIN", 'FeatureReweight']
 method_name = method_list[-1]
 model_name = 'vit'
 # info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_res101_{}_feature_stat.pth'.format(train_dataset))
@@ -15,6 +15,9 @@ quick_test = False
 model = dict(
     type=method_name,
     num_classes=1000,
+    mode='mean',
+    ood_detector=dict(
+    type=method_list[1],
     classifier= dict(
     type='ImageClassifier',
     init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/vit-base-p16_in21k-pre-3rdparty_ft-64xb64_in1k-384_20210928-98e8652b.pth'),
@@ -25,15 +28,15 @@ model = dict(
     patch_size=16,
     # drop_rate=0.1,
     ),
-    neck=None,
-    head=dict(
-        type='VisionTransformerClsHead',
-        num_classes=1000,
-        in_channels=768,
-        loss=dict(
-            type='LabelSmoothLoss', label_smooth_val=0.1,
-            mode='classy_vision'),
-    ))
+    # neck=None,
+    # head=dict(
+    #     type='VisionTransformerClsHead',
+    #     num_classes=1000,
+    #     in_channels=768,
+    #     loss=dict(
+    #         type='LabelSmoothLoss', label_smooth_val=0.1,
+    #         mode='classy_vision'),
+    )))
 )
 
 # pipline =[dict(type='Collect', keys=['img'])]
