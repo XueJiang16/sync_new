@@ -22,10 +22,10 @@
 #bash ./tools/ood_dist_test.sh custom_config/vit_lt.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/patchsim_mobile.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/densenet.py foo 2
-#bash ./tools/ood_dist_test.sh custom_config/vit.py foo 2
+bash ./tools/ood_dist_test.sh custom_config/vit.py foo 2
 ## Cifar
 #bash ./tools/ood_dist_test.sh custom_config/cifar_benchmark/resnet50.py foo 2
-bash ./tools/ood_dist_test.sh custom_config/cifar_benchmark/resnet18.py foo 2
+#bash ./tools/ood_dist_test.sh custom_config/cifar_benchmark/resnet18.py foo 2
 
 ## google doc
 #bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2 --tab_name auto3
