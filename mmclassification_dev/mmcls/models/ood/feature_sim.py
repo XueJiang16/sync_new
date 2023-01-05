@@ -155,14 +155,13 @@ class FeatureReweight(BaseModule):
                 feature_tokens = feature_tokens.permute((0, 2, 1))  # (B, 576, 768)
                 feature_tokens_ = feature_tokens / feature_tokens.norm(dim=-1).unsqueeze(-1)  # (B, 576, 768N)
                 feature_affinity = torch.einsum("bid,bjd->bij", feature_tokens_, feature_tokens_)  # (B, 576, 576)
-                canvas = torch.zeros((24, 24))
                 filenames = [x['filename'] for x in input['img_metas']]
                 print(filenames[42])
                 f = feature_affinity[42, 288].reshape((24, 24)).cpu()
                 f_mean = f.mean()
                 f[f > f_mean] = 1
                 f[f < f_mean] = 0
-                f = f.astype(torch.int32)
+                f = f.int()
                 print(f)
                 assert False
 
