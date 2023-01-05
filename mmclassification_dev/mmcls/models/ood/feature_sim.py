@@ -162,7 +162,13 @@ class FeatureReweight(BaseModule):
                 f[f > f_mean] = 1
                 f[f < f_mean] = 0
                 f = f.int()
-                print(f)
+                for i in f:
+                    for j in i:
+                        if j == 0:
+                            print(" ", end=None)
+                        else:
+                            print("*", end=None)
+                    print("")
                 assert False
 
                 feature_crops = feature_affinity
