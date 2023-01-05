@@ -358,7 +358,6 @@ class VisionTransformer(BaseBackbone):
             x = x[:, 1:]
 
         outs = []
-        print(len(self.layers))
         for i, layer in enumerate(self.layers):
             x = layer(x)
             if i in self.out_indices:
