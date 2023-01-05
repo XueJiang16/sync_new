@@ -150,19 +150,23 @@ class FeatureReweight(BaseModule):
 
             if self.mode == 'vit':
                 # feature_c5 (B, 768, 24, 24)
-                B, C, H, W = feature_c5.shape
+                torch.set_printoptions(threshold=1000)
                 feature_tokens = feature_c5.flatten(2)  # (B, 768, 576)
                 feature_tokens = feature_tokens.permute((0, 2, 1))  # (B, 576, 768)
                 feature_tokens_ = feature_tokens / feature_tokens.norm(dim=-1).unsqueeze(-1)  # (B, 576, 768N)
                 feature_affinity = torch.einsum("bid,bjd->bij", feature_tokens_, feature_tokens_)  # (B, 576, 576)
-                # feature_affinity = feature_affinity.reshape((B, -1, H, W))
+                canvas = torch.zeros((24, 24))
+                filenames = [x['filename'] for x in input['img_metas']]
+                print(filenames[42])
+                f = feature_affinity[42, 288].reshape((24, 24)).cpu()
+                f_mean = f.mean()
+                f[f > f_mean] = 1
+                f[f < f_mean] = 0
+                f = f.astype(torch.int32)
+                print(f)
+                assert False
 
                 feature_crops = feature_affinity
-                # feature_crops = feature_crops[:,::4].contiguous()
-                # value, index = feature_crops.mean(-1).max(dim=-1)  # (N, C, H*W) -> (N, C)
-                # patch_sim = torch.zeros_like(value)
-                # for i,j in enumerate(index):
-                #     patch_sim[i] = torch.abs(feature_crops[i,j] - value[i]).mean(dim=-1)
                 patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
                 patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
 
