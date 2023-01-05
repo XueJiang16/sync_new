@@ -98,9 +98,6 @@ class FeatureReweight(BaseModule):
         with torch.no_grad():
             _, feature_c5 = self.ood_detector.classifier(return_loss=False, softmax=False, post_process=False,
                                                          require_backbone_features=True, **input)
-            print("feature_c5.shape:",feature_c5.shape)
-            print("feature_c5.mean():",feature_c5.mean())
-            print("feature_c5.std():",feature_c5.std())
             input['type'] = type
             if self.mode == 'mean':
                 feature_crops = feature_c5.flatten(2)
@@ -151,6 +148,23 @@ class FeatureReweight(BaseModule):
                     score.append(single_score)
                 patch_sim = torch.tensor(score).to("cuda:{}".format(self.local_rank))
 
+            if self.mode == 'vit':
+                # feature_c5 (B, 768, 24, 24)
+                B, C, H, W = feature_c5.shape
+                feature_tokens = feature_c5.flatten(2)  # (B, 768, 576)
+                feature_tokens = feature_tokens.permute((0, 2, 1))  # (B, 576, 768)
+                feature_tokens_ = feature_tokens / feature_tokens.norm(dim=-1).unsqueeze(-1)  # (B, 576, 768N)
+                feature_affinity = torch.einsum("bid,bjd->bij", feature_tokens_, feature_tokens_)  # (B, 576, 576)
+                # feature_affinity = feature_affinity.reshape((B, -1, H, W))
+
+                feature_crops = feature_affinity
+                # feature_crops = feature_crops[:,::4].contiguous()
+                # value, index = feature_crops.mean(-1).max(dim=-1)  # (N, C, H*W) -> (N, C)
+                # patch_sim = torch.zeros_like(value)
+                # for i,j in enumerate(index):
+                #     patch_sim[i] = torch.abs(feature_crops[i,j] - value[i]).mean(dim=-1)
+                patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
+                patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
 
 
             elif self.mode == 'channel_mean':
