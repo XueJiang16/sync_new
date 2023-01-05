@@ -189,7 +189,8 @@ class FeatureReweight(BaseModule):
                 # feature_tokens = feature_c5.flatten(2)  # (B, 768, 576)
                 feature_tokens = patch_token  # (B, 768, 576)
                 feature_tokens = feature_tokens.permute((0, 2, 1))  # (B, 576, 768)
-                feature_tokens_ = feature_tokens / feature_tokens.norm(dim=-1).unsqueeze(-1)  # (B, 576, 768N)
+                feature_tokens_ = feature_tokens
+                # feature_tokens_ = feature_tokens / feature_tokens.norm(dim=-1).unsqueeze(-1)  # (B, 576, 768N)
                 # cls_token, patch_token = feature_tokens_[:, :, 0].unsqueeze(-1), feature_tokens_[:, :, 1:]
                 # feature_affinity = torch.einsum("bdi,bdj->bij", cls_token, patch_token)
                 feature_affinity = torch.einsum("bid,bjd->bij", feature_tokens_, feature_tokens_)  # (B, 576, 576)
