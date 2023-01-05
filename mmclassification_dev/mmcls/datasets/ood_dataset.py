@@ -36,16 +36,16 @@ class OODBaseDataset(Dataset):
                 tv.transforms.ToTensor(),
                 tv.transforms.Normalize([123.675/255, 116.28/255, 103.53/255],
                                         [58.395/255, 57.12/255, 57.375/255]),
-                # tv.transforms.Normalize([0.5, 0.5, 0.5],
-                #                         [0.5, 0.5, 0.5]),
             ])
         elif transform == 'Cifar':
             self.transform = tv.transforms.Compose([
                 tv.transforms.Resize(32),
                 tv.transforms.CenterCrop(32),
                 tv.transforms.ToTensor(),
-                tv.transforms.Normalize([0.4914, 0.4822, 0.4465],
-                                        [0.2023, 0.1994, 0.2010]),
+                # tv.transforms.Normalize([0.4914, 0.4822, 0.4465],
+                #                         [0.2023, 0.1994, 0.2010]),
+                tv.transforms.Normalize([129.304/255, 124.07/255, 112.434/255],
+                                        [68.17/255, 65.392/255, 70.418/255]),
             ])
         self.noise_engine = noise_engine
         self.len_limit = len_limit
