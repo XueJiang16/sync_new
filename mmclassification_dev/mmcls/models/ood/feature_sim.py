@@ -190,6 +190,7 @@ class FeatureReweight(BaseModule):
                     f = feature_affinity[i, 288].reshape((24, 24)).cpu()
                     f = (f + 1) / 2
                     cam = show_heatmap(img, f)
+                    print(os.path.join(output_path, os.path.basename(img_name)))
                     cv2.imwrite(os.path.join(output_path, os.path.basename(img_name)), cam)
                 feature_crops = feature_affinity
                 patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
