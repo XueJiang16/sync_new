@@ -27,6 +27,7 @@ model = dict(
     img_size=384,
     patch_size=16,
     output_cls_token=False,
+    out_indices=11,
     # drop_rate=0.1,
     ),
     # neck=None,
