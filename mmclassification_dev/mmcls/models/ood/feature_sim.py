@@ -98,6 +98,9 @@ class FeatureReweight(BaseModule):
         with torch.no_grad():
             _, feature_c5 = self.ood_detector.classifier(return_loss=False, softmax=False, post_process=False,
                                                          require_backbone_features=True, **input)
+            print("feature_c5.shape:",feature_c5.shape)
+            print("feature_c5.mean():",feature_c5.mean())
+            print("feature_c5.std():",feature_c5.std())
             input['type'] = type
             if self.mode == 'mean':
                 feature_crops = feature_c5.flatten(2)

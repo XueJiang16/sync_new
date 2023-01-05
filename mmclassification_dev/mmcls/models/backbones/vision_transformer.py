@@ -360,12 +360,6 @@ class VisionTransformer(BaseBackbone):
         outs = []
         for i, layer in enumerate(self.layers):
             x = layer(x)
-            if i in self.out_indices:
-                B, _, C = x.shape
-                patch_token = x[:, 1:].reshape(B, *patch_resolution, C)
-                patch_token = patch_token.permute(0, 3, 1, 2)
-                outs.append(patch_token)
-                break
 
             if i == len(self.layers) - 1 and self.final_norm:
                 x = self.norm1(x)
