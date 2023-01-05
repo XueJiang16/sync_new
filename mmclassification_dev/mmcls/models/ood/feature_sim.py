@@ -176,19 +176,18 @@ class FeatureReweight(BaseModule):
                 patch_sim = torch.tensor(score).to("cuda:{}".format(self.local_rank))
 
             if self.mode == 'vit':
-                print(self.ood_detector.classifier.backbone.layers[11])
                 target_layer = self.ood_detector.classifier.backbone.layers[11]
                 ln = target_layer.ln1
-                attn = target_layer.attn.qkv.weight
-                print(attn.shape)
-                x = ln(x)
-                assert False
+                qkv = target_layer.attn.qkv
                 x = feature_c5
-                B, _, C = x.shape
+                x = ln(x)
+                x = x.permute((0, 2, 1))
+                x = qkv(x)  # (B, 2304, 576+1)
+                patch_token = x[:, :, 1:]
 
-                assert False
                 # feature_c5 (B, 768, 24, 24)
-                feature_tokens = feature_c5.flatten(2)  # (B, 768, 576)
+                # feature_tokens = feature_c5.flatten(2)  # (B, 768, 576)
+                feature_tokens = patch_token  # (B, 768, 576)
                 feature_tokens = feature_tokens.permute((0, 2, 1))  # (B, 576, 768)
                 feature_tokens_ = feature_tokens / feature_tokens.norm(dim=-1).unsqueeze(-1)  # (B, 576, 768N)
                 # cls_token, patch_token = feature_tokens_[:, :, 0].unsqueeze(-1), feature_tokens_[:, :, 1:]
