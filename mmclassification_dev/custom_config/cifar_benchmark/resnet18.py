@@ -3,7 +3,7 @@
 # info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_a8_feature_stat.pth')
 method_list = ["GradNorm", "MSP", "Energy", "ODIN"]
 
-method_name = method_list[-2]
+method_name = method_list[-1]
 model_name = 'resnet50'
 custom_name = "Official"
 train_dataset = 'cifar_10'
