@@ -183,6 +183,7 @@ class FeatureReweight(BaseModule):
                 feature_affinity = torch.einsum("bid,bjd->bij", feature_tokens_, feature_tokens_)  # (B, 576, 576)
                 filenames = [x['filename'] for x in input['img_metas']]
                 output_path = "./feature_affinity_vis"
+                os.makedirs(output_path, exist_ok=True)
                 for i in range(len(feature_tokens)):
                     img_name = filenames[i]
                     img = cv2.imread(img_name)
