@@ -5,6 +5,7 @@ import time
 import warnings
 
 import os
+import cv2
 import numpy as np  # noqa
 from collections import Counter  # noqa
 
@@ -14,12 +15,38 @@ from scipy.stats import norm
 from sklearn.mixture import GaussianMixture as GMM
 
 
+
 from ..builder import OOD
 from mmcls.models import build_classifier, build_ood_model    # noqa
 
 
 def no_ood_detector(**kwargs):
     raise RuntimeError("No Feature-level OOD Detector Configured!")
+
+def show_heatmap(img: np.ndarray,
+                 mask: np.ndarray,
+                 use_rgb: bool = False,
+                 colormap: int = cv2.COLORMAP_JET,
+                 image_weight: float = 0.5):
+    mask = cv2.resize(np.uint8(255 * mask), (img.shape[1], img.shape[0]), interpolation=cv2.INTER_CUBIC)
+    heatmap = cv2.applyColorMap(mask, colormap)
+    if use_rgb:
+        heatmap = cv2.cvtColor(heatmap, cv2.COLOR_BGR2RGB)
+    heatmap = np.float32(heatmap) / 255
+
+    if np.max(img) > 1:
+        img = np.float32(img) / 255
+    else:
+        img = np.float32(img)
+
+    if image_weight < 0 or image_weight > 1:
+        raise Exception(
+            f"image_weight should be in the range [0, 1].\
+                    Got: {image_weight}")
+
+    cam = (1 - image_weight) * heatmap + image_weight * img
+    cam = cam / np.max(cam)
+    return np.uint8(255 * cam)
 
 
 @OOD.register_module()
@@ -150,32 +177,22 @@ class FeatureReweight(BaseModule):
 
             if self.mode == 'vit':
                 # feature_c5 (B, 768, 24, 24)
-                torch.set_printoptions(threshold=1000)
                 feature_tokens = feature_c5.flatten(2)  # (B, 768, 576)
                 feature_tokens = feature_tokens.permute((0, 2, 1))  # (B, 576, 768)
                 feature_tokens_ = feature_tokens / feature_tokens.norm(dim=-1).unsqueeze(-1)  # (B, 576, 768N)
                 feature_affinity = torch.einsum("bid,bjd->bij", feature_tokens_, feature_tokens_)  # (B, 576, 576)
                 filenames = [x['filename'] for x in input['img_metas']]
-                print(filenames[42])
-                f = feature_affinity[42, 288].reshape((24, 24)).cpu()
-                f_mean = f.mean()
-                f[f > f_mean] = 1
-                f[f < f_mean] = 0
-                f = f.int()
-                for i in f:
-                    for j in i:
-                        if j == 0:
-                            print(" ", end=None)
-                        else:
-                            print("*", end=None)
-                    print("")
-                assert False
-
+                output_path = "./feature_affinity_vis"
+                for i in range(len(feature_tokens)):
+                    img_name = filenames[i]
+                    img = cv2.imread(img_name)
+                    f = feature_affinity[i, 288].reshape((24, 24)).cpu()
+                    f = (f + 1) / 2
+                    cam = show_heatmap(img, f)
+                    cv2.imwrite(os.path.join(output_path, os.path.basename(img_name)), cam)
                 feature_crops = feature_affinity
                 patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
                 patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
-
-
             elif self.mode == 'channel_mean':
                 feature_crops = feature_c5.flatten(2)
                 patch_mean = feature_crops.mean(1).unsqueeze(1)  # (N, C, H*W) -> (N, C)
