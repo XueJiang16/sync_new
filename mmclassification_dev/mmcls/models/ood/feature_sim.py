@@ -176,6 +176,8 @@ class FeatureReweight(BaseModule):
                 patch_sim = torch.tensor(score).to("cuda:{}".format(self.local_rank))
 
             if self.mode == 'vit':
+                print(self.ood_detector.classifier)
+                assert False
                 # feature_c5 (B, 768, 24, 24)
                 feature_tokens = feature_c5.flatten(2)  # (B, 768, 576)
                 feature_tokens = feature_tokens.permute((0, 2, 1))  # (B, 576, 768)
