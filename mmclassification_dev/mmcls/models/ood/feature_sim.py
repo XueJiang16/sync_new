@@ -180,9 +180,9 @@ class FeatureReweight(BaseModule):
                 ln = target_layer.ln1
                 qkv = target_layer.attn.qkv
                 x = feature_c5
-                x = ln(x)
+                x = ln(x)  # (B, 576+1, 768)
+                x = qkv(x)  # (B, 576+1, 2304)
                 x = x.permute((0, 2, 1))
-                x = qkv(x)  # (B, 2304, 576+1)
                 patch_token = x[:, :, 1:]
 
                 # feature_c5 (B, 768, 24, 24)
