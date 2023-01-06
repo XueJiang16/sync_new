@@ -1,6 +1,6 @@
 import os
 
-info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_densenetfeature_stat.pth')
+info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_densenet_feature_stat.pth')
 method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch', 'FeatureReweight']
 method_name = method_list[2]
 model_name = 'resnet50'

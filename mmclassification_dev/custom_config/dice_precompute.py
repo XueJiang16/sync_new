@@ -1,5 +1,5 @@
 meta_file='/data/csxjiang/meta/train_labeled.txt'
-precompute_name = '/data/csxjiang/dice_cache/imagenet_densenet'
+precompute_name = '/data/csxjiang/dice_cache/imagenet_densenet_'
 # model = dict(
 #     type='ImageClassifier',
 #     backbone=dict(
