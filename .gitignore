@@ -13,3 +13,5 @@ checkpoints
 mmclassification_dev/vis_cam_features_new/*
 *.jpg
 *.png
+mmclassification_dev/softmax_dump/*
+mmclassification_dev/feature_affinity_vis/*
