@@ -175,7 +175,7 @@ class FeatureReweight(BaseModule):
                     score.append(single_score)
                 patch_sim = torch.tensor(score).to("cuda:{}".format(self.local_rank))
 
-            if self.mode == 'vit':
+            elif self.mode == 'vit':
                 target_layer = self.ood_detector.classifier.backbone.layers[11]
                 ln = target_layer.ln1
                 qkv = target_layer.attn.qkv
