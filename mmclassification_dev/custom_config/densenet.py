@@ -1,5 +1,8 @@
+import os
+
+info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_densenetfeature_stat.pth')
 method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch', 'FeatureReweight']
-method_name = method_list[-1]
+method_name = method_list[2]
 model_name = 'resnet50'
 train_dataset = 'Balance'
 custom_name = None
@@ -12,51 +15,59 @@ training_file = None
 
 
 
-model = dict(
-    type=method_name,
-    debug_mode=False,
-    num_classes=1000,
-    # temperature=1,
-    target_file=training_file,
-    mode='mean',
-    ood_detector=dict(
-        type=method_list[0],
-        classifier=dict(
-        type='ImageClassifier',
-        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/densenet121_4xb256_in1k_20220426-07450f99.pth'),
-        backbone=dict(
-            type='DenseNet',
-            arch='121',
-            th_act_k=0.2,
-            th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
-            th_act_location=23, ## No. of conv layer   # 121: [6, 12, 24, 16]
-            feature_sim_stage=3,  ## 0:C2 1:C3 2:C4 3:C5
-            feature_sim_location=15,  ## No. of conv layer
-        ),
-    )
-    )
-)
-
 # model = dict(
 #     type=method_name,
 #     debug_mode=False,
-#     num_classes=1000,
-#     temperature=1000,
-#     classifier=dict(
+#     num_classes=1000,ls
+#     # temperature=1,
+#     target_file=training_file,
+#     mode='mean',
+#     ood_detector=dict(
+#         type=method_list[0],
+#         classifier=dict(
 #         type='ImageClassifier',
 #         init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/densenet121_4xb256_in1k_20220426-07450f99.pth'),
 #         backbone=dict(
 #             type='DenseNet',
-#             arch='121'),
-#         neck=dict(type='GlobalAveragePooling'),
-#         head=dict(
-#             type='LinearClsHead',
-#             num_classes=1000,
-#             in_channels=1024,
-#             loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-#             topk=(1, 5))
+#             arch='121',
+#             th_act_k=0.2,
+#             th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
+#             th_act_location=23, ## No. of conv layer   # 121: [6, 12, 24, 16]
+#             feature_sim_stage=3,  ## 0:C2 1:C3 2:C4 3:C5
+#             feature_sim_location=15,  ## No. of conv layer
+#         ),
+#     )
 #     )
 # )
+
+model = dict(
+    type=method_name,
+    debug_mode=False,
+    num_classes=1000,
+    # temperature=1000,
+    classifier=dict(
+        type='ImageClassifier',
+        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/densenet121_4xb256_in1k_20220426-07450f99.pth'),
+        backbone=dict(
+            type='DenseNet',
+            arch='121'),
+        neck=dict(type='GlobalAveragePooling'),
+        # head=dict(
+        #     type='LinearClsHead',
+        #     num_classes=1000,
+        #     in_channels=1024,
+        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        #     topk=(1, 5))
+        head = dict(type='DiceHead',
+                    num_classes=1000,
+                    in_channels=1024,
+                    loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+                    topk=(1, 5),
+                    info=info,
+                    p=0.7,
+                    mode='precompute')
+    )
+)
 
 # pipline =[dict(type='Collect', keys=['img'])]
 pipline =[dict(type='Collect', keys=['img', 'type'])]

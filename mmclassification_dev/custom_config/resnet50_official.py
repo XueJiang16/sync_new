@@ -1,8 +1,9 @@
-# import os
-#
-# info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_a8_feature_stat.pth')
+import os
 
-method_name = 'Energy'
+info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_res50_feature_stat.pth')
+method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch', 'FeatureReweight']
+
+method_name = method_list[2]
 model_name = 'resnet50'
 train_dataset = 'Balance'
 custom_name = "Official"
@@ -10,13 +11,13 @@ if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
 else:
     readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
-quick_test = True
+quick_test = False
 # training_file = '/data/csxjiang/meta/train_labeled.txt'
 model = dict(
     type=method_name,
     debug_mode=False,
     num_classes=1000,
-    temperature=1,
+    # temperature=1,
     # target_file='/data/csxjiang/meta/train_LT_a8.txt',
     classifier=dict(
         type='ImageClassifier',
@@ -28,27 +29,27 @@ model = dict(
             out_indices=(3,),
             style='pytorch'),
         neck=dict(type='GlobalAveragePooling'),
-        head=dict(
-            type='LinearClsHead',
-            num_classes=1000,
-            in_channels=2048,
-            loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-            topk=(1, 5))
         # head=dict(
-        #     type='DiceHead',
+        #     type='LinearClsHead',
         #     num_classes=1000,
         #     in_channels=2048,
         #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-        #     topk=(1, 5),
-        #     info=info,
-        #     p=0.7,)
+        #     topk=(1, 5))
+        head=dict(
+            type='DiceHead',
+            num_classes=1000,
+            in_channels=2048,
+            loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+            topk=(1, 5),
+            info=info,
+            p=0.7,)
     )
 )
 pipline =[
           dict(type='Collect', keys=['img', 'type'])
 ]
 data = dict(
-    samples_per_gpu=256,
+    samples_per_gpu=32,
     workers_per_gpu=4,
     id_data=dict(
         name='ImageNet',

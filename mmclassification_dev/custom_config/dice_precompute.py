@@ -1,24 +1,39 @@
-meta_file='/data/csxjiang/meta/train_LT_repeat3_a8.txt'
-precompute_name = '/data/csxjiang/dice_cache/imagenet_res101_repeat3_a8_'
+meta_file='/data/csxjiang/meta/train_labeled.txt'
+precompute_name = '/data/csxjiang/dice_cache/imagenet_densenet'
+# model = dict(
+#     type='ImageClassifier',
+#     backbone=dict(
+#         type='ResNet',
+#         depth=50,
+#         num_stages=4,
+#         out_indices=(3, ),
+#         style='pytorch'),
+#     neck=dict(type='GlobalAveragePooling'),
+#     head=dict(
+#         type='DiceHead',
+#         num_classes=1000,
+#         in_channels=2048,
+#         loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+#         topk=(1, 5),
+#         info=None,
+#         p=0.7,
+#         mode='precompute'))
 model = dict(
-    type='ImageClassifier',
-    backbone=dict(
-        type='ResNet',
-        depth=101,
-        num_stages=4,
-        out_indices=(3, ),
-        style='pytorch'),
-    neck=dict(type='GlobalAveragePooling'),
-    head=dict(
-        type='DiceHead',
-        num_classes=1000,
-        in_channels=2048,
-        loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-        topk=(1, 5),
-        info=None,
-        p=0.7,
-        mode='precompute'))
-
+        type='ImageClassifier',
+        # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/densenet121_4xb256_in1k_20220426-07450f99.pth'),
+        backbone=dict(
+            type='DenseNet',
+            arch='121'),
+        neck=dict(type='GlobalAveragePooling'),
+        head=dict(type='DiceHead',
+                    num_classes=1000,
+                    in_channels=1024,
+                    loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+                    topk=(1, 5),
+                    info=None,
+                    p=0.9,
+                    mode='precompute')
+    )
 # model=dict(
 #     type='ImageClassifier',
 #     backbone=dict(type='MobileNetV3', arch='large'),
