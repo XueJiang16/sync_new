@@ -197,7 +197,7 @@ class FeatureMapSim(BaseModule):
                 patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C, 1)
                 patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(0, 2))  # for ID: .mean(dim=(0, 2))
             elif self.mode is None:
-                patch_sim=1
+                patch_sim=0
             ood_scores = patch_sim
         if self.has_ood_detector:
             ood_scores, _ = self.ood_detector(**input)
