@@ -1,6 +1,6 @@
 method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch', 'ThresholdActivation']
-# method_name = 'FeatureMapSim'
-method_name = 'FeatureReweight'
+method_name = 'FeatureMapSim'
+# method_name = 'FeatureReweight'
 model_name = 'resnet50'
 train_dataset = 'Balance'
 custom_name = 'fc_th_act'
@@ -10,16 +10,16 @@ else:
     readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
 quick_test = False
 noise_engine = None
-k_c5 = 0.65
+# k_c5 = 0.65
 model = dict(
     type=method_name,
     num_crop=3,
     img_size=224,
     threshold=0.4,
     order=1,
-    k=k_c5,
+    # k=k_c5,
     mode=None,
-    fuse_const=0,
+    fuse_const=1,
     ood_detector=dict(
         type=method_list[2],
         debug_mode=False,
@@ -125,4 +125,4 @@ data = dict(
 dist_params = dict(backend='nccl')
 log_level = 'CRITICAL'
 # log_level = 'INFO'
-work_dir = './results/1031'
+work_dir = './results/0107'
