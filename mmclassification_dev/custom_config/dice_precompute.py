@@ -1,5 +1,5 @@
 meta_file='/data/csxjiang/meta/train_labeled.txt'
-precompute_name = '/data/csxjiang/dice_cache/imagenet_densenet_'
+precompute_name = '/data/csxjiang/dice_cache/imagenet_densenet_p50_'
 # model = dict(
 #     type='ImageClassifier',
 #     backbone=dict(
@@ -31,7 +31,7 @@ model = dict(
                     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
                     topk=(1, 5),
                     info=None,
-                    p=0.9,
+                    p=0.5,
                     mode='precompute')
     )
 # model=dict(
