@@ -105,7 +105,7 @@ for i in range(len(img_paths)):
     img_path = img_paths[i]
     img_type = img_names[i]
     img_list = os.listdir(img_path)
-    dst_path = "./vis_c4c5/{}".format(img_type)
+    dst_path = "./vis_c5_pdf/{}".format(img_type)
     os.makedirs(dst_path, exist_ok=True)
     for img_name in tqdm.tqdm(random.sample(img_list, 20)):
         img = cv2.imread(os.path.join(img_path, img_name))
@@ -127,12 +127,12 @@ for i in range(len(img_paths)):
         with torch.no_grad():
             c4, c5 = net(img)
             c4_th_act, c5_th_act = net_th_act(img)
-            # hist + pdf
+            ##  hist + pdf
             # c4 = oversample(c4, 256).cpu().numpy()
-            # c5 = oversample(c5, 256).cpu().numpy()
+            c5 = oversample(c5, 2048).cpu().numpy()
             # c4_th_act = oversample(c4_th_act, 256).cpu().numpy()
-            # c5_th_act = oversample(c5_th_act, 256).cpu().numpy()
-            #
+            # c5_th_act = oversample(c5_th_act, 2048).cpu().numpy()
+            plt.hist(c5, density=True, bins=1000)
             # ax1 = plt.subplot(221)
             # ax1.hist(c4, density=True, bins=100)
             # ax2 = plt.subplot(222)
@@ -141,41 +141,41 @@ for i in range(len(img_paths)):
             # ax3.hist(c5, density=True, bins=100)
             # ax4 = plt.subplot(224)
             # ax4.hist(c5_th_act, density=True, bins=100)
-            # plt.savefig("{}.jpg".format(os.path.join(dst_path, os.path.splitext(img_name)[0])))
-            # plt.close()
+            plt.savefig("{}.jpg".format(os.path.join(dst_path, os.path.splitext(img_name)[0])))
+            plt.close()
 
             #heatmap
 
-            feature_sim1, feature_mean1 = feature_sim(c5)
-            feature_sim2, feature_mean2 = feature_sim(c5_th_act)
-            # print("Loc1: 95%={}".format(torch.quantile(features1.mean(1), 0.95)))
-            # print("Loc2: 95%={}".format(torch.quantile(features2.mean(1), 0.95)))
-            # assert False
-            c4_norm = norm(c4, 0.08)
-            c4_th_act_norm = norm(c4_th_act, 0.08)
-            c5_norm = norm(c5, 1)
-            c5_th_act_norm = norm(c5_th_act, 1)
-
-
-
-            res1 = show_heatmap(img1, c4_norm)
-            res2 = show_heatmap(img2, c4_th_act_norm)
-            res3 = show_heatmap(img3, c5_norm)
-            res4 = show_heatmap(img4, c5_th_act_norm)
-            # font
-            font = cv2.FONT_HERSHEY_SIMPLEX
-            # org = (50, 50)
-            fontScale = 0.8
-            color = (0, 0, 0)
-            thickness = 1
-            res1 = cv2.putText(res1, 'Conf1={}'.format(feature_sim1[0]), (50, 50), font,
-                               fontScale, color, thickness, cv2.LINE_AA)
-            res3 = cv2.putText(res3, 'Conf2={}'.format(feature_sim2[0]), (50, 50), font,
-                               fontScale, color, thickness, cv2.LINE_AA)
-            res12 = np.hstack([res1, res2])
-            res34 = np.hstack([res3, res4])
-            res = np.vstack([res12, res34])
-            # plt.matshow(C4_features[i])
-            cv2.imwrite("{}.jpg".format(os.path.join(dst_path, os.path.splitext(img_name)[0])), res)
+            # feature_sim1, feature_mean1 = feature_sim(c5)
+            # feature_sim2, feature_mean2 = feature_sim(c5_th_act)
+            # # print("Loc1: 95%={}".format(torch.quantile(features1.mean(1), 0.95)))
+            # # print("Loc2: 95%={}".format(torch.quantile(features2.mean(1), 0.95)))
+            # # assert False
+            # c4_norm = norm(c4, 0.08)
+            # c4_th_act_norm = norm(c4_th_act, 0.08)
+            # c5_norm = norm(c5, 1)
+            # c5_th_act_norm = norm(c5_th_act, 1)
+            #
+            #
+            #
+            # res1 = show_heatmap(img1, c4_norm)
+            # res2 = show_heatmap(img2, c4_th_act_norm)
+            # res3 = show_heatmap(img3, c5_norm)
+            # res4 = show_heatmap(img4, c5_th_act_norm)
+            # # font
+            # font = cv2.FONT_HERSHEY_SIMPLEX
+            # # org = (50, 50)
+            # fontScale = 0.8
+            # color = (0, 0, 0)
+            # thickness = 1
+            # res1 = cv2.putText(res1, 'Conf1={}'.format(feature_sim1[0]), (50, 50), font,
+            #                    fontScale, color, thickness, cv2.LINE_AA)
+            # res3 = cv2.putText(res3, 'Conf2={}'.format(feature_sim2[0]), (50, 50), font,
+            #                    fontScale, color, thickness, cv2.LINE_AA)
+            # res12 = np.hstack([res1, res2])
+            # res34 = np.hstack([res3, res4])
+            # res = np.vstack([res12, res34])
+            # # plt.matshow(C4_features[i])
+            # cv2.imwrite("{}.jpg".format(os.path.join(dst_path, os.path.splitext(img_name)[0])), res)
 
 
