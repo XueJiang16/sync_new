@@ -16,20 +16,20 @@
 #bash ./tools/ood_dist_test.sh custom_config/threshold_act.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/vis_features.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/multi_modal/clip.py foo 2 
-#bash ./tools/dist_precompute.sh custom_config/dice_precompute.py /data/csxjiang/ood_ckpt/mmcls_offical/densenet121_4xb256_in1k_20220426-07450f99.pth 2 --metrics accuracy
+bash ./tools/dist_precompute.sh custom_config/dice_precompute.py /data/csxjiang/ood_ckpt/mmcls_offical/densenet121_4xb256_in1k_20220426-07450f99.pth 2 --metrics accuracy
 # bash ./tools/dist_precompute.sh custom_config/dice_precompute.py /data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth 2 --metrics accuracy
 #bash ./tools/ood_dist_test.sh custom_config/resnet101.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/mobilenet3_large.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/vit_lt.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/patchsim_mobile.py foo 2
-#bash ./tools/ood_dist_test.sh custom_config/densenet.py foo 2
+bash ./tools/ood_dist_test.sh custom_config/densenet.py foo 2
 # bash ./tools/ood_dist_test.sh custom_config/vit.py foo 2
 ## Cifar
 #bash ./tools/ood_dist_test.sh custom_config/cifar_benchmark/resnet50.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/cifar_benchmark/resnet18.py foo 2
 
 ## google doc
-bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2 --tab_name add
+# bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2 --tab_name add
 #bash ./tools/ood_dist_test_auto.sh custom_config/patchsim_mobile.py foo 2 --tab_name mobile
 #bash ./tools/ood_dist_test_auto.sh custom_config/resnet50.py foo 2 --tab_name pure_feature_sim_loc
 #bash ./tools/ood_dist_test_auto.sh custom_config/threshold_act.py foo 2 --tab_name auto2

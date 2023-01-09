@@ -1,6 +1,6 @@
 import os
 
-info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_densenet_feature_stat.pth')
+info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_densenet_p50_feature_stat.pth')
 method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch', 'FeatureReweight']
 method_name = method_list[2]
 model_name = 'resnet50'
@@ -64,8 +64,15 @@ model = dict(
                     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
                     topk=(1, 5),
                     info=info,
-                    p=0.7,
+                    p=0.5,
                     mode='precompute')
+        # head=dict(
+        #     type='ReactHead',
+        #     num_classes=1000,
+        #     in_channels=1024,
+        #     threshold=1.5,
+        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        #     topk=(1, 5))
     )
 )
 
