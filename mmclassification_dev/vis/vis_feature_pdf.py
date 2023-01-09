@@ -105,7 +105,7 @@ for i in range(len(img_paths)):
     img_path = img_paths[i]
     img_type = img_names[i]
     img_list = os.listdir(img_path)
-    dst_path = "./vis_c5_pdf/{}".format(img_type)
+    dst_path = "./vis_res/vis_c5_pdf/{}".format(img_type)
     os.makedirs(dst_path, exist_ok=True)
     for img_name in tqdm.tqdm(random.sample(img_list, 20)):
         img = cv2.imread(os.path.join(img_path, img_name))
