@@ -1,6 +1,6 @@
-import os
-
-info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_res50_feature_stat.pth')
+# import os
+#
+# info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_res50_feature_stat.pth')
 method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch', 'FeatureReweight']
 
 method_name = method_list[2]
@@ -35,14 +35,22 @@ model = dict(
         #     in_channels=2048,
         #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
         #     topk=(1, 5))
+        # head=dict(
+        #     type='DiceHead',
+        #     num_classes=1000,
+        #     in_channels=2048,
+        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        #     topk=(1, 5),
+        #     info=info,
+        #     p=0.7,)
         head=dict(
-            type='DiceHead',
+            type='ReactHead',
             num_classes=1000,
             in_channels=2048,
+            threshold=1,
             loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-            topk=(1, 5),
-            info=info,
-            p=0.7,)
+            topk=(1, 5))
+
     )
 )
 pipline =[

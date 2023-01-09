@@ -8,9 +8,10 @@ from .multi_label_linear_head import MultiLabelLinearClsHead
 from .stacked_head import StackedLinearClsHead, DiceStackedLinearClsHead
 from .vision_transformer_head import VisionTransformerClsHead
 from .dice_head import DiceHead
+from .react_head import ReactHead
 
 __all__ = [
     'ClsHead', 'LinearClsHead', 'StackedLinearClsHead', 'MultiLabelClsHead',
     'MultiLabelLinearClsHead', 'VisionTransformerClsHead', 'DeiTClsHead',
-    'ConformerHead', 'DiceHead', 'DiceStackedLinearClsHead'
+    'ConformerHead', 'DiceHead', 'DiceStackedLinearClsHead', 'ReactHead'
 ]
