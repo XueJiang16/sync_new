@@ -107,6 +107,7 @@ for i in range(len(img_paths)):
     img_list = os.listdir(img_path)
     dst_path = "./vis_res/vis_c5_pdf/{}".format(img_type)
     os.makedirs(dst_path, exist_ok=True)
+    c5_all = []
     for img_name in tqdm.tqdm(random.sample(img_list, 20)):
         img = cv2.imread(os.path.join(img_path, img_name))
         img1 = img.copy()
@@ -130,9 +131,13 @@ for i in range(len(img_paths)):
             ##  hist + pdf
             # c4 = oversample(c4, 256).cpu().numpy()
             c5 = oversample(c5, 2048).cpu().numpy()
+            c5_all.append(c5)
             # c4_th_act = oversample(c4_th_act, 256).cpu().numpy()
             # c5_th_act = oversample(c5_th_act, 2048).cpu().numpy()
-            plt.hist(c5, density=True, bins=1000)
+    c5_all = np.concatenate(c5_all)
+    plt.hist(c5_all, density=True, bins=100)
+    plt.savefig("{}.jpg".format(img_type))
+    plt.close()
             # ax1 = plt.subplot(221)
             # ax1.hist(c4, density=True, bins=100)
             # ax2 = plt.subplot(222)
@@ -141,8 +146,8 @@ for i in range(len(img_paths)):
             # ax3.hist(c5, density=True, bins=100)
             # ax4 = plt.subplot(224)
             # ax4.hist(c5_th_act, density=True, bins=100)
-            plt.savefig("{}.jpg".format(os.path.join(dst_path, os.path.splitext(img_name)[0])))
-            plt.close()
+            # plt.savefig("{}.jpg".format(os.path.join(dst_path, os.path.splitext(img_name)[0])))
+            # plt.close()
 
             #heatmap
 
