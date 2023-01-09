@@ -108,7 +108,7 @@ for i in range(len(img_paths)):
     dst_path = "./vis_res/vis_c5_pdf/{}".format(img_type)
     os.makedirs(dst_path, exist_ok=True)
     c5_all = []
-    for img_name in tqdm.tqdm(random.sample(img_list, 20)):
+    for img_name in tqdm.tqdm(random.sample(img_list, 200)):
         img = cv2.imread(os.path.join(img_path, img_name))
         img1 = img.copy()
         img2 = img.copy()
@@ -136,7 +136,7 @@ for i in range(len(img_paths)):
             # c5_th_act = oversample(c5_th_act, 2048).cpu().numpy()
     c5_all = np.concatenate(c5_all)
     plt.hist(c5_all, density=True, bins=100)
-    plt.savefig("{}.jpg".format(img_type))
+    plt.savefig("{}.jpg".format(os.path.join(dst_path, img_type)))
     plt.close()
             # ax1 = plt.subplot(221)
             # ax1.hist(c4, density=True, bins=100)
