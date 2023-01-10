@@ -90,7 +90,7 @@ class FeatureReweight(BaseModule):
         else:
             plt.plot(x_axis, y_axis0, label='Background', color='g')
             plt.plot(x_axis, y_axis1, label='Foreground', color='darkorange')
-        plt.plot(x_axis, y_axis0 + y_axis1, ls='dashed', label='Mixed Distribution', color='b')
+        plt.plot(x_axis, y_axis0 + y_axis1, ls='dashed', label='Mixed Distribution', color='royalblue')
         plt.xlim(-0.1, 1.1)
         # plt.ylim(0.0, 2.0)
         plt.xlabel(r"X")
@@ -172,10 +172,10 @@ class FeatureReweight(BaseModule):
                     x = feature_crops[i]
                     # val, idx = torch.topk(x.mean(dim=-1), k=2048)
                     # x = x[idx].flatten()
-                    x = x.flatten()
-                    x = x[::64].contiguous()
-                    # x = x.reshape(int(channel/sub_channel), sub_channel, -1)
-                    # x = x.mean(0)
+                    # x = x.flatten()
+                    # x = x[::64].contiguous()
+                    x = x.reshape(int(channel/sub_channel), sub_channel, -1)
+                    x = x.mean(0)
                     # single_score = np.mean(list(map(self.gmm_score, x)))
                     filename = os.path.splitext(os.path.basename(filenames[i]))[0]
                     single_score = self.gmm_score(x, out_dir, filename)
