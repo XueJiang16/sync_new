@@ -96,6 +96,7 @@ class FeatureReweight(BaseModule):
         plt.xlabel(r"X")
         plt.ylabel(r"Density")
         plt.legend()
+        plt.tight_layout()
 
         plt.savefig(os.path.join(out_dir, '{}.jpg'.format(filename)))
         plt.close('all')
