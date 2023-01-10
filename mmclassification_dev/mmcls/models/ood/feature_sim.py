@@ -61,7 +61,7 @@ class FeatureReweight(BaseModule):
             self.ood_detector = no_ood_detector
         self.mode = mode
 
-    def gmm_score(self, x, out_dir='./'):
+    def gmm_score(self, x, out_dir='./', filename=None):
         x = x.cpu().detach().numpy()
         x = x.reshape(-1, 1)
         gmm = GMM(n_components=2, max_iter=100, random_state=10, covariance_type='full')
@@ -79,21 +79,26 @@ class FeatureReweight(BaseModule):
         #       format(float(mean[1][0]), np.sqrt(float(covs[1][0][0])), weights[1]))
 
         # create necessary things to plot
-        # x_axis = np.arange(-0.1, 1.1, 0.001)
-        # y_axis0 = norm.pdf(x_axis, float(mean[0][0]), np.sqrt(float(covs[0][0][0]))) * weights[0]  # 1st gaussian
-        # y_axis1 = norm.pdf(x_axis, float(mean[1][0]), np.sqrt(float(covs[1][0][0]))) * weights[1]  # 2nd gaussian
-        # plt.hist(x, density=True, color='black', bins=60)
-        # plt.plot(x_axis, y_axis0, label='Dis 1')
-        # plt.plot(x_axis, y_axis1, label='Dis 2')
-        # plt.plot(x_axis, y_axis0 + y_axis1, ls='dashed', label='Mixed Dis')
-        # plt.xlim(-0.1, 1.1)
-        # # plt.ylim(0.0, 2.0)
-        # plt.xlabel(r"X")
-        # plt.ylabel(r"Density")
-        # plt.legend()
-        # filename = os.path.splitext(os.path.basename(filenames[i]))[0]
-        # plt.savefig(os.path.join(out_dir, '{}.jpg'.format(filename)))
-        # plt.close('all')
+
+        x_axis = np.arange(-0.1, 1.1, 0.001)
+        y_axis0 = norm.pdf(x_axis, float(mean[0][0]), np.sqrt(float(covs[0][0][0]))) * weights[0]  # 1st gaussian
+        y_axis1 = norm.pdf(x_axis, float(mean[1][0]), np.sqrt(float(covs[1][0][0]))) * weights[1]  # 2nd gaussian
+        plt.hist(x, density=True, color='black', bins=60)
+        if mean[0][0] > mean[1][0]:
+            plt.plot(x_axis, y_axis0, label='Foreground')
+            plt.plot(x_axis, y_axis1, label='Background')
+        else:
+            plt.plot(x_axis, y_axis0, label='Background')
+            plt.plot(x_axis, y_axis1, label='Foreground')
+        plt.plot(x_axis, y_axis0 + y_axis1, ls='dashed', label='Mixed Distribution')
+        plt.xlim(-0.1, 1.1)
+        # plt.ylim(0.0, 2.0)
+        plt.xlabel(r"X")
+        plt.ylabel(r"Density")
+        plt.legend()
+
+        plt.savefig(os.path.join(out_dir, '{}.jpg'.format(filename)))
+        plt.close('all')
 
         if mean[0][0] > mean[1][0]:
             forg_idx = 0
@@ -156,7 +161,7 @@ class FeatureReweight(BaseModule):
                     mid_path = 'OOD'
                 else:
                     mid_path = 'ID'
-                out_dir = os.path.join('./vis_gmm/', mid_path)
+                out_dir = os.path.join('./vis_res/vis_gmm/', mid_path)
                 os.makedirs(out_dir, exist_ok=True)
                 feature_crops = feature_c5.flatten(2)
                 batch_size, channel, _ = feature_crops.shape
@@ -171,7 +176,8 @@ class FeatureReweight(BaseModule):
                     # x = x.reshape(int(channel/sub_channel), sub_channel, -1)
                     # x = x.mean(0)
                     # single_score = np.mean(list(map(self.gmm_score, x)))
-                    single_score = self.gmm_score(x)
+                    filename = os.path.splitext(os.path.basename(filenames[i]))[0]
+                    single_score = self.gmm_score(x, out_dir, filename)
                     score.append(single_score)
                 patch_sim = torch.tensor(score).to("cuda:{}".format(self.local_rank))
 
