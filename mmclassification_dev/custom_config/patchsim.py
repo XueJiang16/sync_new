@@ -51,7 +51,7 @@ model = dict(
             #     topk=(1, 5))
             head=dict(
                 type='ReactHead',
-                threshold=1,
+                threshold=2,
                 num_classes=1000,
                 in_channels=2048,
                 loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
