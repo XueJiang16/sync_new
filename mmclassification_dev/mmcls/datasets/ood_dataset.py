@@ -21,19 +21,22 @@ from .builder import DATASETS
 from .pipelines import Compose
 
 class OODBaseDataset(Dataset):
-    def __init__(self, name, pipeline, transform='ImageNet', aug=None, noise_engine=None, len_limit=-1):
+    def __init__(self, name, pipeline, input_size=None, transform='ImageNet', aug=None, noise_engine=None, len_limit=-1):
         super().__init__()
         self.pipeline = Compose(pipeline)
         self.file_list = []
         self.data_prefix = None
         self.name = name
+        self.resize_size = input_size if input_size is not None else 256
+        self.crop_size = input_size if input_size is not None else 224
+
         if transform == 'ImageNet':
             self.transform = tv.transforms.Compose([
                 # tv.transforms.Resize(256),
-                tv.transforms.Resize(800),
+                tv.transforms.Resize(self.resize_size),
                 # tv.transforms.Resize(248, interpolation=tv.transforms.InterpolationMode.BICUBIC),
                 # tv.transforms.CenterCrop(224),
-                tv.transforms.CenterCrop(800),
+                tv.transforms.CenterCrop(self.crop_size),
                 # tv.transforms.Resize((480, 480)),
                 tv.transforms.ToTensor(),
                 tv.transforms.Normalize([123.675/255, 116.28/255, 103.53/255],
@@ -49,6 +52,7 @@ class OODBaseDataset(Dataset):
                 # tv.transforms.Normalize([129.304/255, 124.07/255, 112.434/255],
                 #                         [68.17/255, 65.392/255, 70.418/255]),
             ])
+
         self.noise_engine = noise_engine
         self.len_limit = len_limit
         self.data_infos = []

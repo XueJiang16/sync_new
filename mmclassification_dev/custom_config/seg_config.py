@@ -1,6 +1,6 @@
 method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch', 'FeatureReweight']
 method_name = method_list[-1]
-model_name = 'resnet50_faster_rcnn'
+model_name = 'resnet50_seg'
 train_dataset = 'Balance'
 custom_name = None
 if custom_name is not None:
@@ -9,12 +9,6 @@ else:
     readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
 quick_test = True
 training_file = None
-
-# 18: (BasicBlock, (2, 2, 2, 2)),
-#         34: (BasicBlock, (3, 4, 6, 3)),
-#         50: (Bottleneck, (3, 4, 6, 3)),
-#         101: (Bottleneck, (3, 4, 23, 3)),
-#         152: (Bottleneck, (3, 8, 36, 3))
 
 model = dict(
     type=method_name,
@@ -27,10 +21,7 @@ model = dict(
         type=method_list[0],
         classifier=dict(
         type='ImageClassifier',
-        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/coco/faster_rcnn_r50_fpn_1x_coco_20200130-047c8118.pth'),
-        # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/resnet50_8xb32_in1k_20210831-ea4938fc.pth'),
-        # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/resnet34_8xb32_in1k_20210831-f257d4e6.pth'),
-        # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/resnet101_8xb32_in1k_20210831-539c63f8.pth'),
+        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ade20k/deeplabv3plus_r50-d8_512x512_80k_ade20k_20200614_185028-bf1400d8.pth'),
         backbone=dict(
             type='ResNetActivation',
             depth=50,
@@ -58,17 +49,18 @@ pipline =[dict(type='Collect', keys=['img', 'type'])]
 
 # aug =
 aug = None
-input_size=800
+input_size = 512
 data = dict(
     samples_per_gpu=8,
     workers_per_gpu=4,
     id_data=dict(
-        name='COCO',
+        name='ADE20K',
         type='FolderDataset',
-        path='/data/csxjiang/ood_data/coco/val2017',
+        path='/data/csxjiang/ood_data/ADE20K/ADEChallengeData2016/images/validation',
         pipeline=pipline,
         input_size=input_size,
-        len_limit=5000 if quick_test else -1,
+
+        len_limit=2000 if quick_test else -1,
         aug=aug,
     ),
     ood_data=[
@@ -79,7 +71,8 @@ data = dict(
             pipeline=pipline,
             aug=aug,
             input_size=input_size,
-            len_limit=1000 if quick_test else -1,
+
+            len_limit=400 if quick_test else -1,
         ),
         dict(
             name='SUN',
@@ -88,16 +81,18 @@ data = dict(
             pipeline=pipline,
             aug=aug,
             input_size=input_size,
-            len_limit=1000 if quick_test else -1,
+
+            len_limit=400 if quick_test else -1,
         ),
         dict(
             name='Places',
             type='FolderDataset',
             path='/data/csxjiang/ood_data/Places/images',
             pipeline=pipline,
-            aug=aug,
             input_size=input_size,
-            len_limit=1000 if quick_test else -1,
+
+            aug=aug,
+            len_limit=400 if quick_test else -1,
         ),
         dict(
             name='Textures',
@@ -106,7 +101,8 @@ data = dict(
             pipeline=pipline,
             aug=aug,
             input_size=input_size,
-            len_limit=1000 if quick_test else -1,
+
+            len_limit=400 if quick_test else -1,
         ),
     ],
 
