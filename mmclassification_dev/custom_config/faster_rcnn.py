@@ -68,7 +68,6 @@ data = dict(
         path='/data/csxjiang/ood_data/coco/val2017',
         pipeline=pipline,
         len_limit=5000 if quick_test else -1,
-        train_label=None,
         aug=aug,
     ),
     ood_data=[
