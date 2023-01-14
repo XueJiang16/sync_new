@@ -697,6 +697,20 @@ class ResNetActivation(BaseBackbone):
                 if isinstance(m, _BatchNorm):
                     m.eval()
 
+@BACKBONES.register_module()
+class ResNetV1cActivation(ResNetActivation):
+    """ResNetV1c backbone.
+
+    This variant is described in `Bag of Tricks.
+    <https://arxiv.org/pdf/1812.01187.pdf>`_.
+
+    Compared with default ResNet(ResNetV1b), ResNetV1c replaces the 7x7 conv
+    in the input stem with three 3x3 convs.
+    """
+
+    def __init__(self, **kwargs):
+        super(ResNetV1cActivation, self).__init__(
+            deep_stem=True, avg_down=False, **kwargs)
 
 if __name__ == '__main__':
     model = ResNetActivation(depth=50)
