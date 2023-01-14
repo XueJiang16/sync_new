@@ -28,8 +28,10 @@
 #bash ./tools/ood_dist_test.sh custom_config/cifar_benchmark/resnet50.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/cifar_benchmark/resnet18.py foo 2
 
+##coco
+bash ./tools/ood_dist_test.sh custom_config/faster_rcnn.py foo 2
 ## google doc
-bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2 --tab_name add
+#bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2 --tab_name add
 #bash ./tools/ood_dist_test_auto.sh custom_config/patchsim_mobile.py foo 2 --tab_name mobile
 #bash ./tools/ood_dist_test_auto.sh custom_config/resnet50.py foo 2 --tab_name pure_feature_sim_loc
 #bash ./tools/ood_dist_test_auto.sh custom_config/threshold_act.py foo 2 --tab_name auto2
