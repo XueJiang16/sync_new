@@ -41,7 +41,6 @@ for idx, value in enumerate(target_places):
             if filename.endswith('.jpg')]
 
     random.shuffle(place_filenames)
-print(target_places[0])
 ### Write dataset to disk
 output_subfolder = os.path.join(output_dir, dataset_name)
 os.makedirs(output_subfolder, exist_ok=True)
@@ -54,9 +53,9 @@ for i in tqdm(range(len(place_filenames))):
     place_name = place_filepath.split("/")[-1]
 
     place_path = os.path.join(places_dir, 'data_large', place_filepath)
-    if place_category in target_places[0]:
+    if place_category in target_places[0]+['forest']:
         output_path = os.path.join(output_subfolder, 'land', place_name)
-    elif place_category in target_places[1]:
+    elif place_category in target_places[1]+['lake']:
         output_path = os.path.join(output_subfolder, 'water', place_name)
     else:
         raise Exception(f'Category{place_category} not found')
