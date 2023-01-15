@@ -9,10 +9,11 @@ import torch
 def convert_resnet(src_dict, dst_dict):
     """convert resnet checkpoints from torchvision."""
     for key, value in src_dict.items():
-        if not key.startswith('fc'):
+        if not key.startswith('linear'):
             dst_dict['backbone.' + key] = value
         else:
-            dst_dict['head.' + key] = value
+            key_ = key.split('.')[-1]
+            dst_dict['head.fc.' + key_] = value
 
 # model name to convert function
 CONVERT_F_DICT = {
