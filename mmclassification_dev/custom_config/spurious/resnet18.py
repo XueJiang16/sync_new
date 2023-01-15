@@ -72,7 +72,7 @@ model = dict(
     )
 )
 # pipline =[dict(type='Collect', keys=['img'])]
-ood_pipline =[dict(type='Collect', keys=['img', 'type'])]
+ood_pipeline =[dict(type='Collect', keys=['img', 'type'])]
 transform = "ImageNet"
 
 # aug =
@@ -85,7 +85,7 @@ data = dict(
         name='waterbird',
         type='CsvDataset',
         path='/data/csxjiang/spurious_ood/waterbird_complete90_forest2water2',
-        pipeline=ood_pipline,
+        pipeline=ood_pipeline,
         len_limit=5000 if quick_test else -1,
         aug=aug,
     ),
