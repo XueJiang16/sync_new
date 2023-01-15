@@ -47,7 +47,8 @@ output_subfolder = os.path.join(output_dir, dataset_name)
 os.makedirs(output_subfolder, exist_ok=True)
 os.makedirs(os.path.join(output_subfolder, 'land'), exist_ok=True)
 os.makedirs(os.path.join(output_subfolder, 'water'), exist_ok=True)
-
+print(target_places[0])
+assert False
 for i in tqdm(range(len(place_filenames))):
     place_filepath = place_filenames[i][1:]
     place_category = place_filepath.split("/")[1]
