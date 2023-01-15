@@ -115,7 +115,7 @@ data = dict(
             name='Placebg',
             type='FolderDataset',
             path='/data/csxjiang/spurious_ood/ood_datasets/placesbg/image_collate',
-            pipeline=ood_pipline,
+            pipeline=ood_pipeline,
             len_limit=5000 if quick_test else -1,
             aug=aug,
         ),
