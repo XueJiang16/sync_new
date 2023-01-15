@@ -41,7 +41,7 @@ for idx, value in enumerate(target_places):
             if filename.endswith('.jpg')]
 
     random.shuffle(place_filenames)
-
+print(target_places[0])
 ### Write dataset to disk
 output_subfolder = os.path.join(output_dir, dataset_name)
 os.makedirs(output_subfolder, exist_ok=True)
