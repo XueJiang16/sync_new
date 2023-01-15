@@ -54,9 +54,9 @@ for i in tqdm(range(len(place_filenames))):
     place_name = place_filepath.split("/")[-1]
 
     place_path = os.path.join(places_dir, 'data_large', place_filepath)
-    if place_category in target_places[0]+target_places[0][1].split('/'):
+    if place_category in target_places[0]+['forest']:
         output_path = os.path.join(output_subfolder, 'land', place_name)
-    elif place_category in target_places[1]+target_places[1][1].split('/'):
+    elif place_category in target_places[1]+['lake']:
         output_path = os.path.join(output_subfolder, 'water', place_name)
     else:
         raise Exception(f'Category{place_category} not found')
