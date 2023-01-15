@@ -29,10 +29,10 @@ place_ids_df = pd.read_csv(
 
 target_place_ids = []
 
-for idx, target_places in enumerate(target_places):
+for idx, value in enumerate(target_places):
     place_filenames = []
 
-    for target_place in target_places:
+    for target_place in value:
 
         # Read place filenames associated with target_place
         place_filenames += [
@@ -47,17 +47,16 @@ output_subfolder = os.path.join(output_dir, dataset_name)
 os.makedirs(output_subfolder, exist_ok=True)
 os.makedirs(os.path.join(output_subfolder, 'land'), exist_ok=True)
 os.makedirs(os.path.join(output_subfolder, 'water'), exist_ok=True)
-print(target_places[0])
-assert False
+
 for i in tqdm(range(len(place_filenames))):
     place_filepath = place_filenames[i][1:]
     place_category = place_filepath.split("/")[1]
     place_name = place_filepath.split("/")[-1]
 
     place_path = os.path.join(places_dir, 'data_large', place_filepath)
-    if place_category in target_places[0]+['forest']:
+    if place_category in target_places[0]:
         output_path = os.path.join(output_subfolder, 'land', place_name)
-    elif place_category in target_places[1]+['lake']:
+    elif place_category in target_places[1]:
         output_path = os.path.join(output_subfolder, 'water', place_name)
     else:
         raise Exception(f'Category{place_category} not found')
