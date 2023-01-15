@@ -72,7 +72,8 @@ model = dict(
     )
 )
 # pipline =[dict(type='Collect', keys=['img'])]
-pipline =[dict(type='Collect', keys=['img', 'type'])]
+ood_pipline =[dict(type='Collect', keys=['img', 'type'])]
+transform = "Cifar"
 
 # aug =
 aug = None
@@ -81,65 +82,49 @@ data = dict(
     samples_per_gpu=256 if method_name is not 'ODIN' else 32,
     workers_per_gpu=4,
     id_data=dict(
-        name='ImageNet',
-        type='TxtDataset',
-        path='/data/csxjiang/val',
-        data_ann='/data/csxjiang/meta/val_labeled.txt',
-        # path='/data/csxjiang/ILSVRC/Data/CLS-LOC/train',
-        # data_ann='/data/csxjiang/meta/train_labeled.txt',
-        pipeline=pipline,
+        name='Placebg',
+        type='FolderDataset',
+        path='/data/csxjiang/spurious_ood/ood_datasets/placesbg',
+        pipeline=ood_pipline,
         len_limit=5000 if quick_test else -1,
-        train_label=None,
         aug=aug,
     ),
-    # id_data=dict(
-    #     type='JsonDataset',
-    #     path='/data/csxjiang/',
-    #     data_ann='/data/csxjiang/ood_data/inat/val2018.json',
-    #     pipeline=[
-    #         dict(type='LoadImageFromFile'),
-    #         dict(type='Resize', size=480),
-    #         dict(
-    #             type='Normalize',
-    #             mean=[123.675, 116.28, 103.53],
-    #             std=[58.395, 57.12, 57.375],
-    #             to_rgb=True),
-    #         dict(type='ImageToTensor', keys=['img']),
-    #         dict(type='Collect', keys=['img'])
-    #     ]),
     ood_data=[
         dict(
-            name='iNaturalist',
+            name='SVHN',
             type='FolderDataset',
-            path='/data/csxjiang/ood_data/iNaturalist/images',
-            pipeline=pipline,
-            aug=aug,
-            len_limit=1000 if quick_test else -1,
+            path='/data/csxjiang/cifar_benchmark/svhn/images',
+            pipeline=ood_pipeline,
+            transform=transform,
         ),
         dict(
-            name='SUN',
+            name='LSUN',
             type='FolderDataset',
-            path='/data/csxjiang/ood_data/SUN/images',
-            pipeline=pipline,
-            aug=aug,
-            len_limit=1000 if quick_test else -1,
+            path='/data/csxjiang/cifar_benchmark/LSUN/test',
+            pipeline=ood_pipeline,
+            transform=transform,
         ),
         dict(
-            name='Places',
+            name='iSUN',
             type='FolderDataset',
-            path='/data/csxjiang/ood_data/Places/images',
-            pipeline=pipline,
-            aug=aug,
-            len_limit=1000 if quick_test else -1,
+            path='/data/csxjiang/cifar_benchmark/iSUN/iSUN_patches',
+            pipeline=ood_pipeline,
+            transform=transform,
         ),
-        dict(
-            name='Textures',
-            type='FolderDataset',
-            path='/data/csxjiang/ood_data/Textures/dtd/images_collate',
-            pipeline=pipline,
-            aug=aug,
-            len_limit=1000 if quick_test else -1,
-        ),
+        # dict(
+        #     name='Places',
+        #     type='FolderDataset',
+        #     path='/data/csxjiang/ood_data/Places/images',
+        #     pipeline=ood_pipeline,
+        #     transform=transform,
+        # ),
+        # dict(
+        #     name='Textures',
+        #     type='FolderDataset',
+        #     path='/data/csxjiang/ood_data/Textures/dtd/images_collate',
+        #     pipeline=ood_pipeline,
+        #     transform=transform,
+        # ),
     ],
 
 )

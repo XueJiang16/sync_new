@@ -12,7 +12,7 @@ places_dir = '/data/csxjiang/spurious_ood'
 output_dir = '/data/csxjiang/spurious_ood/ood_datasets'
 
 target_places = [
-    ['bamboo_forest', 'forest/broadleaf'],  # Land backgrounds
+    # ['bamboo_forest', 'forest/broadleaf'],  # Land backgrounds
     ['ocean', 'lake/natural']]              # Water backgrounds
 
 confounder_strength = 0.6 # Determines relative size of majority vs. minority groups
@@ -55,8 +55,8 @@ for i in tqdm(range(len(place_filenames))):
 
     place_path = os.path.join(places_dir, 'data_large', place_filepath)
     if place_category in target_places[0]:
-        output_path = os.path.join(output_subfolder, 'land', place_name)
-    elif place_category in target_places[1]:
+    #     output_path = os.path.join(output_subfolder, 'land', place_name)
+    # elif place_category in target_places[1]:
         output_path = os.path.join(output_subfolder, 'water', place_name)
     else:
         raise Exception(f'Category{place_category} not found')
