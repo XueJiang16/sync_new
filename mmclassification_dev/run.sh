@@ -30,7 +30,7 @@
 
 ##coco
 #bash ./tools/ood_dist_test.sh custom_config/faster_rcnn.py foo 2
-bash ./tools/ood_dist_test_auto.sh custom_config/faster_rcnn.py foo 2 --tab_name coco
+#bash ./tools/ood_dist_test_auto.sh custom_config/faster_rcnn.py foo 2 --tab_name coco
 ## google doc
 #bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2 --tab_name add
 #bash ./tools/ood_dist_test_auto.sh custom_config/patchsim_mobile.py foo 2 --tab_name mobile
@@ -40,6 +40,8 @@ bash ./tools/ood_dist_test_auto.sh custom_config/faster_rcnn.py foo 2 --tab_name
 #bash ./tools/ood_dist_test_auto.sh custom_config/cifar_benchmark/feature_sim.py foo 2 --tab_name cifar
 
 
+## spurious
+bash ./tools/ood_dist_test.sh custom_config/spurious/resnet18.py foo 2
 ## id acc
 #bash ./tools/dist_test.sh custom_config/id_acc/resnet50_topk.py /data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth 2 --metrics accuracy
 #bash ./tools/dist_test_auto.sh custom_config/id_acc/resnet50_topk.py /data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth 2 --metrics accuracy
