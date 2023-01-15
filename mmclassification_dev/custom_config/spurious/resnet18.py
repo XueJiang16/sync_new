@@ -102,14 +102,14 @@ data = dict(
             type='FolderDataset',
             path='/data/csxjiang/cifar_benchmark/LSUN/test',
             pipeline=ood_pipeline,
-            transform=transform,
+            transform='Cifar',
         ),
         dict(
             name='iSUN',
             type='FolderDataset',
             path='/data/csxjiang/cifar_benchmark/iSUN/iSUN_patches',
             pipeline=ood_pipeline,
-            transform=transform,
+            transform='Cifar',
         ),
     dict(
             name='Placebg',
