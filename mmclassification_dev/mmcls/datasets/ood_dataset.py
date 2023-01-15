@@ -15,7 +15,7 @@ import copy
 from collections import Counter
 import imgaug as ia
 import imgaug.augmenters as iaa
-
+import pandas as pd
 # from .base_dataset import BaseDataset
 from .builder import DATASETS
 from .pipelines import Compose
@@ -182,6 +182,23 @@ class FolderDataset(OODBaseDataset):
             self.file_list.append(filename)
         self.parse_datainfo()
 
+@DATASETS.register_module()
+class CsvDataset(OODBaseDataset):
+    def __init__(self, name, path, pipeline, data_ann=None, **kwargs):
+        super().__init__(name, pipeline, **kwargs)
+        # self.file_list = glob.glob(os.path.join(path, '*'))
+        self.data_prefix = path
+        self.metadata_df = pd.read_csv(
+            os.path.join(self.data_prefix, 'metadata.csv'))
+        self.metadata_df = self.metadata_df[self.metadata_df['split'] == self.split_dict[self.split]]
+
+        self.y_array = self.metadata_df['y'].values
+        self.place_array = self.metadata_df['place'].values
+        self.filename_array = self.metadata_df['img_filename'].values
+
+        for filename in self.filename_array:
+            self.file_list.append(os.path.join(self.data_prefix,filename))
+        self.parse_datainfo()
 
 @DATASETS.register_module()
 class ImageNetSuperclass(OODBaseDataset):

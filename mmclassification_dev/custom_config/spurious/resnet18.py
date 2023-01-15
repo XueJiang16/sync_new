@@ -73,7 +73,7 @@ model = dict(
 )
 # pipline =[dict(type='Collect', keys=['img'])]
 ood_pipline =[dict(type='Collect', keys=['img', 'type'])]
-transform = "Cifar"
+transform = "ImageNet"
 
 # aug =
 aug = None
@@ -82,9 +82,9 @@ data = dict(
     samples_per_gpu=256 if method_name is not 'ODIN' else 32,
     workers_per_gpu=4,
     id_data=dict(
-        name='Placebg',
-        type='FolderDataset',
-        path='/data/csxjiang/spurious_ood/ood_datasets/placesbg',
+        name='waterbird',
+        type='CsvDataset',
+        path='/data/csxjiang/spurious_ood/waterbird_complete90_forest2water2',
         pipeline=ood_pipline,
         len_limit=5000 if quick_test else -1,
         aug=aug,
@@ -110,6 +110,14 @@ data = dict(
             path='/data/csxjiang/cifar_benchmark/iSUN/iSUN_patches',
             pipeline=ood_pipeline,
             transform=transform,
+        ),
+    dict(
+            name='Placebg',
+            type='FolderDataset',
+            path='/data/csxjiang/spurious_ood/ood_datasets/placesbg/image_collate',
+            pipeline=ood_pipline,
+            len_limit=5000 if quick_test else -1,
+            aug=aug,
         ),
         # dict(
         #     name='Places',
