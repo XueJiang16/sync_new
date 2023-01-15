@@ -190,10 +190,10 @@ class CsvDataset(OODBaseDataset):
         self.data_prefix = path
         self.metadata_df = pd.read_csv(
             os.path.join(self.data_prefix, 'metadata.csv'))
-        self.metadata_df = self.metadata_df[self.metadata_df['split'] == 1]
+        self.metadata_df = self.metadata_df[self.metadata_df['split'] == 2]
 
-        self.y_array = self.metadata_df['y'].values
-        self.place_array = self.metadata_df['place'].values
+        # self.y_array = self.metadata_df['y'].values
+        # self.place_array = self.metadata_df['place'].values
         self.filename_array = self.metadata_df['img_filename'].values
 
         for filename in self.filename_array:
