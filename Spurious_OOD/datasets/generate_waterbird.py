@@ -7,7 +7,7 @@ from tqdm import tqdm
 from dataset_utils import crop_and_resize, combine_and_mask
 
 ################ Paths and other configs - Set these #################################
-cub_dir = '/data/csxjiang/spurious_ood/dataset/CUB_200_2011'
+cub_dir = '/data/csxjiang/spurious_ood/CUB_200_2011'
 places_dir = '/data/csxjiang/spurious_ood'
 output_dir = '/data/csxjiang/spurious_ood'
 
