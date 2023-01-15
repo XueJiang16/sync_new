@@ -104,7 +104,7 @@ data = dict(
             type='FolderDataset',
             path='/data/csxjiang/cifar_benchmark/LSUN/test',
             pipeline=ood_pipeline,
-            transform=transform2,
+            transform=transform,
             len_limit=2000 if quick_test else -1,
         ),
         dict(
@@ -112,7 +112,7 @@ data = dict(
             type='FolderDataset',
             path='/data/csxjiang/cifar_benchmark/iSUN/iSUN_patches',
             pipeline=ood_pipeline,
-            transform=transform2,
+            transform=transform,
             len_limit = 2000 if quick_test else -1,
         ),
         dict(

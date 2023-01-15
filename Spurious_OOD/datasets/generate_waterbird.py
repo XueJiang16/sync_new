@@ -135,10 +135,10 @@ place_ids_df = pd.read_csv(
 
 target_place_ids = []
 
-for idx, target_places in enumerate(target_places):
+for idx, values in enumerate(target_places):
     place_filenames = []
 
-    for target_place in target_places:
+    for target_place in values:
         target_place_full = f'/{target_place[0]}/{target_place}'
         assert (np.sum(place_ids_df['place_name'] == target_place_full) == 1)
         target_place_ids.append(place_ids_df.index[place_ids_df['place_name'] == target_place_full][0])
