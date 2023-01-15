@@ -55,7 +55,7 @@ model = dict(
     # target_file='/data/csxjiang/meta/train_LT_a8.txt',
     classifier=dict(
         type='ImageClassifier',
-        init_cfg=dict(type='Pretrained', checkpoint='/home/csxjiang/jx/sync/Spurious_OOD/checkpoints/waterbird/erm_r_0_9/erm_r_0_9_20230115/checkpoint_30.pth.tar'),
+        init_cfg=dict(type='Pretrained', checkpoint='/home/csxjiang/jx/sync/Spurious_OOD/checkpoints/waterbird/erm_r_0_9/erm_r_0_9_20230115/ckpt30.pth'),
         backbone=dict(
             type='ResNet',
             depth=18,

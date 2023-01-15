@@ -27,7 +27,7 @@ def convert(src: str, dst: str, convert_f: callable):
     converted_state_dict = OrderedDict()
 
     # convert key in weight
-    convert_f(blobs, converted_state_dict)
+    convert_f(blobs['state_dict_model'], converted_state_dict)
 
     torch.save(converted_state_dict, dst)
     print('Done!')
