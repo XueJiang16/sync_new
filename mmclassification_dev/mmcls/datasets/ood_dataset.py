@@ -190,7 +190,7 @@ class CsvDataset(OODBaseDataset):
         self.data_prefix = path
         self.metadata_df = pd.read_csv(
             os.path.join(self.data_prefix, 'metadata.csv'))
-        self.metadata_df = self.metadata_df[self.metadata_df['split'] == self.split_dict[self.split]]
+        self.metadata_df = self.metadata_df[self.metadata_df['split'] == 1]
 
         self.y_array = self.metadata_df['y'].values
         self.place_array = self.metadata_df['place'].values
