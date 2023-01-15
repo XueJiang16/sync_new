@@ -8,8 +8,8 @@ from tqdm import tqdm
 from dataset_utils import crop_and_resize, combine_and_mask
 
 ################ Paths and other configs - Set these #################################
-places_dir = '/nobackup-slow/dataset/places365_standard'
-output_dir = 'datasets/ood_datasets'
+places_dir = '/data/csxjiang/spurious_ood'
+output_dir = '/data/csxjiang/spurious_ood/ood_datasets'
 
 target_places = [
     ['bamboo_forest', 'forest/broadleaf'],  # Land backgrounds
@@ -37,7 +37,7 @@ for idx, target_places in enumerate(target_places):
         # Read place filenames associated with target_place
         place_filenames += [
             f'/{target_place[0]}/{target_place}/{filename}' for filename in os.listdir(
-                os.path.join(places_dir, 'data_large', 'train', target_place[0], target_place))
+                os.path.join(places_dir, 'data_large', target_place[0], target_place))
             if filename.endswith('.jpg')]
 
     random.shuffle(place_filenames)
@@ -53,7 +53,7 @@ for i in tqdm(range(len(place_filenames))):
     place_category = place_filepath.split("/")[1]
     place_name = place_filepath.split("/")[2]
 
-    place_path = os.path.join(places_dir, 'data_large', 'train', place_filepath)
+    place_path = os.path.join(places_dir, 'data_large', place_filepath)
     if place_category in target_places[0]:
         output_path = os.path.join(output_subfolder, 'land', place_name)
     elif place_category in target_places[1]:
