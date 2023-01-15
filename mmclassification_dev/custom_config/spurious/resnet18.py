@@ -74,6 +74,7 @@ model = dict(
 # pipline =[dict(type='Collect', keys=['img'])]
 ood_pipeline =[dict(type='Collect', keys=['img', 'type'])]
 transform = "ImageNet"
+transform2 = 'Cifar'
 
 # aug =
 aug = None
@@ -103,7 +104,7 @@ data = dict(
             type='FolderDataset',
             path='/data/csxjiang/cifar_benchmark/LSUN/test',
             pipeline=ood_pipeline,
-            transform=transform,
+            transform=transform2,
             len_limit=2000 if quick_test else -1,
         ),
         dict(
@@ -111,7 +112,7 @@ data = dict(
             type='FolderDataset',
             path='/data/csxjiang/cifar_benchmark/iSUN/iSUN_patches',
             pipeline=ood_pipeline,
-            transform=transform,
+            transform=transform2,
             len_limit = 2000 if quick_test else -1,
         ),
         dict(
