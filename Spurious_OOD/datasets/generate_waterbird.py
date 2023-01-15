@@ -147,7 +147,7 @@ for idx, target_places in enumerate(target_places):
         # Read place filenames associated with target_place
         place_filenames += [
             f'/{target_place[0]}/{target_place}/{filename}' for filename in os.listdir(
-                os.path.join(places_dir, 'data_large', 'train', target_place[0], target_place))
+                os.path.join(places_dir, 'data_large', target_place[0], target_place))
             if filename.endswith('.jpg')]
 
     random.shuffle(place_filenames)
@@ -173,7 +173,7 @@ for i in tqdm(df.index):
 
     # Load place background
     # Skip front /
-    place_path = os.path.join(places_dir, 'data_large', 'train', df.loc[i, 'place_filename'][1:])
+    place_path = os.path.join(places_dir, 'data_large', df.loc[i, 'place_filename'][1:])
     place = Image.open(place_path).convert('RGB')
 
     img_black = Image.fromarray(np.around(img_np * seg_np).astype(np.uint8))
