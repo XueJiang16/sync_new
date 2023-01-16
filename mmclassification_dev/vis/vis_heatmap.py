@@ -102,7 +102,7 @@ def show_heatmap(img: np.ndarray,
 
 
 img_path = "/data/csxjiang/val/"
-img_name = 'ILSVRC2012_val_00000837.JPEG'
+img_name = 'ILSVRC2012_val_00001155.JPEG'
 dst_path = "./vis_res/vis_heatmap/"
 os.makedirs(dst_path, exist_ok=True)
 img = cv2.imread(os.path.join(img_path, img_name))
@@ -125,3 +125,7 @@ with torch.no_grad():
     sns.heatmap(c4_th_act_norm, cmap=sns.color_palette("ch:start=.2,rot=-.3", as_cmap=True))
     plt.savefig("{}c4_th_act_norm.jpg".format(dst_path))
     plt.close()
+    sns.heatmap(c4_norm, cmap=sns.color_palette("ch:start=.2,rot=-.3", as_cmap=True))
+    plt.savefig("{}c4_norm.jpg".format(dst_path))
+    plt.close()
+
