@@ -23,18 +23,26 @@ model = dict(
         type='ImageClassifier',
         init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
         backbone=dict(
-            type='ResNet',
+            # type='ResNet',
+            # depth=50,
+            # num_stages=4,
+            # out_indices=(3,),
+            # style='pytorch'),
+            type='ResNetActivation',
             depth=50,
             num_stages=4,
             out_indices=(3,),
-            style='pytorch'),
+            style='pytorch',
+            th_act_k=0.1,
+            th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
+            th_act_location=5,),
         neck=dict(type='GlobalAveragePooling'),
-        head=dict(
-            type='LinearClsHead',
-            num_classes=1000,
-            in_channels=2048,
-            loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-            topk=(1, 5))
+        # head=dict(
+        #     type='LinearClsHead',
+        #     num_classes=1000,
+        #     in_channels=2048,
+        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        #     topk=(1, 5))
         # head=dict(
         #     type='DiceHead',
         #     num_classes=1000,
@@ -43,13 +51,13 @@ model = dict(
         #     topk=(1, 5),
         #     info=info,
         #     p=0.7,)
-        # head=dict(
-        #     type='ReactHead',
-        #     num_classes=1000,
-        #     in_channels=2048,
-        #     threshold=1,
-        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-        #     topk=(1, 5))
+        head=dict(
+            type='ReactHead',
+            num_classes=1000,
+            in_channels=2048,
+            threshold=1,
+            loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+            topk=(1, 5))
     )
 )
 pipline =[
