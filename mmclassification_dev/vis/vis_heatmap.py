@@ -35,8 +35,8 @@ backbone_th_act = dict(
         th_act_k=0.2,
         th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
         th_act_location=5,  ## No. of conv layer
-        feature_sim_stage=3,  ## 0:C2 1:C3 2:C4 3:C5
-        feature_sim_location=2,  ## No. of conv layer
+        # feature_sim_stage=3,  ## 0:C2 1:C3 2:C4 3:C5
+        # feature_sim_location=2,  ## No. of conv layer
         init_cfg=dict(type='Pretrained', checkpoint=model_path)
 )
 
@@ -118,9 +118,10 @@ train_transform = transforms.Compose([
 img = train_transform(img).unsqueeze(0).cuda()
 with torch.no_grad():
     c4, c5 = net(img)
-    # c4_th_act, c5_th_act = net_th_act(img)
+    c4_th_act, c5_th_act = net_th_act(img)
     # c4 = c4.mean(1).squeeze(0).cpu().numpy()
     c4_norm = norm(c4, 0.08)
-    sns.heatmap(c4_norm, cmap=sns.color_palette("ch:start=.2,rot=-.3", as_cmap=True))
-    plt.savefig("{}c4_norm.jpg".format(dst_path))
+    c4_th_act_norm = norm(c4_th_act, 0.08)
+    sns.heatmap(c4_th_act_norm, cmap=sns.color_palette("ch:start=.2,rot=-.3", as_cmap=True))
+    plt.savefig("{}c4_th_act_norm.jpg".format(dst_path))
     plt.close()
