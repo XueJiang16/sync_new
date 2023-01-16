@@ -118,7 +118,7 @@ train_transform = transforms.Compose([
 img = train_transform(img).unsqueeze(0).cuda()
 with torch.no_grad():
     c4, c5 = net(img)
-    c4_th_act, c5_th_act = net_th_act(img)
+    # c4_th_act, c5_th_act = net_th_act(img)
     c4 = c4.mean(1).squeeze(0)
     sns.heatmap(c4, cmap=sns.color_palette("ch:start=.2,rot=-.3", as_cmap=True))
     plt.savefig("c4_{}.jpg".format(os.path.join(dst_path, img_name)))
