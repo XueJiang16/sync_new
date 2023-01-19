@@ -30,7 +30,9 @@
 
 ##coco
 #bash ./tools/ood_dist_test.sh custom_config/faster_rcnn.py foo 2
-bash ./tools/ood_dist_test_auto.sh custom_config/faster_rcnn.py foo 2 --tab_name coco
+# bash ./tools/ood_dist_test_auto.sh custom_config/faster_rcnn.py foo 2 --tab_name coco
+bash ./tools/ood_dist_test_auto.sh custom_config/seg_config.py foo 2 --tab_name ade20k
+
 ## google doc
 #bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2 --tab_name add
 #bash ./tools/ood_dist_test_auto.sh custom_config/patchsim_mobile.py foo 2 --tab_name mobile

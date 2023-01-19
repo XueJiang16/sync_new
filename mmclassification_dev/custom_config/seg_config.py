@@ -21,9 +21,9 @@ model = dict(
         type=method_list[0],
         classifier=dict(
         type='ImageClassifier',
-        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ade20k/deeplabv3plus_r50-d8_512x512_80k_ade20k_20200614_185028-bf1400d8.pth'),
+        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ade20k/iter_80000.pth'),
         backbone=dict(
-            type='ResNetV1cActivation',
+            type='ResNetActivation',
             depth=50,
             num_stages=4,
             dilations=(1, 1, 2, 4),
