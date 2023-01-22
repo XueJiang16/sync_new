@@ -98,7 +98,8 @@ img_paths = ["/data/csxjiang/val", '/data/csxjiang/ood_data/iNaturalist/images',
             '/data/csxjiang/ood_data/Places/images', '/data/csxjiang/ood_data/Textures/dtd/images_collate']
 # img_names = ['ID', 'iNaturalist', 'SUN', 'Places', 'Textures']
 
-i = 0
+i = 3
+# img_name = 'ILSVRC2012_val_00011372.JPEG'
 img_name = 'ILSVRC2012_val_00011372.JPEG'
 img_path = img_paths[i]
 dst_path = "./vis/figure/fig1/"
@@ -121,23 +122,6 @@ img = train_transform(img).unsqueeze(0).cuda()
 with torch.no_grad():
     c4, c5 = net(img)
     c4_th_act, c5_th_act = net_th_act(img)
-    ##  hist + pdf
-    # c4 = oversample(c4, 256).cpu().numpy()
-    # c5 = oversample(c5, 2048).cpu().numpy()
-    # c4_th_act = oversample(c4_th_act, 256).cpu().numpy()
-    # c5_th_act = oversample(c5_th_act, 2048).cpu().numpy()
-    # ax1 = plt.subplot(221)
-    # ax1.hist(c4, density=True, bins=100)
-    # ax2 = plt.subplot(222)
-    # ax2.hist(c4_th_act, density=True, bins=100)
-    # ax3 = plt.subplot(223)
-    # ax3.hist(c5, density=True, bins=100)
-    # ax4 = plt.subplot(224)
-    # ax4.hist(c5_th_act, density=True, bins=100)
-    # plt.savefig("{}.jpg".format(os.path.join(dst_path, os.path.splitext(img_name)[0])))
-    # plt.close()
-
-    #heatmap
 
     feature_sim1, feature_mean1 = feature_sim(c5)
     feature_sim2, feature_mean2 = feature_sim(c5_th_act)
