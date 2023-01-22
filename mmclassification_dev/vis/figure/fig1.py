@@ -99,10 +99,10 @@ img_paths = ["/data/csxjiang/val", '/data/csxjiang/ood_data/iNaturalist/images',
             '/data/csxjiang/ood_data/Places/images', '/data/csxjiang/ood_data/Textures/dtd/images_collate']
 # img_names = ['ID', 'iNaturalist', 'SUN', 'Places', 'Textures']
 
-#i=0
-# img_name = 'ILSVRC2012_val_00011372.JPEG'
-i = 3
-img_name = 'f_field_wild_00000123.jpg'
+i=0
+img_name = 'ILSVRC2012_val_00011372.JPEG'
+# i = 3
+# img_name = 'f_field_wild_00000123.jpg'
 img_path = img_paths[i]
 dst_path = "./vis/figure/fig1/"
 os.makedirs(dst_path, exist_ok=True)
@@ -137,7 +137,6 @@ with torch.no_grad():
     c5_norm_mask = cv2.resize(np.uint8(255 * c5_norm), (img1.shape[1], img1.shape[0]), interpolation=cv2.INTER_CUBIC)
     c5_norm_mask = np.float32(c5_norm_mask) / 255
     c5_norm_mask = np.reshape(c5_norm_mask, newshape=-1)
-    print(c5_norm_mask.shape)
     plt.hist(c5_norm_mask, density=True, bins=20)
     plt.savefig("{}_before_hist.jpg".format(os.path.join(dst_path, os.path.splitext(img_name)[0])))
     plt.close()
