@@ -99,7 +99,7 @@ img_paths = ["/data/csxjiang/val", '/data/csxjiang/ood_data/iNaturalist/images',
 # img_names = ['ID', 'iNaturalist', 'SUN', 'Places', 'Textures']
 
 i = 0
-img_name = 'ILSVRC2012_val_00001155.JPEG'
+img_name = 'ILSVRC2012_val_0011372.JPEG'
 img_path = img_paths[i]
 dst_path = "./vis/figure/fig1/"
 os.makedirs(dst_path, exist_ok=True)
