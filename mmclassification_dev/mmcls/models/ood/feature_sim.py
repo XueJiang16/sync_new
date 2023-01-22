@@ -83,7 +83,7 @@ class FeatureReweight(BaseModule):
         x_axis = np.arange(-0.1, 1.1, 0.001)
         y_axis0 = norm.pdf(x_axis, float(mean[0][0]), np.sqrt(float(covs[0][0][0]))) * weights[0]  # 1st gaussian
         y_axis1 = norm.pdf(x_axis, float(mean[1][0]), np.sqrt(float(covs[1][0][0]))) * weights[1]  # 2nd gaussian
-        plt.hist(x, density=True, color='black', bins=60)
+        plt.hist(x, density=True, color='silver', bins=60)
         if mean[0][0] > mean[1][0]:
             plt.plot(x_axis, y_axis0, label='Foreground', color='darkorange')
             plt.plot(x_axis, y_axis1, label='Background', color='royalblue')
@@ -98,7 +98,7 @@ class FeatureReweight(BaseModule):
         plt.legend()
         plt.tight_layout()
 
-        plt.savefig(os.path.join(out_dir, '{}.pdf'.format(filename)))
+        plt.savefig(os.path.join(out_dir, '{}.jpg'.format(filename)))
         plt.close('all')
 
         if mean[0][0] > mean[1][0]:
