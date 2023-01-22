@@ -157,7 +157,7 @@ class FeatureReweight(BaseModule):
                     mid_path = 'OOD'
                 else:
                     mid_path = 'ID'
-                out_dir = os.path.join('./vis_res/vis_gmm_0122/', mid_path)
+                out_dir = os.path.join('./vis_res/vis_gmm_single/', mid_path)
                 os.makedirs(out_dir, exist_ok=True)
                 # feature_crops = feature_c5.flatten(2)
                 feature_crops = feature_c5
@@ -169,7 +169,6 @@ class FeatureReweight(BaseModule):
                 score = []
                 for i in range(batch_size):
                     x = feature_crops[i]
-                    x = x.cpu().detach().numpy()
 
 
                     # val, idx = torch.topk(x.mean(dim=-1), k=2048)
@@ -178,12 +177,12 @@ class FeatureReweight(BaseModule):
                     # x = x[::64].contiguous()
 
                     # x = x.reshape(int(channel/sub_channel), sub_channel, -1)
-                    x = x.mean(0)
+                    x = x[124]
 
-                    x = x - x.min()
+                    # x = x - x.min()
                     # x[x > 1] = 1
                     # x[x < 0] = 0
-
+                    x = x.cpu().detach().numpy()
                     c5_norm_mask = cv2.resize(np.uint8(255 * x), (100, 100),
                                               interpolation=cv2.INTER_CUBIC)
                     c5_norm_mask = np.float32(c5_norm_mask) / 255
