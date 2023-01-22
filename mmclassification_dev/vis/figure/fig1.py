@@ -134,7 +134,7 @@ with torch.no_grad():
     c5_norm = norm(c5, 1)
     c5_th_act_norm = norm(c5_th_act, 1)
 
-    c5_norm_mask = cv2.resize(np.uint8(255 * c5_norm), (img.shape[1], img.shape[0]), interpolation=cv2.INTER_CUBIC)
+    c5_norm_mask = cv2.resize(np.uint8(255 * c5_norm), (img1.shape[1], img1.shape[0]), interpolation=cv2.INTER_CUBIC)
     c5_norm_mask = np.float32(c5_norm_mask) / 255
     # c5_norm_mask = np.reshape(c5_norm_mask, newshape=-1)
     print(c5_norm_mask.shape)
