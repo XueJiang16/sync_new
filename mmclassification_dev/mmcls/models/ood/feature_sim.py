@@ -86,7 +86,7 @@ class FeatureReweight(BaseModule):
             plt.plot(x_axis, y_axis0, label='Background', color='royalblue')
             plt.plot(x_axis, y_axis1, label='Foreground', color='darkorange')
         plt.plot(x_axis, y_axis0 + y_axis1, ls='dashed', label='Mixed Distribution', color='g')
-        plt.xlim(-0.1, 1.1)
+        # plt.xlim(-0.1, 1.1)
         # plt.ylim(0.0, 2.0)
         plt.xlabel(r"X")
         plt.ylabel(r"Density")
@@ -177,7 +177,7 @@ class FeatureReweight(BaseModule):
                     # x = x[::64].contiguous()
 
                     # x = x.reshape(int(channel/sub_channel), sub_channel, -1)
-                    x = x[124]
+                    x = x[88]
 
                     # x = x - x.min()
                     # x[x > 1] = 1
