@@ -62,8 +62,9 @@ class FeatureReweight(BaseModule):
         self.mode = mode
 
     def gmm_score(self, x, out_dir='./', filename=None):
-        x = x.cpu().detach().numpy()
+        # x = x.cpu().detach().numpy()
         x = x.reshape(-1, 1)
+
         gmm = GMM(n_components=2, max_iter=100, random_state=10, covariance_type='full')
         # find useful parameters
         with warnings.catch_warnings():
@@ -73,12 +74,7 @@ class FeatureReweight(BaseModule):
         covs = model.covariances_
         weights = model.weights_
 
-        # print('Dis1 mean={}, std={}, weight={}'.
-        #       format(float(mean[0][0]), np.sqrt(float(covs[0][0][0])), weights[0]))
-        # print('Dis2 mean={}, std={}, weight={}'.
-        #       format(float(mean[1][0]), np.sqrt(float(covs[1][0][0])), weights[1]))
 
-        # create necessary things to plot
 
         x_axis = np.arange(-0.1, 1.1, 0.001)
         y_axis0 = norm.pdf(x_axis, float(mean[0][0]), np.sqrt(float(covs[0][0][0]))) * weights[0]  # 1st gaussian
@@ -162,20 +158,35 @@ class FeatureReweight(BaseModule):
                     mid_path = 'OOD'
                 else:
                     mid_path = 'ID'
-                out_dir = os.path.join('./vis_res/vis_gmm_0122_/', mid_path)
+                out_dir = os.path.join('./vis_res/vis_gmm_0122/', mid_path)
                 os.makedirs(out_dir, exist_ok=True)
-                feature_crops = feature_c5.flatten(2)
+                # feature_crops = feature_c5.flatten(2)
+                feature_crops = feature_c5
+
+
+
                 batch_size, channel, _ = feature_crops.shape
                 sub_channel = 64
                 score = []
                 for i in range(batch_size):
                     x = feature_crops[i]
+
                     # val, idx = torch.topk(x.mean(dim=-1), k=2048)
                     # x = x[idx].flatten()
                     # x = x.flatten()
                     # x = x[::64].contiguous()
-                    x = x.reshape(int(channel/sub_channel), sub_channel, -1)
+
+                    # x = x.reshape(int(channel/sub_channel), sub_channel, -1)
                     x = x.mean(0)
+
+                    x = x - x.min()
+                    # x[x > 1] = 1
+                    # x[x < 0] = 0
+
+                    c5_norm_mask = cv2.resize(np.uint8(255 * x), (100, 100),
+                                              interpolation=cv2.INTER_CUBIC)
+                    c5_norm_mask = np.float32(c5_norm_mask) / 255
+                    x = np.reshape(c5_norm_mask, newshape=-1)
                     # single_score = np.mean(list(map(self.gmm_score, x)))
                     filename = os.path.splitext(os.path.basename(filenames[i]))[0]
                     single_score = self.gmm_score(x, out_dir, filename)
