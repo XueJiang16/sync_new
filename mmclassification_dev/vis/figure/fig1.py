@@ -168,8 +168,8 @@ with torch.no_grad():
     # res34 = np.hstack([res3, res4])
     # res = np.vstack([res12, res34])
     # plt.matshow(C4_features[i])
-    cv2.imwrite("{}_before.jpg".format(os.path.join(dst_path, img_name)), res3)
-    cv2.imwrite("{}_after.jpg".format(os.path.join(dst_path, img_name)), res4)
+    cv2.imwrite("{}_before.jpg".format(os.path.join(dst_path, os.path.splitext(img_name)[0])), res3)
+    cv2.imwrite("{}_after.jpg".format(os.path.join(dst_path, os.path.splitext(img_name)[0])), res4)
     print("Before score={}, After score={}".format(feature_sim1[0], feature_sim2[0]))
 
 
