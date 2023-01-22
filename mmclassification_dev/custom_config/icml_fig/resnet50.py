@@ -87,6 +87,7 @@ data = dict(
             type='FolderDataset',
             path='/data/csxjiang/ood_data/Places/images',
             pipeline=pipline,
+            pick_img=['f_field_wild_00000123.jpg'],
             aug=aug,
             len_limit=1000 if quick_test else -1,
         ),
