@@ -94,6 +94,7 @@ def show_heatmap(img: np.ndarray,
     cam = cam / np.max(cam)
     return np.uint8(255 * cam)
 
+
 img_paths = ["/data/csxjiang/val", '/data/csxjiang/ood_data/iNaturalist/images', '/data/csxjiang/ood_data/SUN/images',
             '/data/csxjiang/ood_data/Places/images', '/data/csxjiang/ood_data/Textures/dtd/images_collate']
 # img_names = ['ID', 'iNaturalist', 'SUN', 'Places', 'Textures']
@@ -124,16 +125,20 @@ with torch.no_grad():
     c4, c5 = net(img)
     c4_th_act, c5_th_act = net_th_act(img)
 
+
+    # heatmap
     feature_sim1, feature_mean1 = feature_sim(c5)
     feature_sim2, feature_mean2 = feature_sim(c5_th_act)
-    # print("Loc1: 95%={}".format(torch.quantile(features1.mean(1), 0.95)))
-    # print("Loc2: 95%={}".format(torch.quantile(features2.mean(1), 0.95)))
-    # assert False
     # c4_norm = norm(c4, 0.08)
     # c4_th_act_norm = norm(c4_th_act, 0.08)
     c5_norm = norm(c5, 1)
     c5_th_act_norm = norm(c5_th_act, 1)
 
+    c5_norm_mask = cv2.resize(np.uint8(255 * c5_norm), (img.shape[1], img.shape[0]), interpolation=cv2.INTER_CUBIC)
+    c5_norm_mask = np.float32(c5_norm_mask) / 255
+    plt.hist(c5_norm_mask, density=True, bins=100)
+    plt.savefig("{}_before_hist.jpg".format(os.path.join(dst_path, os.path.splitext(img_name)[0])))
+    plt.close()
 
 
     # res1 = show_heatmap(img1, c4_norm)
