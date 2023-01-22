@@ -62,7 +62,6 @@ class FeatureReweight(BaseModule):
         self.mode = mode
 
     def gmm_score(self, x, out_dir='./', filename=None):
-        # x = x.cpu().detach().numpy()
         x = x.reshape(-1, 1)
 
         gmm = GMM(n_components=2, max_iter=100, random_state=10, covariance_type='full')
@@ -170,6 +169,8 @@ class FeatureReweight(BaseModule):
                 score = []
                 for i in range(batch_size):
                     x = feature_crops[i]
+                    x = x.cpu().detach().numpy()
+
 
                     # val, idx = torch.topk(x.mean(dim=-1), k=2048)
                     # x = x[idx].flatten()
