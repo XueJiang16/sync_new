@@ -181,7 +181,7 @@ class FeatureReweight(BaseModule):
                     v, idx = x_tmp.topk(k=120, dim=0)
                     x = x[idx[-1]]
 
-                    # x = x - x.min()
+                    x = x - x.min()
                     # x[x > 1] = 1
                     # x[x < 0] = 0
                     x = x.cpu().detach().numpy()
