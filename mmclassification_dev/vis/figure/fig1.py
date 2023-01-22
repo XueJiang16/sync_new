@@ -63,6 +63,7 @@ def norm(features, mean):
     return features_norm
 
 def feature_sim(feature):
+    print(feature)
     feature_crops = feature.flatten(-2)
     patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
     patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
