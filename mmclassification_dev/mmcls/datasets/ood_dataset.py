@@ -127,7 +127,6 @@ class TxtDataset(OODBaseDataset):
         random.shuffle(self.file_list)
         if self.pick_img is not None:
             self.file_list = self.pick_img
-        print(self.file_list)
         if self.train_label is not None:
             train_labels = []
             with open(self.train_label, 'r') as f:
