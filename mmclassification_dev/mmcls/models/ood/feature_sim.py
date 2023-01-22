@@ -165,7 +165,7 @@ class FeatureReweight(BaseModule):
 
 
 
-                batch_size, channel, _ = feature_crops.shape
+                batch_size, channel, _, _ = feature_crops.shape
                 sub_channel = 64
                 score = []
                 for i in range(batch_size):
