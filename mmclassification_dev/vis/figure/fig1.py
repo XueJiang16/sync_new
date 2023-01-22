@@ -123,7 +123,7 @@ with torch.no_grad():
     c4_th_act, c5_th_act = net_th_act(img)
     ##  hist + pdf
     # c4 = oversample(c4, 256).cpu().numpy()
-    c5 = oversample(c5, 2048).cpu().numpy()
+    # c5 = oversample(c5, 2048).cpu().numpy()
     # c4_th_act = oversample(c4_th_act, 256).cpu().numpy()
     # c5_th_act = oversample(c5_th_act, 2048).cpu().numpy()
     # ax1 = plt.subplot(221)
