@@ -21,7 +21,7 @@ from .builder import DATASETS
 from .pipelines import Compose
 
 class OODBaseDataset(Dataset):
-    def __init__(self, name, pipeline, input_size=None, transform='ImageNet', aug=None, noise_engine=None, len_limit=-1):
+    def __init__(self, name, pipeline, input_size=None, transform='ImageNet', pick_img=None, aug=None, noise_engine=None, len_limit=-1):
         super().__init__()
         self.pipeline = Compose(pipeline)
         self.file_list = []
@@ -29,6 +29,7 @@ class OODBaseDataset(Dataset):
         self.name = name
         self.resize_size = input_size if input_size is not None else 256
         self.crop_size = input_size if input_size is not None else 224
+        self.pick_img = pick_img
 
         if transform == 'ImageNet':
             self.transform = tv.transforms.Compose([
@@ -61,6 +62,8 @@ class OODBaseDataset(Dataset):
     def parse_datainfo(self):
         random.seed(111)
         random.shuffle(self.file_list)
+        if self.pick_img is not None:
+            self.file_list = self.pick_img
         for sample in self.file_list:
             info = dict(img_prefix=self.data_prefix)
             sample = os.path.join(self.data_prefix, sample)
@@ -121,6 +124,8 @@ class TxtDataset(OODBaseDataset):
     def parse_datainfo(self):
         random.seed(222)
         random.shuffle(self.file_list)
+        if self.pick_img is not None:
+            self.file_list = self.pick_img
         if self.train_label is not None:
             train_labels = []
             with open(self.train_label, 'r') as f:
@@ -229,6 +234,8 @@ class ImageNetSuperclass(OODBaseDataset):
     def parse_datainfo(self):
         random.seed(111)
         random.shuffle(self.file_list)
+        if self.pick_img is not None:
+            self.file_list = self.pick_img
         if self.train_label is not None:
             train_labels = []
             with open(self.train_label, 'r') as f:

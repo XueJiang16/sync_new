@@ -59,6 +59,7 @@ data = dict(
         data_ann='/data/csxjiang/meta/val_labeled.txt',
         # path='/data/csxjiang/ILSVRC/Data/CLS-LOC/train',
         # data_ann='/data/csxjiang/meta/train_labeled.txt',
+        pick_img=['ILSVRC2012_val_00011372.JPEG'],
         pipeline=pipline,
         len_limit=5000 if quick_test else -1,
         train_label=None,
