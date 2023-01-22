@@ -162,7 +162,7 @@ class FeatureReweight(BaseModule):
                     mid_path = 'OOD'
                 else:
                     mid_path = 'ID'
-                out_dir = os.path.join('./vis_res/vis_gmm_0122/', mid_path)
+                out_dir = os.path.join('./vis_res/vis_gmm_0122_/', mid_path)
                 os.makedirs(out_dir, exist_ok=True)
                 feature_crops = feature_c5.flatten(2)
                 batch_size, channel, _ = feature_crops.shape
