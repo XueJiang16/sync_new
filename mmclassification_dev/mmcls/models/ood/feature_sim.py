@@ -177,8 +177,9 @@ class FeatureReweight(BaseModule):
                     # x = x[::64].contiguous()
 
                     # x = x.reshape(int(channel/sub_channel), sub_channel, -1)
-                    v, idx = x.topk(k=200, dim=0)
-                    x = v[-1]
+                    x_tmp = x.mean(dim=(-1,-2))
+                    v, idx = x_tmp.topk(k=1000, dim=0)
+                    x = x[idx[-1]]
 
                     # x = x - x.min()
                     # x[x > 1] = 1
