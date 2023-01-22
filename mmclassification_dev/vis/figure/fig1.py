@@ -141,7 +141,12 @@ with torch.no_grad():
     plt.savefig("{}_before_hist.jpg".format(os.path.join(dst_path, os.path.splitext(img_name)[0])))
     plt.close()
 
-
+    c5_th_act_norm_mask = cv2.resize(np.uint8(255 * c5_th_act_norm), (img1.shape[1], img1.shape[0]), interpolation=cv2.INTER_CUBIC)
+    c5_th_act_norm_mask = np.float32(c5_th_act_norm_mask) / 255
+    c5_th_act_norm_mask = np.reshape(c5_th_act_norm_mask, newshape=-1)
+    plt.hist(c5_th_act_norm_mask, density=True, bins=20)
+    plt.savefig("{}_after_hist.jpg".format(os.path.join(dst_path, os.path.splitext(img_name)[0])))
+    plt.close()
     # res1 = show_heatmap(img1, c4_norm)
     # res2 = show_heatmap(img2, c4_th_act_norm)
     res3 = show_heatmap(img3, c5_norm)
