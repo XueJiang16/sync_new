@@ -7,10 +7,10 @@ import seaborn as sns
 import os
 
 def single_picture(basic_path, method, dataset, mode=''):
-    path = os.path.join(basic_path, method, dataset)
-    in_confs = np.load(path+'/id_rw.npy')
+    path = basic_path
+    in_confs = np.load(path+'/ID.npy')
     in_confs = in_confs[:,0]
-    out_confs = np.load(path+'/ood_rw.npy')
+    out_confs = np.load(path+'/{}.npy'.format(dataset))
     out_confs = out_confs[:,0]
     #id-ood
     sns.set(rc={'figure.figsize': (8, 6)})
@@ -24,11 +24,11 @@ def single_picture(basic_path, method, dataset, mode=''):
     plt.yticks(size=16)
     plt.xticks(size=16)
     plt.tight_layout()
-    fig.get_figure().savefig('dis_file/{}_{}_overall.pdf'.format(method, dataset))
+    fig.get_figure().savefig(os.path.join(basic_path, '{}_overall.pdf'.format(dataset)))
     plt.close()
 
 if __name__ == '__main__':
-    basic_path = './'
+    basic_path = './feature_sim_dump'
     # methods = ['MSP','ODIN','Energy']
     # methods = ['GradNorm']
     methods = ['ours']
