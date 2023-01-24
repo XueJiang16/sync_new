@@ -23,6 +23,7 @@ model = dict(
     # temperature=1,
     target_file=training_file,
     mode='mean',
+    debug_mode=True,
     ood_detector=dict(
         type=method_list[0],
         classifier=dict(

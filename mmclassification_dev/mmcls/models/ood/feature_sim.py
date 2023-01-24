@@ -51,7 +51,7 @@ def show_heatmap(img: np.ndarray,
 
 @OOD.register_module()
 class FeatureReweight(BaseModule):
-    def __init__(self, ood_detector=None, mode='mean',**kwargs):
+    def __init__(self, ood_detector=None, mode='mean', debug_mode=False, **kwargs):
         super(FeatureReweight, self).__init__()
         self.local_rank = os.environ['LOCAL_RANK']
         self.has_ood_detector = True if ood_detector else False
@@ -60,6 +60,7 @@ class FeatureReweight(BaseModule):
         else:
             self.ood_detector = no_ood_detector
         self.mode = mode
+        self.debug_mode = debug_mode
 
     def gmm_score(self, x, out_dir='./', filename=None):
         x = x.reshape(-1, 1)
