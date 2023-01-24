@@ -9,9 +9,7 @@ import os
 def single_picture(basic_path, method, dataset, mode=''):
     path = basic_path
     in_confs = np.load(path+'/ID.npy')
-    in_confs = in_confs[:,0]
     out_confs = np.load(path+'/{}.npy'.format(dataset))
-    out_confs = out_confs[:,0]
     #id-ood
     sns.set(rc={'figure.figsize': (8, 6)})
     # sns.set_style('whitegrid')
