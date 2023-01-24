@@ -258,6 +258,7 @@ class FeatureReweight(BaseModule):
                 else:
                     middle_name = 'Unknown'
                 filename = os.path.splitext(os.path.basename(filename_['filename']))[0] + ".txt"
+                os.makedirs(os.path.join(dump_path, middle_name), exist_ok=True)
                 with open(os.path.join(dump_path, middle_name,filename), mode='w') as f:
                     f.write(str(id_score) + '\n')
         return patch_sim, type
