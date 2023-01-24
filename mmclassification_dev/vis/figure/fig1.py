@@ -103,10 +103,10 @@ img_paths = ["/data/csxjiang/val", '/data/csxjiang/ood_data/iNaturalist/images',
 #ILSVRC2012_val_00011802.jpg  ILSVRC2012_val_00020514.jpg  ILSVRC2012_val_00020967.jpg  ILSVRC2012_val_00022333.jpg  ILSVRC2012_val_00049692.jpg
 # i=0
 # img_name = 'ILSVRC2012_val_00049692.JPEG'
-i=4
-img_name = 'braided_0009.jpg'
-# i = 3
-# img_name = 'f_field_wild_00000123.jpg'
+# i=4
+# img_name = 'braided_0009.jpg'
+i = 3
+img_name = 'g_grotto_00004308.jpg'
 img_path = img_paths[i]
 dst_path = "./vis/figure/fig1/"
 os.makedirs(dst_path, exist_ok=True)
