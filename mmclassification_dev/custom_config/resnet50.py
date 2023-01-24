@@ -18,12 +18,11 @@ training_file = None
 
 model = dict(
     type=method_name,
-    debug_mode=False,
+    debug_mode=True,
     num_classes=1000,
     # temperature=1,
     target_file=training_file,
     mode='mean',
-    debug_mode=True,
     ood_detector=dict(
         type=method_list[0],
         classifier=dict(
