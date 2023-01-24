@@ -240,5 +240,23 @@ class FeatureReweight(BaseModule):
                 patch_sim = feature_c5.std(dim=(-1,-2)).mean(-1)
             else:
                 raise NotImplementedError
-
+        if self.debug_mode:
+            dump_path = './feature_sim_dump'
+            S_dump = patch_sim.cpu().tolist()
+            for id_score, filename_ in zip(S_dump, input['img_metas']):
+                if 'ILSVRC2012' in filename_['filename']:
+                    middle_name = 'ID'
+                elif 'iNaturalist' in filename_['filename']:
+                    middle_name = 'iNaturalist'
+                elif 'SUN' in filename_['filename']:
+                    middle_name = 'SUN'
+                elif 'Places' in filename_['filename']:
+                    middle_name = 'Places'
+                elif 'Textures' in filename_['filename']:
+                    middle_name = 'Textures'
+                else:
+                    middle_name = 'Unknown'
+                filename = os.path.splitext(os.path.basename(filename_['filename']))[0] + ".txt"
+                with open(os.path.join(dump_path, middle_name,filename), mode='w') as f:
+                    f.write(str(id_score) + '\n')
         return patch_sim, type
