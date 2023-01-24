@@ -24,7 +24,7 @@ def single_picture(basic_path, method, dataset, mode=''):
     plt.yticks(size=16)
     plt.xticks(size=16)
     plt.tight_layout()
-    fig.get_figure().savefig(os.path.join(basic_path, '{}_overall.pdf'.format(dataset)))
+    fig.get_figure().savefig(os.path.join(basic_path, '{}_overall.jpg'.format(dataset)))
     plt.close()
 
 if __name__ == '__main__':
