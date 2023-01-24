@@ -17,12 +17,12 @@ def single_picture(basic_path, method, dataset, mode=''):
     fig = sns.kdeplot(np.array(in_confs), bw=0.2)
     sns.kdeplot(np.array(out_confs), bw=0.2)
     plt.legend(labels=['ID (ImageNet)', 'OOD ({})'.format(dataset)])
-    plt.xlabel('OOD scores', fontsize=18, fontweight='bold')
+    plt.xlabel('Feature Sim Score', fontsize=18, fontweight='bold')
     plt.ylabel('Density', fontsize=18, fontweight='bold')
     plt.yticks(size=16)
     plt.xticks(size=16)
     plt.tight_layout()
-    fig.get_figure().savefig(os.path.join(basic_path, '{}_overall.jpg'.format(dataset)))
+    fig.get_figure().savefig(os.path.join(basic_path, '{}_overall.pdf'.format(dataset)))
     plt.close()
 
 if __name__ == '__main__':
