@@ -54,8 +54,7 @@ data = dict(
         data_ann='/data/csxjiang/meta/val_labeled.txt',
         pipeline=pipline,
         len_limit=5000 if quick_test else -1,
-        resize_size=384,
-        crop_size=384,
+        input_size=384,
         # train_label=training_file,
     ),
     ood_data=[
@@ -65,8 +64,8 @@ data = dict(
             path='/data/csxjiang/ood_data/iNaturalist/images',
             pipeline=pipline,
             len_limit=1000 if quick_test else -1,
-            resize_size=384,
-            crop_size=384,
+            input_size=384,
+
         ),
         dict(
             name='SUN',
@@ -74,8 +73,8 @@ data = dict(
             path='/data/csxjiang/ood_data/SUN/images',
             pipeline=pipline,
             len_limit=1000 if quick_test else -1,
-            resize_size=384,
-            crop_size=384,
+            input_size=384,
+
         ),
         dict(
             name='Places',
@@ -83,8 +82,8 @@ data = dict(
             path='/data/csxjiang/ood_data/Places/images',
             pipeline=pipline,
             len_limit=1000 if quick_test else -1,
-            resize_size=384,
-            crop_size=384,
+            input_size=384,
+
         ),
         dict(
             name='Textures',
@@ -92,8 +91,7 @@ data = dict(
             path='/data/csxjiang/ood_data/Textures/dtd/images_collate',
             pipeline=pipline,
             len_limit=1000 if quick_test else -1,
-            resize_size=384,
-            crop_size=384,
+            input_size=384,
         ),
     ],
 
