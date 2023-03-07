@@ -193,7 +193,7 @@ class FeatureReweight(BaseModule):
                 # feature_tokens_ = feature_tokens / feature_tokens.norm(dim=-1).unsqueeze(-1)  # (B, 576, 768N)
                 # cls_token, patch_token = feature_tokens_[:, :, 0].unsqueeze(-1), feature_tokens_[:, :, 1:]
                 # feature_affinity = torch.einsum("bdi,bdj->bij", cls_token, patch_token)
-                ## feature_affinity = torch.einsum("bid,bjd->bij", feature_tokens_, feature_tokens_)  # (B, 576, 576)
+                feature_affinity = torch.einsum("bid,bjd->bij", feature_tokens_, feature_tokens_)  # (B, 576, 576)
                 # filenames = [x['filename'] for x in input['img_metas']]
                 # output_path = "./feature_affinity_vis"
                 # os.makedirs(output_path, exist_ok=True)
@@ -205,10 +205,10 @@ class FeatureReweight(BaseModule):
                 #     f = (f + 1) / 2
                 #     cam = show_heatmap(img, f)
                 #     cv2.imwrite(os.path.join(output_path, os.path.basename(img_name)), cam)
-                ## feature_crops = feature_affinity
-                ## patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
-                feature_crops = feature_tokens
-                patch_mean = feature_tokens.mean(-1).unsqueeze(-1)
+                feature_crops = feature_affinity
+                patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
+                # feature_crops = feature_tokens
+                # patch_mean = feature_tokens.mean(-1).unsqueeze(-1)
                 patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
             elif self.mode == 'channel_mean':
                 feature_crops = feature_c5.flatten(2)
