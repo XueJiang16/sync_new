@@ -18,7 +18,7 @@ model = dict(
     mode='vit',
     ood_detector=dict(
     type=method_list[-1],
-    classifier= dict(
+    classifier=dict(
     type='ImageClassifier',
     init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/vit-base-p16_in21k-pre-3rdparty_ft-64xb64_in1k-384_20210928-98e8652b.pth'),
     backbone=dict(
