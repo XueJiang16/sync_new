@@ -17,7 +17,7 @@ model = dict(
     num_classes=1000,
     mode='vit',
     ood_detector=dict(
-    type=method_list[1],
+    type=method_list[-1],
     classifier= dict(
     type='ImageClassifier',
     init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/vit-base-p16_in21k-pre-3rdparty_ft-64xb64_in1k-384_20210928-98e8652b.pth'),
@@ -54,6 +54,8 @@ data = dict(
         data_ann='/data/csxjiang/meta/val_labeled.txt',
         pipeline=pipline,
         len_limit=5000 if quick_test else -1,
+        resize_size=384,
+        crop_size=384,
         # train_label=training_file,
     ),
     ood_data=[
@@ -63,6 +65,8 @@ data = dict(
             path='/data/csxjiang/ood_data/iNaturalist/images',
             pipeline=pipline,
             len_limit=1000 if quick_test else -1,
+            resize_size=384,
+            crop_size=384,
         ),
         dict(
             name='SUN',
@@ -70,6 +74,8 @@ data = dict(
             path='/data/csxjiang/ood_data/SUN/images',
             pipeline=pipline,
             len_limit=1000 if quick_test else -1,
+            resize_size=384,
+            crop_size=384,
         ),
         dict(
             name='Places',
@@ -77,6 +83,8 @@ data = dict(
             path='/data/csxjiang/ood_data/Places/images',
             pipeline=pipline,
             len_limit=1000 if quick_test else -1,
+            resize_size=384,
+            crop_size=384,
         ),
         dict(
             name='Textures',
@@ -84,6 +92,8 @@ data = dict(
             path='/data/csxjiang/ood_data/Textures/dtd/images_collate',
             pipeline=pipline,
             len_limit=1000 if quick_test else -1,
+            resize_size=384,
+            crop_size=384,
         ),
     ],
 
