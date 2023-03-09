@@ -208,7 +208,7 @@ class FeatureReweight(BaseModule):
                 # feature_crops = feature_affinity
                 # patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
                 feature_crops = feature_tokens
-                patch_mean = feature_tokens.mean(-2).unsqueeze(-1)
+                patch_mean = feature_tokens.mean(-2).unsqueeze(-2)
                 patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
             elif self.mode == 'channel_mean':
                 feature_crops = feature_c5.flatten(2)
