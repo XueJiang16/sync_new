@@ -205,10 +205,10 @@ class FeatureReweight(BaseModule):
                 #     f = (f + 1) / 2
                 #     cam = show_heatmap(img, f)
                 #     cv2.imwrite(os.path.join(output_path, os.path.basename(img_name)), cam)
-                # feature_crops = feature_affinity
-                # patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
-                feature_crops = feature_tokens
-                patch_mean = feature_tokens.mean(-1).unsqueeze(-1)
+                feature_crops = feature_affinity
+                patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
+                # feature_crops = feature_tokens
+                # patch_mean = feature_tokens.mean(-1).unsqueeze(-1)
                 patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
             elif self.mode == 'channel_mean':
                 feature_crops = feature_c5.flatten(2)
