@@ -15,3 +15,8 @@ mmclassification_dev/vis_cam_features_new/*
 *.png
 mmclassification_dev/softmax_dump/*
 mmclassification_dev/feature_affinity_vis/*
+Spurious_OOD/datasets/waterbird_complete90_forest2water2/*
+mmclassification/work_dirs/*
+mmclassification_dev/feature_sim_dump/*
+mmclassification_dev/vis_res/*
+wise-ft/*
