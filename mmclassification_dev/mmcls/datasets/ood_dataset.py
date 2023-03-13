@@ -29,7 +29,7 @@ class OODBaseDataset(Dataset):
         self.name = name
         if transform == 'ImageNet':
             self.transform = tv.transforms.Compose([
-                tv.transforms.Resize(384),
+                tv.transforms.Resize(384),  # vit 384
                 # tv.transforms.Resize(248, interpolation=tv.transforms.InterpolationMode.BICUBIC),
                 tv.transforms.CenterCrop(384),
                 # tv.transforms.Resize((480, 480)),
