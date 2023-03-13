@@ -60,6 +60,25 @@ class FeatureReweight(BaseModule):
         else:
             self.ood_detector = no_ood_detector
         self.mode = mode
+        self.gap = nn.AdaptiveAvgPool2d((1, 1))
+
+    def kap(self, x, k):
+        b, c, h, w = x.shape
+        x_gap = self.gap(x).view(b, c)
+
+        ## kap
+        x = x.view(b, c, -1)
+        ## h*w -> top k
+        num = int(k * (h * w))
+        # num = int(self.k * h)
+        topk_v, _ = x.topk(num, dim=-1)
+        out = topk_v.mean(dim=-1)
+        # topk_v, _ = out.topk(num, dim=-1)
+        # out = topk_v.mean(dim=-1)
+        mean_gap = x_gap.mean(dim=-1)
+        mean_kap = out.mean(dim=-1)
+        out = out * (mean_gap / mean_kap).unsqueeze(-1)
+        return out
 
     def gmm_score(self, x, out_dir='./'):
         x = x.cpu().detach().numpy()
@@ -220,6 +239,9 @@ class FeatureReweight(BaseModule):
                 patch_sim = torch.abs(feature_crops - patch_median).flatten(1).median(dim=-1)[0]  # for ID: .mean(dim=-2)
             elif self.mode =='std':
                 patch_sim = feature_c5.std(dim=(-1,-2)).mean(-1)
+            elif self.mode == 'kap':
+                patch_mean = self.kap(feature_c5, 0.5).unsqueeze(-1)
+                patch_sim = torch.abs(feature_c5.flatten(2) - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
             else:
                 raise NotImplementedError
 
