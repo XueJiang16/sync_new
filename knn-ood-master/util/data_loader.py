@@ -202,12 +202,12 @@ def get_loader_out(args, dataset=('tim', 'noise'), config_type='default', split=
                 batch_size=batch_size, shuffle=False, num_workers=2)
         elif val_dataset =='lsun':
             val_ood_loader = torch.utils.data.DataLoader(
-                torchvision.datasets.ImageFolder("/data/csxjiang/cifar_benchmark/LSUN/test",
+                torchvision.datasets.ImageFolder("/data/csxjiang/cifar_benchmark/LSUN",
                                                  transform=transform_test), batch_size=batch_size, shuffle=False,
                 num_workers=2)
         elif val_dataset =='isun':
             val_ood_loader = torch.utils.data.DataLoader(
-                torchvision.datasets.ImageFolder("/data/csxjiang/cifar_benchmark/iSUN/iSUN_patches",
+                torchvision.datasets.ImageFolder("/data/csxjiang/cifar_benchmark/iSUN",
                                                  transform=transform_test), batch_size=batch_size, shuffle=False,
                 num_workers=2)
         else:
