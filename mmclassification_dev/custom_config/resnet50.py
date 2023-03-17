@@ -128,4 +128,4 @@ data = dict(
 dist_params = dict(backend='nccl')
 log_level = 'CRITICAL'
 # log_level = 'INFO'
-work_dir = './results/1031'
+work_dir = './results/rebuttal'
