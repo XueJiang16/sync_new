@@ -77,18 +77,18 @@ def get_loader_in(args, config_type='default', split=('train', 'val')):
     if args.in_dataset == "CIFAR-10":
         # Data loading code
         if 'train' in split:
-            trainset = torchvision.datasets.CIFAR10(root='./datasets/data', train=True, download=True, transform=config.transform_train)
+            trainset = torchvision.datasets.CIFAR10(root='/data/csxjiang/cifar10', train=True, download=True, transform=config.transform_train)
             train_loader = torch.utils.data.DataLoader(trainset, batch_size=config.batch_size, shuffle=True, **kwargs)
         if 'val' in split:
-            valset = torchvision.datasets.CIFAR10(root='./datasets/data', train=False, download=True, transform=transform_test)
+            valset = torchvision.datasets.CIFAR10(root='/data/csxjiang/cifar10', train=False, download=True, transform=transform_test)
             val_loader = torch.utils.data.DataLoader(valset, batch_size=config.batch_size, shuffle=True, **kwargs)
     elif args.in_dataset == "CIFAR-100":
         # Data loading code
         if 'train' in split:
-            trainset = torchvision.datasets.CIFAR100(root='./datasets/data', train=True, download=True, transform=config.transform_train)
+            trainset = torchvision.datasets.CIFAR100(root='/data/csxjiang/cifar100', train=True, download=True, transform=config.transform_train)
             train_loader = torch.utils.data.DataLoader(trainset, batch_size=config.batch_size, shuffle=True, **kwargs)
         if 'val' in split:
-            valset = torchvision.datasets.CIFAR100(root='./datasets/data', train=False, download=True, transform=config.transform_test)
+            valset = torchvision.datasets.CIFAR100(root='/data/csxjiang/cifar100', train=False, download=True, transform=config.transform_test)
             val_loader = torch.utils.data.DataLoader(valset, batch_size=config.batch_size, shuffle=True, **kwargs)
     elif args.in_dataset == "imagenet":
         root = args.imagenet_root
@@ -200,6 +200,16 @@ def get_loader_out(args, dataset=('tim', 'noise'), config_type='default', split=
             val_ood_loader = torch.utils.data.DataLoader(
                 LowFreqRandom(image_size=imagesize, data_size=10000),
                 batch_size=batch_size, shuffle=False, num_workers=2)
+        elif val_dataset =='lsun':
+            val_ood_loader = torch.utils.data.DataLoader(
+                torchvision.datasets.ImageFolder("/data/csxjiang/cifar_benchmark/LSUN/test".format(val_dataset),
+                                                 transform=transform_test), batch_size=batch_size, shuffle=False,
+                num_workers=2)
+        elif val_dataset =='isun':
+            val_ood_loader = torch.utils.data.DataLoader(
+                torchvision.datasets.ImageFolder("/data/csxjiang/cifar_benchmark/iSUN/iSUN_patches".format(val_dataset),
+                                                 transform=transform_test), batch_size=batch_size, shuffle=False,
+                num_workers=2)
         else:
             val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.ImageFolder("./datasets/ood_data/{}".format(val_dataset),
                                                           transform=transform_test), batch_size=batch_size, shuffle=False, num_workers=2)
