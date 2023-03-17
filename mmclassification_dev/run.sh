@@ -9,7 +9,7 @@
 # bash ./tools/ood_dist_test.sh custom_config/resnet50.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/resnet50_official.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/meanstd.py foo 2
-#bash ./tools/ood_dist_test.sh custom_config/patchsim.py foo 2
+# bash ./tools/ood_dist_test.sh custom_config/patchsim.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/inat_ib/resnet101.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/aug_contrast.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/cifar10.py foo 2
@@ -22,10 +22,13 @@
 #bash ./tools/ood_dist_test.sh custom_config/vit_lt.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/patchsim_mobile.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/densenet.py foo 2
-bash ./tools/ood_dist_test.sh custom_config/vit.py foo 2
+# bash ./tools/ood_dist_test.sh custom_config/vit.py foo 2
 ## Cifar
+bash ./tools/dist_precompute.sh custom_config/cifar_benchmark/dice_precompute.py /data/csxjiang/ood_ckpt/mmcls_offical/cifar/cifar100_resnet18.pth 2 --metrics accuracy
 #bash ./tools/ood_dist_test.sh custom_config/cifar_benchmark/resnet50.py foo 2
-#bash ./tools/ood_dist_test.sh custom_config/cifar_benchmark/resnet18.py foo 2
+bash ./tools/ood_dist_test.sh custom_config/cifar_benchmark/resnet18.py foo 2
+# bash ./tools/ood_dist_test.sh custom_config/cifar_benchmark/feature_sim.py foo 2
+
 
 ## google doc
 #bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2 --tab_name auto3
@@ -33,7 +36,7 @@ bash ./tools/ood_dist_test.sh custom_config/vit.py foo 2
 #bash ./tools/ood_dist_test_auto.sh custom_config/resnet50.py foo 2 --tab_name pure_feature_sim_loc
 #bash ./tools/ood_dist_test_auto.sh custom_config/threshold_act.py foo 2 --tab_name auto2
 #bash ./tools/ood_dist_test_auto.sh custom_config/densenet.py foo 2 --tab_name densenet
-#bash ./tools/ood_dist_test_auto.sh custom_config/cifar_benchmark/feature_sim.py foo 2 --tab_name cifar
+# bash ./tools/ood_dist_test_auto.sh custom_config/cifar_benchmark/feature_sim.py foo 2 --tab_name near_ood
 
 
 ## id acc

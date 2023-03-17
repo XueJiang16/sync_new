@@ -18,7 +18,7 @@ def get_args():
     parser.add_argument('--name', default="resnet18-supcon", type=str, help='neural network name and training set')
     parser.add_argument('--model-arch', default='resnet18-supcon', type=str, help='model architecture')
     parser.add_argument('--p', default=0, type=float, help='sparsity level')
-    parser.add_argument('--imagenet-root', default='./datasets/imagenet/', type=str, help='imagenet root')
+    parser.add_argument('--imagenet-root', default='/data/csxjiang/ILSVRC/Data/CLS-LOC/', type=str, help='imagenet root')
     parser.add_argument('--seed', default=0, type=int, help='seed')
 
     parser.add_argument('--method', default='', type=str, help='')

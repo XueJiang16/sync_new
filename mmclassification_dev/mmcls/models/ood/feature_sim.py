@@ -51,7 +51,7 @@ def show_heatmap(img: np.ndarray,
 
 @OOD.register_module()
 class FeatureReweight(BaseModule):
-    def __init__(self, ood_detector=None, mode='mean',**kwargs):
+    def __init__(self, ood_detector=None, mode='mean', fuse_const=None, **kwargs):
         super(FeatureReweight, self).__init__()
         self.local_rank = os.environ['LOCAL_RANK']
         self.has_ood_detector = True if ood_detector else False
@@ -61,6 +61,8 @@ class FeatureReweight(BaseModule):
             self.ood_detector = no_ood_detector
         self.mode = mode
         self.gap = nn.AdaptiveAvgPool2d((1, 1))
+        self.fuse_const=fuse_const
+
 
     def kap(self, x, k):
         b, c, h, w = x.shape

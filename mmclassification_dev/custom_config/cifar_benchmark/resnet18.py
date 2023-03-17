@@ -1,13 +1,14 @@
-# import os
-#
-# info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_a8_feature_stat.pth')
+import os
+
+info=os.path.expanduser('/data/csxjiang/dice_cache/cifar100_resnet_p90_feature_stat.pth')
 method_list = ["GradNormBatch", "MSP", "Energy", "ODIN"]
 
-method_name = method_list[0]
+method_name = method_list[2]
 model_name = 'resnet18'
 custom_name = "Official"
-train_dataset = 'cifar_10'
+train_dataset = 'cifar_100'
 num_classes = int(train_dataset.split('_')[-1])
+num_classes_ = 10
 if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
 else:
@@ -19,8 +20,8 @@ model = dict(
     classifier=dict(
         type='ImageClassifier',
         init_cfg=dict(type='Pretrained',
-                      checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet18_b16x8_cifar10_20210528-bd6371c8.pth'),
-                      # checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/cifar100_resnet18.pth'),
+                      # checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet18_b16x8_cifar10_20210528-bd6371c8.pth'),
+                      checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/cifar100_resnet18.pth'),
     backbone=dict(
             type='ResNet_CIFAR',
             depth=18,
@@ -28,12 +29,20 @@ model = dict(
             out_indices=(3,),
             style='pytorch'),
         neck=dict(type='GlobalAveragePooling'),
+        # head=dict(
+        #     type='LinearClsHead',
+        #     num_classes=num_classes,
+        #     in_channels=512,
+        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        #     topk=(1, 5)),
         head=dict(
-            type='LinearClsHead',
+            type='DiceHead',
             num_classes=num_classes,
             in_channels=512,
             loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-            topk=(1, 5))
+            topk=(1, 5),
+            info=info,
+            p=0.9,)
     )
 )
 
@@ -54,6 +63,14 @@ data = dict(
         pipeline=ood_pipeline,
         test_mode=True),
     ood_data=[
+        # dict(
+        # name='cifar{}'.format(num_classes_),
+        # type='CIFAR{}OOD'.format(num_classes_),
+        # data_prefix='/data/csxjiang/cifar{}'.format(num_classes_),
+        # transform=transform,
+        # pipeline=ood_pipeline,
+        # test_mode=True
+        # )
         dict(
             name='SVHN',
             type='FolderDataset',
