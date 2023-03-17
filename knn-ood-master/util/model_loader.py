@@ -40,13 +40,8 @@ def get_model(args, num_classes, load_ckpt=True, load_epoch=None):
         elif args.model_arch == 'resnet18':
             from models.resnet import resnet18_cifar
             model = resnet18_cifar(num_classes=num_classes, method=args.method, p=args.p)
-            if load_ckpt:
-                checkpoint = torch.load('/data/csxjiang/ood_ckpt/mmcls_offical/cifar/cifar100_resnet18.pth')
-                state_dict = checkpoint['state_dict']
-                state_dict = {str.replace(k, 'backbone.', ''): v for k, v in state_dict.items()}
-                state_dict = {str.replace(k, 'head.', ''): v for k, v in state_dict.items()}
-                state_dict = {str.replace(k, 'module.', ''): v for k, v in state_dict.items()}
-                model.load_state_dict(state_dict, strict=False)
+            # if load_ckpt:
+
         elif args.model_arch == 'resnet18-supcon':
             from models.resnet_ss import resnet18_cifar
             model = resnet18_cifar(num_classes=num_classes, method=args.method)
@@ -66,13 +61,16 @@ def get_model(args, num_classes, load_ckpt=True, load_epoch=None):
             assert False, 'Not supported model arch: {}'.format(args.model_arch)
 
         if load_ckpt:
-            epoch = args.epochs
-            if load_epoch is not None:
-                epoch = load_epoch
+            # epoch = args.epochs
+            # if load_epoch is not None:
+            #     epoch = load_epoch
             # checkpoint = torch.load("./checkpoints/{in_dataset}/{model_arch}/checkpoint_{epochs}.pth.tar".format(in_dataset=args.in_dataset, model_arch=args.name, epochs=epoch))
-            checkpoint = torch.load("./checkpoints/{in_dataset}/{model_arch}/checkpoint_{epochs}.pth.tar".format(in_dataset=args.in_dataset, model_arch=args.name, epochs=epoch), map_location='cpu')
-            checkpoint = {'state_dict': {key.replace("module.", ""): value for key, value in checkpoint['state_dict'].items()}}
-            model.load_state_dict(checkpoint['state_dict'])
+            checkpoint = torch.load('/data/csxjiang/ood_ckpt/mmcls_offical/cifar/cifar100_resnet18.pth')
+            state_dict = checkpoint['state_dict']
+            state_dict = {str.replace(k, 'backbone.', ''): v for k, v in state_dict.items()}
+            state_dict = {str.replace(k, 'head.', ''): v for k, v in state_dict.items()}
+            state_dict = {str.replace(k, 'module.', ''): v for k, v in state_dict.items()}
+            model.load_state_dict(state_dict, strict=False)
 
     model.cuda()
     model.eval()
