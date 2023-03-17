@@ -1,5 +1,5 @@
 method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch', 'FeatureReweight']
-method_name = method_list[-2]
+method_name = method_list[2]
 model_name = 'resnet18'
 train_dataset = 'Balance'
 custom_name = None
@@ -56,10 +56,17 @@ model = dict(
             out_indices=(3,),
             style='pytorch'),
         neck=dict(type='GlobalAveragePooling'),
+        # head=dict(
+        #     type='LinearClsHead',
+        #     num_classes=2,
+        #     in_channels=512,
+        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        #     topk=(1, 5))
         head=dict(
-            type='LinearClsHead',
+            type='ReactHead',
             num_classes=2,
             in_channels=512,
+            threshold=1,
             loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
             topk=(1, 5))
     )
