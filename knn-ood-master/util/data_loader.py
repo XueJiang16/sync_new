@@ -152,10 +152,10 @@ def get_loader_out(args, dataset=('tim', 'noise'), config_type='default', split=
                                                         num_workers=2)
         elif val_dataset == 'dtd':
             transform = config.transform_test_largescale if args.in_dataset in {'imagenet'} else config.transform_test
-            val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.ImageFolder(root="/data/csxjiang/ood_data/Textures/dtd/images_collate", transform=transform),
+            val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.ImageFolder(root="/data/csxjiang/ood_data/Textures/dtd/images", transform=transform),
                                                        batch_size=batch_size, shuffle=True, num_workers=2)
         elif val_dataset == 'places365':
-            val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.ImageFolder(root="/data/csxjiang/ood_data/Places/images", transform=transform_test),
+            val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.ImageFolder(root="/data/csxjiang/ood_data/Places", transform=transform_test),
                                                        batch_size=batch_size, shuffle=True, num_workers=2)
         elif val_dataset == 'CIFAR-100':
             val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.CIFAR100(root='/data/csxjiang/cifar100', train=False, download=True, transform=transform_test),
