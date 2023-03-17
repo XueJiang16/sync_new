@@ -112,6 +112,8 @@ def get_loader_in(args, config_type='default', split=('train', 'val')):
             val_loader = torch.utils.data.DataLoader(
                 torchvision.datasets.ImageFolder(os.path.join(root, 'val'), config.transform_test_largescale),
                 batch_size=config.batch_size, shuffle=False, **kwargs)
+    # elif args.in_dataset == 'waterbird':
+
     return EasyDict({
         "train_loader": train_loader,
         "val_loader": val_loader,
@@ -208,6 +210,11 @@ def get_loader_out(args, dataset=('tim', 'noise'), config_type='default', split=
         elif val_dataset =='isun':
             val_ood_loader = torch.utils.data.DataLoader(
                 torchvision.datasets.ImageFolder("/data/csxjiang/cifar_benchmark/iSUN",
+                                                 transform=transform_test), batch_size=batch_size, shuffle=False,
+                num_workers=2)
+        elif val_dataset == 'placebg':
+            val_ood_loader = torch.utils.data.DataLoader(
+                torchvision.datasets.ImageFolder("/data/csxjiang/spurious_ood/ood_datasets/placesbg/images",
                                                  transform=transform_test), batch_size=batch_size, shuffle=False,
                 num_workers=2)
         else:
