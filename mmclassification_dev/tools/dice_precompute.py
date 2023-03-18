@@ -138,7 +138,7 @@ def main():
         distributed = True
         init_dist(args.launcher, **cfg.dist_params)
 
-    dataset = build_dataset(cfg.data.test, default_args=dict(test_mode=True))
+    dataset = build_dataset(cfg.data.train, default_args=dict(test_mode=True))
 
     # build the dataloader
     # The default loader config
@@ -212,10 +212,11 @@ def main():
     if rank == 0:
         outputs = [x.cpu() for x in outputs]
         outputs = torch.cat(outputs, dim=0)
-        outputs_mean = outputs.mean(0)
+        if "dice" in cfg.precompute_name:
+            outputs = outputs.mean(0)
         root_dir = cfg.precompute_name
         os.makedirs(root_dir, exist_ok=True)
-        torch.save(outputs_mean, '{}feature_stat.pth'.format(root_dir))
+        torch.save(outputs, '{}feature_stat.pth'.format(root_dir))
     # if rank == 0:
     #     results = {}
     #     logger = get_root_logger()
