@@ -48,8 +48,8 @@
 
 
 ## spurious
-bash ./tools/dist_precompute.sh custom_config/spurious/dice_precompute.py /home/csxjiang/jx/sync/Spurious_OOD/checkpoints/waterbird/erm_r_0_9/erm_r_0_9_20230115/ckpt30.pth 2 --metrics accuracy
-#bash ./tools/ood_dist_test.sh custom_config/spurious/resnet18.py foo 2
+#bash ./tools/dist_precompute.sh custom_config/spurious/dice_precompute.py /home/csxjiang/jx/sync/Spurious_OOD/checkpoints/waterbird/erm_r_0_9/erm_r_0_9_20230115/ckpt30.pth 2 --metrics accuracy
+bash ./tools/ood_dist_test.sh custom_config/spurious/resnet18.py foo 2
 #bash ./tools/ood_dist_test_auto.sh custom_config/spurious/resnet18.py foo 2 --tab_name spurous
 
 
