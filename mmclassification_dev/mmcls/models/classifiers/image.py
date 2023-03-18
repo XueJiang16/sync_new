@@ -160,6 +160,7 @@ class ImageClassifier(BaseClassifier):
                     require_backbone_features_idx=None,
                     **kwargs):
         """Test without augmentation."""
+        x_ = None
         if require_backbone_features:
             # assert th_act==False
             x_ = self.extract_feat(img, stage='backbone', th_act=th_act)[-1].detach().clone()
@@ -168,7 +169,11 @@ class ImageClassifier(BaseClassifier):
             x_ = self.extract_feat(img, stage='backbone')[int(require_backbone_features_idx)].detach().clone()
 
         if not self.with_head:
-            return None, x_
+            if not x_:
+                x_ = self.extract_feat(img, stage='backbone', th_act=th_act)[-1].detach().clone()
+                return x_
+            else:
+                return None, x_
         else:
             x = self.extract_feat(img, th_act=th_act, sum_scale=True)
             if isinstance(self.head, MultiLabelClsHead):
