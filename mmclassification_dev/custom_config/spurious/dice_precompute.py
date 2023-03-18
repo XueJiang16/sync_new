@@ -71,7 +71,7 @@ data = dict(
         name='waterbird',
         type='CsvDataset',
         path='/data/csxjiang/spurious_ood/waterbird_complete90_forest2water2',
-        mode='val',
+        mode='train',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(type='Resize', size=(256, -1)),
@@ -84,11 +84,11 @@ data = dict(
             dict(type='ImageToTensor', keys=['img']),
             dict(type='Collect', keys=['img'])
         ]),
-    test=dict(
+    test=dict( ##### should be training set !!!
         name='waterbird',
         type='CsvDataset',
         path='/data/csxjiang/spurious_ood/waterbird_complete90_forest2water2',
-        mode='test',
+        mode='train',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(type='Resize', size=(256, -1)),
