@@ -44,6 +44,7 @@ data = dict(
             dict(type='Collect', keys=['img'])
         ],
         test_mode=True),
+
     test=dict(
         type='CIFAR100',
         data_prefix='/data/csxjiang/cifar100',
