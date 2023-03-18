@@ -1,6 +1,6 @@
 import os
 #
-info=os.path.expanduser('/data/csxjiang/dice_cache/spurious_resnet_p70_feature_stat.pth')
+info=os.path.expanduser('/data/csxjiang/dice_cache/spurious_resnet_p90_feature_stat.pth')
 
 method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch', 'FeatureReweight']
 method_name = method_list[2]
@@ -80,7 +80,7 @@ model = dict(
             loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
             topk=(1, 5),
             info=info,
-            p=0.7,)
+            p=0.9,)
     )
 )
 # pipline =[dict(type='Collect', keys=['img'])]
