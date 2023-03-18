@@ -1,9 +1,9 @@
 method_name = 'FeatureReweight'
 model_name = 'resnet18'
 custom_name = "Official"
-train_dataset = 'cifar_100'
+train_dataset = 'cifar_10'
 num_classes = int(train_dataset.split('_')[-1])
-num_classes_ = 10
+num_classes_ = 100
 
 if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
@@ -30,8 +30,8 @@ model = dict(
                           # checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet50_b16x8_cifar10_20210528-f54bfad9.pth'),
                           # checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet18_b16x8_cifar10_20210528-bd6371c8.pth'),
                           # checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/cifar100_resnet18.pth'
-                          checkpoint='/home/csxjiang/jx/sync/mmclassification/work_dirs/cifar100/epoch_100.pth'
-
+                          # checkpoint='/home/csxjiang/jx/sync/mmclassification/work_dirs/cifar100/epoch_100.pth'
+                          checkpoint='/home/csxjiang/jx/sync/mmclassification/work_dirs/cifar10/epoch_100.pth'
                           ),
             backbone=dict(
                 type='ResNetActivation',
