@@ -29,9 +29,12 @@ model = dict(
             init_cfg=dict(type='Pretrained',
                           # checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet50_b16x8_cifar10_20210528-f54bfad9.pth'),
                           # checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet18_b16x8_cifar10_20210528-bd6371c8.pth'),
-                          checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/cifar100_resnet18.pth'),
+                          # checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/cifar100_resnet18.pth'
+                          checkpoint='/home/csxjiang/jx/sync/mmclassification/work_dirs/cifar100/epoch_100.pth'
+
+                          ),
             backbone=dict(
-                type='ResNet_CIFAR',
+                type='ResNetActivation',
                 depth=18,
                 num_stages=4,
                 th_act_k=0.15,
@@ -55,7 +58,7 @@ ood_pipeline = [
     dict(type='Collect', keys=['img', 'type'])
 ]
 
-transform = "Cifar"
+transform = "Cifar224"
 
 data = dict(
     samples_per_gpu=256,
