@@ -12,7 +12,7 @@ training_file = None
 model = dict(
     type=method_name,
     dumped_feature='/data/csxjiang/knn_cache/spurious_resnet_feature_stat.pth',
-    k=100,
+    k=200,
     classifier=dict(
         type='ImageClassifier',
         init_cfg=dict(type='Pretrained', checkpoint='/home/csxjiang/jx/sync/Spurious_OOD/checkpoints/waterbird/erm_r_0_9/erm_r_0_9_20230115/ckpt30.pth'),
