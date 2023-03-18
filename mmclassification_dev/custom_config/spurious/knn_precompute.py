@@ -79,10 +79,10 @@ data = dict(
         name='waterbird',
         type='CsvDataset',
         path='/data/csxjiang/spurious_ood/waterbird_complete90_forest2water2',
-        mode='test',
+        mode='train',
         pipeline=[
             dict(type='LoadImageFromFile'),
-            dict(type='Resize', size=(256, -1)),
+            dict(type='Resize', size=(224, 224)),
             dict(type='CenterCrop', crop_size=224),
             dict(
                 type='Normalize',
