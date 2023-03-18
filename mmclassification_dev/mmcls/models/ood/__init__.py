@@ -10,9 +10,10 @@ from .th_act import ThresholdActivation
 from .feature_vis import FeatureVis, FeatureVisBlock
 from .dynamic_th_act import DynamicThresholdActivation
 from .feature_sim import FeatureReweight
+from .knn import KNN
 
 __all__ = [
     'GradNorm', 'GradNormBatch', 'GradNormBatchScore', 'MSP', 'MSPCustom', 'PatchSim', 'FeatureMapSim', 'KLDiv',
     'GradNormCos', 'ODIN', 'ODINCustom', 'Energy', 'EnergyCustom', 'Cosine', 'MeanStdDetector', 'AugContrast',
-    'ThresholdActivation', 'FeatureVis', 'DynamicThresholdActivation', 'FeatureReweight', 'FeatureVisBlock'
+    'ThresholdActivation', 'FeatureVis', 'DynamicThresholdActivation', 'FeatureReweight', 'FeatureVisBlock', 'KNN'
 ]
