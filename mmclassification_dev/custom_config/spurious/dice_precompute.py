@@ -1,4 +1,4 @@
-precompute_name = '/data/csxjiang/dice_cache/spurious_resnet_p90_'
+precompute_name = '/data/csxjiang/dice_cache/spurious_resnet_p70_'
 model = dict(
     type='ImageClassifier',
     backbone=dict(
@@ -15,7 +15,7 @@ model = dict(
         loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
         topk=(1, 5),
         info=None,
-        p=0.9,
+        p=0.7,
         mode='precompute'))
 
 # dataset_type = 'ImageNet'
