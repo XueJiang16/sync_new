@@ -190,7 +190,7 @@ class FolderDataset(OODBaseDataset):
 
 @DATASETS.register_module()
 class CsvDataset(OODBaseDataset):
-    def __init__(self, name, path, pipeline, mode='test', data_ann=None, **kwargs):
+    def __init__(self, name, path, pipeline, mode='test', data_ann=None, test_mode=None, **kwargs):
         super().__init__(name, pipeline, **kwargs)
         # self.file_list = glob.glob(os.path.join(path, '*'))
         self.data_prefix = path
