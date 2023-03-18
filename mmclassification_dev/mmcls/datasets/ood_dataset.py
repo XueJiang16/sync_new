@@ -190,13 +190,18 @@ class FolderDataset(OODBaseDataset):
 
 @DATASETS.register_module()
 class CsvDataset(OODBaseDataset):
-    def __init__(self, name, path, pipeline, data_ann=None, **kwargs):
+    def __init__(self, name, path, pipeline, mode='test', data_ann=None, **kwargs):
         super().__init__(name, pipeline, **kwargs)
         # self.file_list = glob.glob(os.path.join(path, '*'))
         self.data_prefix = path
         self.metadata_df = pd.read_csv(
             os.path.join(self.data_prefix, 'metadata.csv'))
-        self.metadata_df = self.metadata_df[self.metadata_df['split'] == 2]
+        self.split_dict = {
+            'train': 0,
+            'val': 1,
+            'test': 2
+        }
+        self.metadata_df = self.metadata_df[self.metadata_df['split'] == self.split_dict[mode]]
 
         # self.y_array = self.metadata_df['y'].values
         # self.place_array = self.metadata_df['place'].values

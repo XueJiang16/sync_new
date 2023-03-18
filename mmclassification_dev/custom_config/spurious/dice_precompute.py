@@ -19,7 +19,7 @@ model = dict(
         p=0.9,
         mode='precompute'))
 
-dataset_type = 'ImageNet'
+# dataset_type = 'ImageNet'
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 train_pipeline = [
@@ -51,9 +51,9 @@ data = dict(
     samples_per_gpu=32*4,
     workers_per_gpu=2*2,
     train=dict(
-        type='ImageNet',
-        data_prefix='/data/csxjiang/ILSVRC/Data/CLS-LOC/train',
-        ann_file=meta_file,
+        type='CsvDataset',
+        data_prefix='/data/csxjiang/spurious_ood/waterbird_complete90_forest2water2',
+        mode='train',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(type='RandomResizedCrop', size=224),
@@ -68,9 +68,9 @@ data = dict(
             dict(type='Collect', keys=['img', 'gt_label'])
         ]),
     val=dict(
-        type='ImageNet',
-        data_prefix='/data/csxjiang/ILSVRC/Data/CLS-LOC/train',
-        ann_file=meta_file,
+        type='CsvDataset',
+        data_prefix='/data/csxjiang/spurious_ood/waterbird_complete90_forest2water2',
+        mode='val',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(type='Resize', size=(256, -1)),
@@ -84,9 +84,9 @@ data = dict(
             dict(type='Collect', keys=['img'])
         ]),
     test=dict(
-        type='ImageNet',
-        data_prefix='/data/csxjiang/ILSVRC/Data/CLS-LOC/train',
-        ann_file=meta_file,
+        type='CsvDataset',
+        data_prefix='/data/csxjiang/spurious_ood/waterbird_complete90_forest2water2',
+        mode='test',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(type='Resize', size=(256, -1)),

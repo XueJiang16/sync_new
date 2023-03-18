@@ -1,3 +1,7 @@
+import os
+#
+info=os.path.expanduser('/data/csxjiang/dice_cache/spurious_resnet_p90_feature_stat.pth')
+
 method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch', 'FeatureReweight']
 method_name = method_list[2]
 model_name = 'resnet18'
@@ -62,13 +66,21 @@ model = dict(
         #     in_channels=512,
         #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
         #     topk=(1, 5))
+        # head=dict(
+        #     type='ReactHead',
+        #     num_classes=2,
+        #     in_channels=512,
+        #     threshold=1.5,
+        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        #     topk=(1, 5))
         head=dict(
-            type='ReactHead',
+            type='DiceHead',
             num_classes=2,
             in_channels=512,
-            threshold=1.5,
             loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-            topk=(1, 5))
+            topk=(1, 5),
+            info=info,
+            p=0.9,)
     )
 )
 # pipline =[dict(type='Collect', keys=['img'])]
