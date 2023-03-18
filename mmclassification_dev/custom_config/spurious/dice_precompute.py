@@ -1,4 +1,3 @@
-meta_file='/data/csxjiang/meta/train_labeled.txt'
 precompute_name = '/data/csxjiang/dice_cache/spurious_resnet_p90_'
 model = dict(
     type='ImageClassifier',
@@ -51,8 +50,9 @@ data = dict(
     samples_per_gpu=32*4,
     workers_per_gpu=2*2,
     train=dict(
+        name='waterbird',
         type='CsvDataset',
-        data_prefix='/data/csxjiang/spurious_ood/waterbird_complete90_forest2water2',
+        path='/data/csxjiang/spurious_ood/waterbird_complete90_forest2water2',
         mode='train',
         pipeline=[
             dict(type='LoadImageFromFile'),
@@ -68,8 +68,9 @@ data = dict(
             dict(type='Collect', keys=['img', 'gt_label'])
         ]),
     val=dict(
+        name='waterbird',
         type='CsvDataset',
-        data_prefix='/data/csxjiang/spurious_ood/waterbird_complete90_forest2water2',
+        path='/data/csxjiang/spurious_ood/waterbird_complete90_forest2water2',
         mode='val',
         pipeline=[
             dict(type='LoadImageFromFile'),
@@ -84,8 +85,9 @@ data = dict(
             dict(type='Collect', keys=['img'])
         ]),
     test=dict(
+        name='waterbird',
         type='CsvDataset',
-        data_prefix='/data/csxjiang/spurious_ood/waterbird_complete90_forest2water2',
+        path='/data/csxjiang/spurious_ood/waterbird_complete90_forest2water2',
         mode='test',
         pipeline=[
             dict(type='LoadImageFromFile'),
