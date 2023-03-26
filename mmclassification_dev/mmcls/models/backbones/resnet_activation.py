@@ -683,8 +683,8 @@ class ResNetActivation(BaseBackbone):
             x = res_layer(x, th_act_para=th_act_parameter,
                           feature_sim_para=feature_sim_parameter, th_act_k=self.th_act_k, stage=i)
             #############
-            # if i == self.feature_sim_stage:
-            #     return tuple([x])
+            if i == self.feature_sim_stage:
+                return tuple([x])
             if i in self.out_indices:
                 outs.append(x)
         return tuple(outs)
