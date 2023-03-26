@@ -1,6 +1,6 @@
 import os
 
-info=os.path.expanduser('/data/csxjiang/dice_cache/cifar100_resnet_p90_feature_stat.pth')
+info=os.path.expanduser('/data/csxjiang/dice_cache/cifar10_resnet_p90_feature_stat.pth')
 method_list = ["GradNormBatch", "MSP", "Energy", "ODIN"]
 
 method_name = method_list[2]
@@ -35,21 +35,21 @@ model = dict(
         #     in_channels=512,
         #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
         #     topk=(1, 5)),
-        # head=dict(
-        #     type='DiceHead',
-        #     num_classes=num_classes,
-        #     in_channels=512,
-        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-        #     topk=(1, 5),
-        #     info=info,
-        #     p=0.9,),
         head=dict(
-            type='ReactHead',
+            type='DiceHead',
             num_classes=num_classes,
             in_channels=512,
-            threshold=1,
             loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-            topk=(1, 5))
+            topk=(1, 5),
+            info=info,
+            p=0.9,),
+        # head=dict(
+        #     type='ReactHead',
+        #     num_classes=num_classes,
+        #     in_channels=512,
+        #     threshold=1,
+        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        #     topk=(1, 5))
 
     )
 )
