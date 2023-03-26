@@ -121,7 +121,7 @@ class FeatureMapSim(BaseModule):
 
         with torch.no_grad():
             _, feature_c5 = self.ood_detector.classifier(return_loss=False, softmax=False, post_process=False,
-                                                         require_backbone_features=True, **input)
+                                                         require_backbone_features=True, skip_classifier=True,**input)
             ##########
             # _, features_orig = self.ood_detector.classifier(return_loss=False, softmax=False, post_process=False,
             #                                                 th_act=False, require_features=True, **input)
