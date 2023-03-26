@@ -3,7 +3,7 @@ import os
 info=os.path.expanduser('/data/csxjiang/dice_cache/cifar10_resnet_p90_feature_stat.pth')
 method_list = ["GradNormBatch", "MSP", "Energy", "ODIN"]
 
-method_name = method_list[-2]
+method_name = method_list[-3]
 model_name = 'resnet18'
 custom_name = "Official"
 train_dataset = 'cifar_100'
