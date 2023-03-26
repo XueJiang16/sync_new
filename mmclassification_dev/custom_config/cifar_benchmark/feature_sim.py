@@ -34,14 +34,14 @@ model = dict(
                           checkpoint='/home/csxjiang/jx/sync/mmclassification/work_dirs/cifar10/epoch_100.pth'
                           ),
             backbone=dict(
-                type='ResNetActivation',
+                type='ResNet_CIFAR',
                 depth=18,
                 num_stages=4,
                 th_act_k=0.15,
                 th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
                 th_act_location=1, ## No. of conv layer
                 feature_sim_stage=3,  ## 0:C2 1:C3 2:C4 3:C5
-                feature_sim_location=1,  ## No. of conv layer
+                feature_sim_location=0,  ## No. of conv layer
                 out_indices=(3,),
                 style='pytorch'),
             # neck=dict(type='GlobalAveragePooling'),
