@@ -26,23 +26,26 @@ model = dict(
             type='ResNet_CIFAR',
             depth=18,
             num_stages=4,
+            th_act_k=0.15,
+            th_act_stage=0,  ## 0:C2 1:C3 2:C4 3:C5
+            th_act_location=0, ## No. of conv layer
             out_indices=(3,),
             style='pytorch'),
         neck=dict(type='GlobalAveragePooling'),
-        # head=dict(
-        #     type='LinearClsHead',
-        #     num_classes=num_classes,
-        #     in_channels=512,
-        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-        #     topk=(1, 5)),
         head=dict(
-            type='DiceHead',
+            type='LinearClsHead',
             num_classes=num_classes,
             in_channels=512,
             loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-            topk=(1, 5),
-            info=info,
-            p=0.9,),
+            topk=(1, 5)),
+        # head=dict(
+        #     type='DiceHead',
+        #     num_classes=num_classes,
+        #     in_channels=512,
+        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        #     topk=(1, 5),
+        #     info=info,
+        #     p=0.9,),
         # head=dict(
         #     type='ReactHead',
         #     num_classes=num_classes,
