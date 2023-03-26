@@ -26,9 +26,9 @@ model = dict(
             type='ResNet_CIFAR',
             depth=18,
             num_stages=4,
-            th_act_k=0.15,
-            th_act_stage=0,  ## 0:C2 1:C3 2:C4 3:C5
-            th_act_location=0, ## No. of conv layer
+            # th_act_k=0.15,
+            # th_act_stage=0,  ## 0:C2 1:C3 2:C4 3:C5
+            # th_act_location=0, ## No. of conv layer
             out_indices=(3,),
             style='pytorch'),
         neck=dict(type='GlobalAveragePooling'),
