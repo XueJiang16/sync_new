@@ -30,6 +30,7 @@ bash ./tools/ood_dist_test.sh custom_config/cifar_benchmark/resnet18.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/cifar_benchmark/feature_sim.py foo 2
 
 
+
 ## google doc
 #bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2 --tab_name auto3
 #bash ./tools/ood_dist_test_auto.sh custom_config/patchsim_mobile.py foo 2 --tab_name mobile
