@@ -3,14 +3,14 @@ method_name = 'FeatureMapSim'
 # method_name = 'FeatureReweight'
 model_name = 'resnet18'
 custom_name = 'fc_th_act'
-train_dataset = 'cifar_100'
+train_dataset = 'cifar_10'
 num_classes = int(train_dataset.split('_')[-1])
-num_classes_ = 10
+num_classes_ = 100
 if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
 else:
     readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
-quick_test = True
+quick_test = False
 noise_engine = None
 # k_c5 = 0.65
 model = dict(
@@ -25,13 +25,13 @@ model = dict(
     ood_detector=dict(
         type=method_list[2],
         debug_mode=False,
-        num_classes=1000,
+        num_classes=num_classes,
         # temperature=1,
         target_file=None,
         classifier=dict(
             type='ImageClassifier',
-            # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet18_b16x8_cifar10_20210528-bd6371c8.pth'),
-            init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/cifar100_resnet18.pth'),
+            init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet18_b16x8_cifar10_20210528-bd6371c8.pth'),
+            # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/cifar100_resnet18.pth'),
             # backbone=dict(
             #     type='ResNet',
             #     depth=18,
