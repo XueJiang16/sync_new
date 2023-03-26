@@ -82,9 +82,9 @@ class DiceHead(ClsHead):
                 - If post processing, the output is a multi-dimentional list of
                   float and the dimensions are ``(num_samples, num_classes)``.
         """
-        x = self.pre_logits(x)
-        print(x.shape)
-        assert False
+        x = self.pre_logits(x)  ## input of fc
+        # print(x.shape)
+        # assert False
         if self.mode == 'precompute':
             return x
         else:
@@ -92,8 +92,9 @@ class DiceHead(ClsHead):
                 f = x.detach().clone()
             # cls_score = self.fc(x)
             # DICE
-            if self.masked_w is None:
-                self.calculate_mask_weight()
+            with torch.no_grad():
+                if self.masked_w is None:
+                    self.calculate_mask_weight()
             vote = x[:, None, :] * self.masked_w
             if self.fc.bias is not None:
                 cls_score = vote.sum(2) + self.fc.bias
