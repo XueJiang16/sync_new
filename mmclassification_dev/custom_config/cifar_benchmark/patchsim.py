@@ -1,9 +1,11 @@
 method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch', 'ThresholdActivation']
 method_name = 'FeatureMapSim'
 # method_name = 'FeatureReweight'
-model_name = 'resnet50'
-train_dataset = 'Balance'
+model_name = 'resnet18'
 custom_name = 'fc_th_act'
+train_dataset = 'cifar_10'
+num_classes = int(train_dataset.split('_')[-1])
+num_classes_ = 100
 if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
 else:
@@ -28,10 +30,10 @@ model = dict(
         target_file=None,
         classifier=dict(
             type='ImageClassifier',
-            init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
+            init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet18_b16x8_cifar10_20210528-bd6371c8.pth'),
             backbone=dict(
                 type='ResNet',
-                depth=50,
+                depth=18,
                 num_stages=4,
                 out_indices=(3,),
                 style='pytorch',
@@ -44,80 +46,71 @@ model = dict(
             #           k=k_c5),
             head=dict(
                 type='LinearClsHead',
-                num_classes=1000,
-                in_channels=2048,
+                num_classes=num_classes,
+                in_channels=512,
                 loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
                 topk=(1, 5))
 )
     )
 )
-pipline =[dict(type='Collect', keys=['img', 'type'])]
+ood_pipeline =[dict(type='Collect', keys=['img', 'type'])]
 # aug = ['fog']
 aug = None
-
+transform='Cifar'
 data = dict(
-    samples_per_gpu=256 if method_name is not 'ODIN' else 32,
+    samples_per_gpu=256,
     workers_per_gpu=4,
     id_data=dict(
-        name='ImageNet',
-        type='TxtDataset',
-        path='/data/csxjiang/val',
-        data_ann='/data/csxjiang/meta/val_labeled.txt',
-        # path='/data/csxjiang/ILSVRC/Data/CLS-LOC/train',
-        # data_ann='/data/csxjiang/meta/train_labeled.txt',
-        pipeline=pipline,
-        len_limit=5000 if quick_test else -1,
-        train_label=None,
-        aug=aug,
-    ),
-    # id_data=dict(
-    #     type='JsonDataset',
-    #     path='/data/csxjiang/',
-    #     data_ann='/data/csxjiang/ood_data/inat/val2018.json',
-    #     pipeline=[
-    #         dict(type='LoadImageFromFile'),
-    #         dict(type='Resize', size=480),
-    #         dict(
-    #             type='Normalize',
-    #             mean=[123.675, 116.28, 103.53],
-    #             std=[58.395, 57.12, 57.375],
-    #             to_rgb=True),
-    #         dict(type='ImageToTensor', keys=['img']),
-    #         dict(type='Collect', keys=['img'])
-    #     ]),
+        name='cifar{}'.format(num_classes),
+        type='CIFAR{}OOD'.format(num_classes),
+        data_prefix='/data/csxjiang/cifar{}'.format(num_classes),
+        transform=transform,
+        pipeline=ood_pipeline,
+        test_mode=True),
     ood_data=[
         dict(
-            name='iNaturalist',
-            type='FolderDataset',
-            path='/data/csxjiang/ood_data/iNaturalist/images',
-            pipeline=pipline,
-            aug=aug,
-            len_limit=1000 if quick_test else -1,
-        ),
-        dict(
-            name='SUN',
-            type='FolderDataset',
-            path='/data/csxjiang/ood_data/SUN/images',
-            pipeline=pipline,
-            aug=aug,
-            len_limit=1000 if quick_test else -1,
-        ),
-        dict(
-            name='Places',
-            type='FolderDataset',
-            path='/data/csxjiang/ood_data/Places/images',
-            pipeline=pipline,
-            aug=aug,
-            len_limit=1000 if quick_test else -1,
-        ),
-        dict(
-            name='Textures',
-            type='FolderDataset',
-            path='/data/csxjiang/ood_data/Textures/dtd/images_collate',
-            pipeline=pipline,
-            aug=aug,
-            len_limit=1000 if quick_test else -1,
-        ),
+        name='cifar{}'.format(num_classes_),
+        type='CIFAR{}OOD'.format(num_classes_),
+        data_prefix='/data/csxjiang/cifar{}'.format(num_classes_),
+        transform=transform,
+        pipeline=ood_pipeline,
+        test_mode=True
+        )
+        # dict(
+        #     name='SVHN',
+        #     type='FolderDataset',
+        #     path='/data/csxjiang/cifar_benchmark/svhn/images',
+        #     pipeline=ood_pipeline,
+        #     transform=transform,
+        # ),
+        # dict(
+        #     name='LSUN',
+        #     type='FolderDataset',
+        #     path='/data/csxjiang/cifar_benchmark/LSUN/test',
+        #     pipeline=ood_pipeline,
+        #     transform=transform,
+        # ),
+        # dict(
+        #     name='iSUN',
+        #     type='FolderDataset',
+        #     path='/data/csxjiang/cifar_benchmark/iSUN/iSUN_patches',
+        #     pipeline=ood_pipeline,
+        #     transform=transform,
+        # ),
+        # dict(
+        #     name='Places',
+        #     type='FolderDataset',
+        #     path='/data/csxjiang/ood_data/Places/images',
+        #     pipeline=ood_pipeline,
+        #     transform=transform,
+        # ),
+        # dict(
+        #     name='Textures',
+        #     type='FolderDataset',
+        #     path='/data/csxjiang/ood_data/Textures/dtd/images_collate',
+        #     pipeline=ood_pipeline,
+        #     transform=transform,
+        # ),
     ],
 
 )
