@@ -3,9 +3,9 @@ method_name = 'FeatureMapSim'
 # method_name = 'FeatureReweight'
 model_name = 'resnet18'
 custom_name = 'fc_th_act'
-train_dataset = 'cifar_100'
+train_dataset = 'cifar_10'
 num_classes = int(train_dataset.split('_')[-1])
-num_classes_ = 10
+num_classes_ = 100
 if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
 else:
@@ -21,7 +21,7 @@ model = dict(
     order=1,
     # k=k_c5,
     mode='mean',
-    fuse_const=0.016,
+    fuse_const=1300,
     ood_detector=dict(
         type=method_list[1],
         debug_mode=False,
@@ -30,8 +30,8 @@ model = dict(
         target_file=None,
         classifier=dict(
             type='ImageClassifier',
-            # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet18_b16x8_cifar10_20210528-bd6371c8.pth'),
-            init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/cifar100_resnet18.pth'),
+            init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet18_b16x8_cifar10_20210528-bd6371c8.pth'),
+            # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/cifar100_resnet18.pth'),
             # backbone=dict(
             #     type='ResNet',
             #     depth=18,
@@ -46,9 +46,9 @@ model = dict(
                 type='ResNet_CIFAR',
                 depth=18,
                 num_stages=4,
-                th_act_k=0.1,
-                th_act_stage=1,  ## 0:C2 1:C3 2:C4 3:C5
-                th_act_location=0,  ## No. of conv layer
+                th_act_k=0.15,
+                th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
+                th_act_location=1,  ## No. of conv layer
                 feature_sim_stage=3,  ## 0:C2 1:C3 2:C4 3:C5
                 feature_sim_location=0,  ## No. of conv layer
                 out_indices=(3,),
