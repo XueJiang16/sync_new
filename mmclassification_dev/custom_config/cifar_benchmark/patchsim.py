@@ -31,16 +31,27 @@ model = dict(
         classifier=dict(
             type='ImageClassifier',
             init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet18_b16x8_cifar10_20210528-bd6371c8.pth'),
+            # backbone=dict(
+            #     type='ResNet',
+            #     depth=18,
+            #     num_stages=4,
+            #     out_indices=(3,),
+            #     style='pytorch',
+            #     random_block=[1],
+            #     random_block_k=[0.15],
+            #     random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
+            # ),
             backbone=dict(
-                type='ResNet',
+                type='ResNetActivation',
                 depth=18,
                 num_stages=4,
+                th_act_k=0.15,
+                th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
+                th_act_location=1,  ## No. of conv layer
+                feature_sim_stage=3,  ## 0:C2 1:C3 2:C4 3:C5
+                feature_sim_location=0,  ## No. of conv layer
                 out_indices=(3,),
-                style='pytorch',
-                random_block=[1],
-                random_block_k=[0.15],
-                random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
-            ),
+                style='pytorch'),
             neck=dict(type='GlobalAveragePooling'),
             # neck=dict(type='TopKAveragePooling',
             #           k=k_c5),
