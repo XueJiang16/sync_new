@@ -83,6 +83,8 @@ class DiceHead(ClsHead):
                   float and the dimensions are ``(num_samples, num_classes)``.
         """
         x = self.pre_logits(x)
+        print(x.shape)
+        assert False
         if self.mode == 'precompute':
             return x
         else:
