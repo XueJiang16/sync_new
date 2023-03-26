@@ -21,9 +21,9 @@ model = dict(
     order=1,
     # k=k_c5,
     mode='mean',
-    fuse_const=0.1,
+    fuse_const=0.028,
     ood_detector=dict(
-        type=method_list[0],
+        type=method_list[2],
         debug_mode=False,
         num_classes=num_classes,
         # temperature=1,
@@ -56,10 +56,17 @@ model = dict(
             neck=dict(type='GlobalAveragePooling'),
             # neck=dict(type='TopKAveragePooling',
             #           k=k_c5),
+            # head=dict(
+            #     type='LinearClsHead',
+            #     num_classes=num_classes,
+            #     in_channels=512,
+            #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+            #     topk=(1, 5))
             head=dict(
-                type='LinearClsHead',
+                type='ReactHead',
                 num_classes=num_classes,
                 in_channels=512,
+                threshold=1,
                 loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
                 topk=(1, 5))
 )
