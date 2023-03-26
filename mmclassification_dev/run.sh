@@ -28,7 +28,7 @@
 #bash ./tools/ood_dist_test.sh custom_config/cifar_benchmark/resnet50.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/cifar_benchmark/resnet18.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/cifar_benchmark/feature_sim.py foo 2
-bash ./tools/ood_dist_test.sh custom_config/cifar_benchmark/patchsim.py foo 2
+#bash ./tools/ood_dist_test.sh custom_config/cifar_benchmark/patchsim.py foo 2
 
 
 
@@ -39,6 +39,7 @@ bash ./tools/ood_dist_test.sh custom_config/cifar_benchmark/patchsim.py foo 2
 #bash ./tools/ood_dist_test_auto.sh custom_config/threshold_act.py foo 2 --tab_name auto2
 #bash ./tools/ood_dist_test_auto.sh custom_config/densenet.py foo 2 --tab_name densenet
 # bash ./tools/ood_dist_test_auto.sh custom_config/cifar_benchmark/feature_sim.py foo 2 --tab_name near_ood
+bash ./tools/ood_dist_test_auto.sh custom_config/cifar_benchmark/patchsim.py foo 2 --tab_name near_ood_add
 
 
 ## id acc
