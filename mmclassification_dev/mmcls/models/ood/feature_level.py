@@ -200,14 +200,15 @@ class FeatureMapSim(BaseModule):
                 patch_sim=1
             ood_scores = patch_sim
         if self.has_ood_detector:
+            tmp1 = self.ood_detector.classifier.backbone.feature_sim_stage
+            tmp2 = self.ood_detector.classifier.backbone.feature_sim_location
+            self.ood_detector.classifier.backbone.feature_sim_stage=3
+            self.ood_detector.classifier.backbone.feature_sim_location=1
             ood_scores, _ = self.ood_detector(**input)
-            # patch_sim = ((1 / self.threshold) ** (self.order)) * torch.pow(patch_sim, self.order)
-            # patch_sim[patch_sim > 1] = 1
-            # with torch.no_grad():
-
-            # ood_scores = ood_scores * kl_sim * patch_sim
             ood_scores *= self.fuse_const
             ood_scores += patch_sim
+            self.ood_detector.classifier.backbone.feature_sim_stage = tmp1
+            self.ood_detector.classifier.backbone.feature_sim_location = tmp2
             # print("mean:", ood_scores.mean())
             # print("std:", ood_scores.std())
             # exit()

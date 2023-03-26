@@ -42,7 +42,7 @@ model = dict(
             #     random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
             # ),
             backbone=dict(
-                type='ResNetActivation',
+                type='ResNet_CIFAR',
                 depth=18,
                 num_stages=4,
                 th_act_k=0.15,
