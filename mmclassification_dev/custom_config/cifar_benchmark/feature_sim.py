@@ -28,11 +28,11 @@ model = dict(
             type='ImageClassifier',
             init_cfg=dict(type='Pretrained',
                           # checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet50_b16x8_cifar10_20210528-f54bfad9.pth'),
-                          # checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet18_b16x8_cifar10_20210528-bd6371c8.pth'),
+                          checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet18_b16x8_cifar10_20210528-bd6371c8.pth'),
                           # checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/cifar100_resnet18.pth'
                           # checkpoint='/home/csxjiang/jx/sync/mmclassification/work_dirs/cifar100/epoch_100.pth'
-                          checkpoint='/home/csxjiang/jx/sync/mmclassification/work_dirs/cifar10/epoch_100.pth'
-                          ),
+                          # checkpoint='/home/csxjiang/jx/sync/mmclassification/work_dirs/cifar10/epoch_100.pth'
+                          # ),
             backbone=dict(
                 type='ResNet_CIFAR',
                 depth=18,
@@ -58,7 +58,7 @@ ood_pipeline = [
     dict(type='Collect', keys=['img', 'type'])
 ]
 
-transform = "Cifar224"
+transform = "Cifar"
 
 data = dict(
     samples_per_gpu=256,
