@@ -1,9 +1,9 @@
 method_name = 'FeatureReweight'
 model_name = 'resnet18'
 custom_name = "Official"
-train_dataset = 'cifar_10'
+train_dataset = 'cifar_100'
 num_classes = int(train_dataset.split('_')[-1])
-num_classes_ = 100
+num_classes_ = 10
 
 if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
@@ -28,20 +28,20 @@ model = dict(
             type='ImageClassifier',
             init_cfg=dict(type='Pretrained',
                           # checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet50_b16x8_cifar10_20210528-f54bfad9.pth'),
-                          checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet18_b16x8_cifar10_20210528-bd6371c8.pth'),
-                          # checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/cifar100_resnet18.pth'
+                          # checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet18_b16x8_cifar10_20210528-bd6371c8.pth'),
+                          checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/cifar100_resnet18.pth'
                           # checkpoint='/home/csxjiang/jx/sync/mmclassification/work_dirs/cifar100/epoch_100.pth'
                           # checkpoint='/home/csxjiang/jx/sync/mmclassification/work_dirs/cifar10/epoch_100.pth'
-                          # ),
+                          ),
             backbone=dict(
                 type='ResNet_CIFAR',
                 depth=18,
                 num_stages=4,
-                th_act_k=0.15,
-                th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
-                th_act_location=1, ## No. of conv layer
-                feature_sim_stage=3,  ## 0:C2 1:C3 2:C4 3:C5
-                feature_sim_location=0,  ## No. of conv layer
+                th_act_k=0.1,
+                th_act_stage=0,  ## 0:C2 1:C3 2:C4 3:C5
+                th_act_location=0, ## No. of conv layer
+                feature_sim_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
+                feature_sim_location=1,  ## No. of conv layer
                 out_indices=(3,),
                 style='pytorch'),
             # neck=dict(type='GlobalAveragePooling'),
