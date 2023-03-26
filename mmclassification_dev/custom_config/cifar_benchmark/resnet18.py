@@ -3,7 +3,7 @@ import os
 info=os.path.expanduser('/data/csxjiang/dice_cache/cifar10_resnet_p90_feature_stat.pth')
 method_list = ["GradNormBatch", "MSP", "Energy", "ODIN"]
 
-method_name = method_list[-1]
+method_name = method_list[0]
 model_name = 'resnet18'
 custom_name = "Official"
 train_dataset = 'cifar_100'
@@ -32,20 +32,20 @@ model = dict(
             out_indices=(3,),
             style='pytorch'),
         neck=dict(type='GlobalAveragePooling'),
-        # head=dict(
-        #     type='LinearClsHead',
-        #     num_classes=num_classes,
-        #     in_channels=512,
-        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-        #     topk=(1, 5)),
         head=dict(
-            type='DiceHead',
+            type='LinearClsHead',
             num_classes=num_classes,
             in_channels=512,
             loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-            topk=(1, 5),
-            info=info,
-            p=0.9,),
+            topk=(1, 5)),
+        # head=dict(
+        #     type='DiceHead',
+        #     num_classes=num_classes,
+        #     in_channels=512,
+        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        #     topk=(1, 5),
+        #     info=info,
+        #     p=0.9,),
         # head=dict(
         #     type='ReactHead',
         #     num_classes=num_classes,
