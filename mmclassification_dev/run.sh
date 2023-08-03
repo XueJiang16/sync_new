@@ -26,7 +26,6 @@ bash ./tools/ood_dist_test.sh custom_config/resnet50.py foo 2
 # bash ./tools/ood_dist_test.sh custom_config/vit.py foo 2
 
 
-
 #bash ./tools/ood_dist_test.sh custom_config/icml_fig/resnet50.py foo 2
 
 ## Cifar
