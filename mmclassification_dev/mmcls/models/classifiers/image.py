@@ -169,7 +169,7 @@ class ImageClassifier(BaseClassifier):
             x_ = self.extract_feat(img, stage='backbone')[int(require_backbone_features_idx)].detach().clone()
 
         if not self.with_head:
-            if not x_:
+            if x_ is None:
                 x_ = self.extract_feat(img, th_act=th_act)[-1].detach().clone()
                 return x_
             else:
