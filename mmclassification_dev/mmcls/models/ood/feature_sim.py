@@ -185,7 +185,7 @@ class FeatureReweight(BaseModule):
                     # x = x - x.min()
                     # x[x > 1] = 1
                     # x[x < 0] = 0
-                    # x = x.cpu().detach().numpy()
+                    x = x.cpu().detach().numpy()
                     # c5_norm_mask = cv2.resize(np.uint8(255 * x), (100, 100),
                     #                           interpolation=cv2.INTER_CUBIC)
                     # c5_norm_mask = np.float32(c5_norm_mask) / 255
