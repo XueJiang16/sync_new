@@ -174,22 +174,22 @@ class FeatureReweight(BaseModule):
 
                     # val, idx = torch.topk(x.mean(dim=-1), k=2048)
                     # x = x[idx].flatten()
-                    # x = x.flatten()
-                    # x = x[::64].contiguous()
+                    x = x.flatten()
+                    x = x[::64].contiguous()
 
                     # x = x.reshape(int(channel/sub_channel), sub_channel, -1)
-                    x_tmp = x.mean(dim=(-1,-2))
-                    v, idx = x_tmp.topk(k=1000, dim=0)
-                    x = x[idx[-1]]
-
-                    x = x - x.min()
-                    x[x > 1] = 1
-                    x[x < 0] = 0
-                    x = x.cpu().detach().numpy()
-                    c5_norm_mask = cv2.resize(np.uint8(255 * x), (100, 100),
-                                              interpolation=cv2.INTER_CUBIC)
-                    c5_norm_mask = np.float32(c5_norm_mask) / 255
-                    x = np.reshape(c5_norm_mask, newshape=-1)
+                    # x_tmp = x.mean(dim=(-1,-2))
+                    # v, idx = x_tmp.topk(k=1000, dim=0)
+                    # x = x[idx[-1]]
+                    #
+                    # x = x - x.min()
+                    # x[x > 1] = 1
+                    # x[x < 0] = 0
+                    # x = x.cpu().detach().numpy()
+                    # c5_norm_mask = cv2.resize(np.uint8(255 * x), (100, 100),
+                    #                           interpolation=cv2.INTER_CUBIC)
+                    # c5_norm_mask = np.float32(c5_norm_mask) / 255
+                    # x = np.reshape(c5_norm_mask, newshape=-1)
                     # single_score = np.mean(list(map(self.gmm_score, x)))
                     filename = os.path.splitext(os.path.basename(filenames[i]))[0]
                     single_score = self.gmm_score(x, out_dir, filename)
