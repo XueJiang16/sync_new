@@ -102,7 +102,7 @@ img_paths = ["/data/csxjiang/val", '/data/csxjiang/ood_data/iNaturalist/images',
 
 #ILSVRC2012_val_00011802.jpg  ILSVRC2012_val_00020514.jpg  ILSVRC2012_val_00020967.jpg  ILSVRC2012_val_00022333.jpg  ILSVRC2012_val_00049692.jpg
 i=0
-img_name = 'ILSVRC2012_val_00011802.JPEG'
+img_name = 'ILSVRC2012_val_00028224.JPEG'
 # i=1
 # img_name = '3e52bbb9139d5fae639880dada9405bc.jpg'
 # i = 3
