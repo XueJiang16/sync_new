@@ -412,8 +412,8 @@ class ResLayer(nn.Sequential):
             if i == th_act_para:
                 # x = x - th_act_k
                 # x = torch.nn.functional.relu(x)
-                mask = x[x>th_act_k]
-                x = x[mask]
+                x[x < th_act_k] = 0
+
             if i == feature_sim_para:
                 return x
         return x
