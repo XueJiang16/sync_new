@@ -408,8 +408,8 @@ class ResLayer(nn.Sequential):
 
     def forward(self, x, th_act_para, th_act_k, feature_sim_para, stage=None):
         for i, layer in enumerate(self.layers):
-            x = layer(x, relu_exist=True if stage !=3 else False)
-            # x = layer(x)
+            # x = layer(x, relu_exist=True if stage !=3 else False)
+            x = layer(x)
             # print("Block {}/Stage {}: mean={}, std={}".format(i, stage, x.mean(), x.std()))
             if i == th_act_para:
                 x = x - th_act_k
