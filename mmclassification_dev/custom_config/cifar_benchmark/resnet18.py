@@ -3,7 +3,7 @@
 # info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_a8_feature_stat.pth')
 method_list = ["GradNormBatch", "MSP", "Energy", "ODIN"]
 
-method_name = method_list[0]
+method_name = method_list[2]
 model_name = 'resnet18'
 custom_name = "Official"
 train_dataset = 'cifar_10'
@@ -25,6 +25,9 @@ model = dict(
             type='ResNet_CIFAR',
             depth=18,
             num_stages=4,
+            th_act_k=0.05,
+            th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
+            th_act_location=5,  ## No. of conv layer
             out_indices=(3,),
             style='pytorch'),
         neck=dict(type='GlobalAveragePooling'),
