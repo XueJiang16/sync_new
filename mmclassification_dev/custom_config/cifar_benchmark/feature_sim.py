@@ -19,7 +19,7 @@ model = dict(
     num_classes=num_classes,
     mode='mean',
     ood_detector=dict(
-        type='MSP',
+        type='Energy',
         num_classes=num_classes,
         classifier=dict(
             type='ImageClassifier',
@@ -31,20 +31,20 @@ model = dict(
                 type='ResNet_CIFAR',
                 depth=18,
                 num_stages=4,
-                th_act_k=0.05,
+                th_act_k=0.2,
                 th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
-                th_act_location=5, ## No. of conv layer
-                feature_sim_stage=3,  ## 0:C2 1:C3 2:C4 3:C5
-                feature_sim_location=2,  ## No. of conv layer
+                th_act_location=1, ## No. of conv layer
+                # feature_sim_stage=3,  ## 0:C2 1:C3 2:C4 3:C5
+                # feature_sim_location=2,  ## No. of conv layer
                 out_indices=(3,),
                 style='pytorch'),
-            # neck=dict(type='GlobalAveragePooling'),
-            # head=dict(
-            #     type='LinearClsHead',
-            #     num_classes=num_classes,
-            #     in_channels=2048,
-            #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-            #     topk=(1, 5))
+            neck=dict(type='GlobalAveragePooling'),
+            head=dict(
+                type='LinearClsHead',
+                num_classes=num_classes,
+                in_channels=2048,
+                loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+                topk=(1, 5))
         )
     )
 )
