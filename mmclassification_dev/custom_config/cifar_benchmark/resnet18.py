@@ -6,7 +6,7 @@ method_list = ["GradNormBatch", "MSP", "Energy", "ODIN"]
 method_name = method_list[2]
 model_name = 'resnet18'
 custom_name = "Official"
-train_dataset = 'cifar_100'
+train_dataset = 'cifar_10'
 num_classes = int(train_dataset.split('_')[-1])
 if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
@@ -19,13 +19,13 @@ model = dict(
     classifier=dict(
         type='ImageClassifier',
         init_cfg=dict(type='Pretrained',
-                      # checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet18_b16x8_cifar10_20210528-bd6371c8.pth'),
-                      checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/cifar100_resnet18.pth'),
+                      checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet18_b16x8_cifar10_20210528-bd6371c8.pth'),
+                      # checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/cifar100_resnet18.pth'),
         backbone=dict(
             type='ResNet_CIFAR',
             depth=18,
             num_stages=4,
-            th_act_k=0.2,
+            th_act_k=0,
             th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
             th_act_location=1,  ## No. of conv layer
             out_indices=(3,),
