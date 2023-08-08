@@ -22,7 +22,7 @@ python main.py \
     --dataset.test.batch_size 256 \
     --dataset.val.batch_size 256 \
     --network.pretrained True \
-    --network.checkpoint 'results/pretrained_weights/resnet50_imagenet1k_v1.pth' \
+    --network.checkpoint '/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth' \
     --merge_option merge
 
 ############################################
