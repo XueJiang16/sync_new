@@ -41,8 +41,8 @@ python scripts/eval_ood_imagenet.py \
 
 
 # full-spectrum ood
-python scripts/eval_ood_imagenet.py \
-   --tvs-pretrained \
-   --arch resnet50 \
-   --postprocessor msp \
-   --save-score --save-csv --fsood
+#python scripts/eval_ood_imagenet.py \
+#   --tvs-pretrained \
+#   --arch resnet50 \
+#   --postprocessor msp \
+#   --save-score --save-csv --fsood
