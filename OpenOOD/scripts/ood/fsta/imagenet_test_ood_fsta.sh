@@ -27,7 +27,7 @@ python scripts/eval_ood_imagenet.py \
     --tvs-pretrained \
     --arch resnet50 \
     --postprocessor fsta \
-    --save-score --save-csv #--fsood
+#    --save-score --save-csv #--fsood
 
 # full-spectrum ood
 #python scripts/eval_ood_imagenet.py \
