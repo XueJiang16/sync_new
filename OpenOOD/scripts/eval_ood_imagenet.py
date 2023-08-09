@@ -140,12 +140,12 @@ evaluator = Evaluator(
     num_workers=8)
 
 # load pre-computed scores if exists
-if os.path.isfile(os.path.join(root, 'scores', f'{postprocessor_name}.pkl')):
-    with open(os.path.join(root, 'scores', f'{postprocessor_name}.pkl'),
-              'rb') as f:
-        scores = pickle.load(f)
-    update(evaluator.scores, scores)
-    print('Loaded pre-computed scores from file.')
+# if os.path.isfile(os.path.join(root, 'scores', f'{postprocessor_name}.pkl')):
+#     with open(os.path.join(root, 'scores', f'{postprocessor_name}.pkl'),
+#               'rb') as f:
+#         scores = pickle.load(f)
+#     update(evaluator.scores, scores)
+#     print('Loaded pre-computed scores from file.')
 
 # save postprocessor for future reuse
 if hasattr(evaluator.postprocessor, 'setup_flag'
