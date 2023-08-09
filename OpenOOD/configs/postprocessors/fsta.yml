@@ -1,0 +1,7 @@
+postprocessor:
+  name: fsta
+  APS_mode: True
+  postprocessor_args:
+    thred: 0.2
+  postprocessor_sweep:
+    thred: [0.1, 0.15, 0.2, 0.25]
