@@ -26,7 +26,7 @@ class FSPostprocessor(BasePostprocessor):
         patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
         fs_conf = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
         fs_conf = fs_conf.data.cpu()
-        conf = fs_conf + self.thred * energyconf
+        conf = fs_conf + 0.0028 * energyconf
         return pred, conf
 
     def set_hyperparam(self, hyperparam: list):
