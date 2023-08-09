@@ -28,8 +28,8 @@ class FSPostprocessor(BasePostprocessor):
         conf = fs_conf
         return pred, conf
 
-    # def set_hyperparam(self, hyperparam: list):
-    #     self.thred = hyperparam[0]
-    #
-    # def get_hyperparam(self):
-    #     return self.thred
+    def set_hyperparam(self, hyperparam: list):
+        self.thred = hyperparam[0]
+
+    def get_hyperparam(self):
+        return self.thred
