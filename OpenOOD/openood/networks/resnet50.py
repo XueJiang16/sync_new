@@ -44,6 +44,20 @@ class ResNet50(ResNet):
 
         return logits_cls
 
+    def forward_ta(self, x, ta_thred):
+        feature1 = self.relu(self.bn1(self.conv1(x)))
+        feature1 = self.maxpool(feature1)
+        feature2 = self.layer1(feature1)
+        feature3 = self.layer2(feature2)
+        feature4 = self.layer3(feature3)
+        feature4 = self.relu(feature4 - ta_thred)
+        feature5 = self.layer4(feature4)
+        feature = self.avgpool(feature5)
+        feature = feature.view(feature.size(0), -1)
+        logits_cls = self.fc(feature)
+
+        return feature5, logits_cls
+
     def intermediate_forward(self, x, layer_index):
         out = self.relu(self.bn1(self.conv1(x)))
         out = self.maxpool(out)
