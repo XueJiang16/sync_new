@@ -44,7 +44,7 @@ class ResNet50(ResNet):
 
         return logits_cls
 
-    def forward_ta(self, x, ta_thred):
+    def forward_ta(self, x, ta_thred, threshold=None):
         feature1 = self.relu(self.bn1(self.conv1(x)))
         feature1 = self.maxpool(feature1)
         feature2 = self.layer1(feature1)
@@ -54,6 +54,8 @@ class ResNet50(ResNet):
         feature5 = self.layer4(feature4)
         feature = self.avgpool(feature5)
         feature = feature.view(feature.size(0), -1)
+        if threshold is not None:
+            feature = feature5.clip(max=threshold)
         logits_cls = self.fc(feature)
 
         return feature5, logits_cls

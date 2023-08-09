@@ -2,7 +2,7 @@ postprocessor:
   name: fsta
   APS_mode: True
   postprocessor_args:
-    thred: 0.2
+    thred: 0.0016
   postprocessor_sweep:
 #    thred: [0.1, 0.15, 0.2, 0.25]
     thred: [0.001, 0.0015, 0.002, 0.0025, 0.003]
