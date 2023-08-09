@@ -55,7 +55,7 @@ class ResNet50(ResNet):
         feature = self.avgpool(feature5)
         feature = feature.view(feature.size(0), -1)
         if threshold is not None:
-            feature = feature5.clip(max=threshold)
+            feature = feature.clip(max=threshold)
         logits_cls = self.fc(feature)
 
         return feature5, logits_cls
