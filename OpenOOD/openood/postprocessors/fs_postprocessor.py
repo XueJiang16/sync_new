@@ -17,7 +17,7 @@ class FSPostprocessor(BasePostprocessor):
 
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
-        feature5, output = net.forward_ta(data, ta_thred=0.2, threshold=1)
+        feature5, output = net.forward_ta(data, ta_thred=0.2)
         _, pred = torch.max(output, dim=1)
         energyconf = torch.logsumexp(output.data.cpu(), dim=1)
 
