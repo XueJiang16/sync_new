@@ -30,7 +30,7 @@ plt.ylim(92, 98)
 
 # 添加网格线
 plt.grid(True, linestyle='--', alpha=0.6)
-
+plt.tight_layout()
 # 显示图例
 
 # 保存图像为文件（可选）
