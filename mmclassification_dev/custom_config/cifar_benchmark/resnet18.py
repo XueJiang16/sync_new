@@ -6,7 +6,7 @@ method_list = ["GradNormBatch", "MSP", "Energy", "ODIN"]
 method_name = method_list[2]
 model_name = 'resnet18'
 custom_name = "Official"
-train_dataset = 'cifar_10'
+train_dataset = 'cifar_100'
 num_classes = int(train_dataset.split('_')[-1])
 if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
