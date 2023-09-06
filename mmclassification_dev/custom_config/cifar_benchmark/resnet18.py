@@ -19,8 +19,8 @@ model = dict(
     classifier=dict(
         type='ImageClassifier',
         init_cfg=dict(type='Pretrained',
-                      checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet18_b16x8_cifar10_20210528-bd6371c8.pth'),
-                      # checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/cifar100_resnet18.pth'),
+                      # checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet18_b16x8_cifar10_20210528-bd6371c8.pth'),
+                      checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/cifar100_resnet18.pth'),
         backbone=dict(
             type='ResNet_CIFAR',
             depth=18,
