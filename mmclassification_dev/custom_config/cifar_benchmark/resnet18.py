@@ -31,19 +31,19 @@ model = dict(
             out_indices=(3,),
             style='pytorch'),
         neck=dict(type='GlobalAveragePooling'),
-        # head=dict(
-        #     type='LinearClsHead',
-        #     num_classes=num_classes,
-        #     in_channels=512,
-        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-        #     topk=(1, 5))
         head=dict(
-            type='ReactHead',
-            threshold=1,
+            type='LinearClsHead',
             num_classes=num_classes,
             in_channels=512,
             loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
             topk=(1, 5))
+        # head=dict(
+        #     type='ReactHead',
+        #     threshold=1,
+        #     num_classes=num_classes,
+        #     in_channels=512,
+        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        #     topk=(1, 5))
     )
 )
 
