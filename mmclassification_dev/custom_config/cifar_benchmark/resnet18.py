@@ -3,7 +3,7 @@
 # info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_a8_feature_stat.pth')
 method_list = ["GradNormBatch", "MSP", "Energy", "ODIN"]
 
-method_name = method_list[2]
+method_name = method_list[1]
 model_name = 'resnet18'
 custom_name = "Official"
 train_dataset = 'cifar_100'
@@ -64,38 +64,45 @@ data = dict(
         pipeline=ood_pipeline,
         test_mode=True),
     ood_data=[
+        # dict(
+        #     name='SVHN',
+        #     type='FolderDataset',
+        #     path='/data/csxjiang/cifar_benchmark/svhn/images',
+        #     pipeline=ood_pipeline,
+        #     transform=transform,
+        # ),
+        # dict(
+        #     name='LSUN',
+        #     type='FolderDataset',
+        #     path='/data/csxjiang/cifar_benchmark/LSUN/test',
+        #     pipeline=ood_pipeline,
+        #     transform=transform,
+        # ),
+        # dict(
+        #     name='iSUN',
+        #     type='FolderDataset',
+        #     path='/data/csxjiang/cifar_benchmark/iSUN/iSUN_patches',
+        #     pipeline=ood_pipeline,
+        #     transform=transform,
+        # ),
+        # dict(
+        #     name='Places',
+        #     type='FolderDataset',
+        #     path='/data/csxjiang/ood_data/Places/images',
+        #     pipeline=ood_pipeline,
+        #     transform=transform,
+        # ),
+        # dict(
+        #     name='Textures',
+        #     type='FolderDataset',
+        #     path='/data/csxjiang/ood_data/Textures/dtd/images_collate',
+        #     pipeline=ood_pipeline,
+        #     transform=transform,
+        # ),
         dict(
-            name='SVHN',
+            name='MNIST',
             type='FolderDataset',
-            path='/data/csxjiang/cifar_benchmark/svhn/images',
-            pipeline=ood_pipeline,
-            transform=transform,
-        ),
-        dict(
-            name='LSUN',
-            type='FolderDataset',
-            path='/data/csxjiang/cifar_benchmark/LSUN/test',
-            pipeline=ood_pipeline,
-            transform=transform,
-        ),
-        dict(
-            name='iSUN',
-            type='FolderDataset',
-            path='/data/csxjiang/cifar_benchmark/iSUN/iSUN_patches',
-            pipeline=ood_pipeline,
-            transform=transform,
-        ),
-        dict(
-            name='Places',
-            type='FolderDataset',
-            path='/data/csxjiang/ood_data/Places/images',
-            pipeline=ood_pipeline,
-            transform=transform,
-        ),
-        dict(
-            name='Textures',
-            type='FolderDataset',
-            path='/data/csxjiang/ood_data/Textures/dtd/images_collate',
+            path='/data/csxjiang/openood/data/images_classic/mnist/test',
             pipeline=ood_pipeline,
             transform=transform,
         ),
