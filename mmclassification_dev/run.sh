@@ -50,7 +50,6 @@ bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2 --tab_name ic
 #bash ./tools/ood_dist_test_auto.sh custom_config/cifar_benchmark/feature_sim.py foo 2 --tab_name cifar18_for_rebuttal
 #bash ./tools/ood_dist_test_auto.sh custom_config/cifar_benchmark/resnet18.py foo 2 --tab_name cifar18_for_rebuttal
 
-
 ## spurious
 #bash ./tools/dist_precompute.sh custom_config/spurious/dice_precompute.py /home/csxjiang/jx/sync/Spurious_OOD/checkpoints/waterbird/erm_r_0_9/erm_r_0_9_20230115/ckpt30.pth 2 --metrics accuracy
 #bash ./tools/dist_precompute.sh custom_config/spurious/knn_precompute.py /home/csxjiang/jx/sync/Spurious_OOD/checkpoints/waterbird/erm_r_0_9/erm_r_0_9_20230115/ckpt30.pth 2 --metrics accuracy
