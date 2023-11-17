@@ -64,7 +64,7 @@ pipline =[dict(type='Collect', keys=['img', 'type'])]
 aug = None
 
 data = dict(
-    samples_per_gpu=256 if method_name is not 'ODIN' else 32,
+    samples_per_gpu=32 if method_name is not 'ODIN' else 32,
     workers_per_gpu=4,
     id_data=dict(
         name='ImageNet',
