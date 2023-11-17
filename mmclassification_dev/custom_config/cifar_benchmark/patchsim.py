@@ -87,14 +87,21 @@ data = dict(
         pipeline=ood_pipeline,
         test_mode=True),
     ood_data=[
+        # dict(
+        # name='cifar{}'.format(num_classes_),
+        # type='CIFAR{}OOD'.format(num_classes_),
+        # data_prefix='/data/csxjiang/cifar{}'.format(num_classes_),
+        # transform=transform,
+        # pipeline=ood_pipeline,
+        # test_mode=True
+        # )
         dict(
-        name='cifar{}'.format(num_classes_),
-        type='CIFAR{}OOD'.format(num_classes_),
-        data_prefix='/data/csxjiang/cifar{}'.format(num_classes_),
-        transform=transform,
-        pipeline=ood_pipeline,
-        test_mode=True
-        )
+            name='MNIST',
+            type='FolderDataset',
+            path='/data/csxjiang/openood/data/images_classic/mnist/test',
+            pipeline=ood_pipeline,
+            transform=transform,
+        ),
         # dict(
         #     name='SVHN',
         #     type='FolderDataset',
