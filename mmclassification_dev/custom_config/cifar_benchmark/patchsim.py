@@ -95,13 +95,6 @@ data = dict(
         # pipeline=ood_pipeline,
         # test_mode=True
         # )
-        dict(
-            name='MNIST',
-            type='FolderDataset',
-            path='/data/csxjiang/openood/data/images_classic/mnist/test',
-            pipeline=ood_pipeline,
-            transform=transform,
-        ),
         # dict(
         #     name='SVHN',
         #     type='FolderDataset',
@@ -137,6 +130,13 @@ data = dict(
         #     pipeline=ood_pipeline,
         #     transform=transform,
         # ),
+        dict(
+            name='MNIST',
+            type='FolderDataset',
+            path='/data/csxjiang/openood/data/images_classic/mnist/test',
+            pipeline=ood_pipeline,
+            transform=transform,
+        ),
     ],
 
 )
