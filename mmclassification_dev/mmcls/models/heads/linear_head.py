@@ -88,7 +88,7 @@ class LinearClsHead(ClsHead):
         if self.require_features or require_features:
             f = x.detach().clone()
 
-        x = self.apply_ash(x, percentile=90)
+        x = self.apply_ash(x, percentile=95)
         # # noise = (torch.rand_like(x) - 0.5) / 2.5
         # x = x - 0.1
         # x = torch.nn.functional.relu(x)
