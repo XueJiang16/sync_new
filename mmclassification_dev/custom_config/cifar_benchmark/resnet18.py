@@ -6,7 +6,7 @@ method_list = ["GradNormBatch", "MSP", "Energy", "ODIN"]
 method_name = method_list[2]
 model_name = 'resnet18'
 custom_name = "Official"
-train_dataset = 'cifar_10'
+train_dataset = 'cifar_100'
 num_classes = int(train_dataset.split('_')[-1])
 if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
@@ -19,8 +19,8 @@ model = dict(
     classifier=dict(
         type='ImageClassifier',
         init_cfg=dict(type='Pretrained',
-                      checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet18_b16x8_cifar10_20210528-bd6371c8.pth'),
-                      # checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/cifar100_resnet18.pth'),
+                      # checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/resnet18_b16x8_cifar10_20210528-bd6371c8.pth'),
+                      checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/cifar/cifar100_resnet18.pth'),
         backbone=dict(
             type='ResNet_CIFAR',
             depth=18,
