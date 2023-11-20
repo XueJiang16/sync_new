@@ -164,7 +164,7 @@ class FeatureMapSim(BaseModule):
                 # patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
 
                 # gram matrix
-                patch_sim = torch.einsum("nlc,ncl->nll", feature_crops.permute((0,2,1)), feature_crops).mean(dim=(-1, -2))
+                patch_sim = torch.einsum("nlc,ncd->nld", feature_crops.permute((0,2,1)), feature_crops).mean(dim=(-1, -2))
 
                 # c5_sum = feature_c5.sum(dim=[1,2,3])
                 # ratio = (c5_sum - 20000) / 10000
