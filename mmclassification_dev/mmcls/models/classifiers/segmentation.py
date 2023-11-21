@@ -20,10 +20,6 @@ class ImageSegmentation(BaseClassifier):
         self.segmentor = EncoderDecoder(**segmentor)
             
     def forward(self, **input):
-        type=3
-        if "type" in input:
-            type = input['type']
-            del input['type']
         with torch.no_grad():
             for x in input["img_metas"]:
                 x["ori_shape"] = (512, 512)
@@ -31,7 +27,7 @@ class ImageSegmentation(BaseClassifier):
             outputs = self.segmentor.inference(input["img"], input["img_metas"], False)
             outputs = outputs.max(dim=1)[0]
             confs = outputs.mean(dim=(-1, -2))
-        return confs, type
+        return confs
 
     def extract_feat(self, img, stage='neck', th_act=False, sum_scale=False):
         """Directly extract features from the specified stage.
