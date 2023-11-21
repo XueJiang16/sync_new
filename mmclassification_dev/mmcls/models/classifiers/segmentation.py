@@ -24,11 +24,12 @@ class ImageSegmentation(BaseClassifier):
             type = input['type']
             del input['type']
         with torch.no_grad():
-            import ipdb; ipdb.set_trace()
-            outputs = self.segmentor.inference(inputs=input["img"], batch_img_metas=input["img_metas"])
-            out_softmax = torch.nn.functional.softmax(outputs, dim=1)
-            # out_softmax = outputs
-            confs, _ = torch.max(out_softmax, dim=-1)
+            for x in input["img_metas"]:
+                x["orig_shape"] = (512, 512)
+                x["flip"] = False
+            outputs = self.segmentor.inference(input["img"], input["img_metas"], False)
+            outputs = outputs.max(dim=1)[0]
+            confs = outputs.mean(dim=(-1, -2))
         return confs, type
 
     def extract_feat(self, img, stage='neck', th_act=False, sum_scale=False):
