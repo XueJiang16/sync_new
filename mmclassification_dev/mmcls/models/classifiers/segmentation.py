@@ -24,9 +24,9 @@ class ImageSegmentation(BaseClassifier):
             for x in input["img_metas"]:
                 x["ori_shape"] = (512, 512)
                 x["flip"] = False
-            outputs = self.segmentor.inference(input["img"], input["img_metas"], False)
-            outputs = outputs.max(dim=1)[0]
-            confs = outputs.mean(dim=(-1, -2))
+        outputs = self.segmentor.inference(input["img"], input["img_metas"], False)  # outputs: (B, C, H, W)
+        outputs = outputs.max(dim=1)[0]  # MSP in category dimension. (B, H, W)
+        confs = outputs.mean(dim=(-1, -2))  # Average among all pixels (B,)
         return confs
 
     def extract_feat(self, img, stage='neck', th_act=False, sum_scale=False):
