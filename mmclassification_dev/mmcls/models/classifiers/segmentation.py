@@ -20,6 +20,7 @@ class ImageSegmentation(BaseClassifier):
         self.segmentor = EncoderDecoder(**segmentor)
             
     def forward(self, **input):
+        type=3
         if "type" in input:
             type = input['type']
             del input['type']
