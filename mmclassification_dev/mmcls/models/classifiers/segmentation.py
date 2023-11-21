@@ -25,7 +25,7 @@ class ImageSegmentation(BaseClassifier):
             del input['type']
         with torch.no_grad():
             import ipdb; ipdb.set_trace()
-            outputs = self.segmentor.inference(**input)
+            outputs = self.segmentor.inference(inputs=input["img"], batch_img_metas=input["img_metas"])
             out_softmax = torch.nn.functional.softmax(outputs, dim=1)
             # out_softmax = outputs
             confs, _ = torch.max(out_softmax, dim=-1)

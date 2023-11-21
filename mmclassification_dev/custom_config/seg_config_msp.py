@@ -17,8 +17,8 @@ model = dict(
     num_classes=1000,
     classifier=dict(
         type='ImageSegmentation',
-        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ade20k/iter_80000.pth'),
         segmentor=dict(
+            init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ade20k/iter_80000.pth'),
             backbone=dict(
                 type='ResNetV1c',
                 depth=50,
