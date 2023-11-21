@@ -25,7 +25,7 @@ class ImageSegmentation(BaseClassifier):
             del input['type']
         with torch.no_grad():
             for x in input["img_metas"]:
-                x["orig_shape"] = (512, 512)
+                x["ori_shape"] = (512, 512)
                 x["flip"] = False
             outputs = self.segmentor.inference(input["img"], input["img_metas"], False)
             outputs = outputs.max(dim=1)[0]
