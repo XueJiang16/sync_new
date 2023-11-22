@@ -12,5 +12,5 @@ model.eval()
 
 with torch.no_grad():
     x = prepare_data(input, transform_imagenet)
-    score, _ = model(x)
+    score, _ = model(x["img"], type=x["type"])
     print(score)
