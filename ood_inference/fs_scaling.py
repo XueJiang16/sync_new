@@ -3,9 +3,11 @@ from data_process import prepare_data, prepare_data_zooming, transform_imagenet
 
 import torch
 from mmcls.models import build_ood_model
+import sys
+import os
 
 
-input = "/data/csxjiang/val/ILSVRC2012_val_00024946.JPEG"
+input = sys.argv[-1]
 model = build_ood_model(model_cfg)
 model.init_weights()
 model.eval()
@@ -21,4 +23,4 @@ with torch.no_grad():
 
 import matplotlib.pyplot as plt
 plt.plot(scale_factor, scores)
-plt.savefig("score_wrt_scale.png")
+plt.savefig("score_wrt_scale_{}.png".format(os.path.basename(os.path.splitext(input)[0])))
