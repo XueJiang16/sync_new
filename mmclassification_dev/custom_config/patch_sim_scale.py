@@ -78,21 +78,6 @@ data = dict(
         train_label=None,
         aug=aug,
     ),
-    # id_data=dict(
-    #     type='JsonDataset',
-    #     path='/data/csxjiang/',
-    #     data_ann='/data/csxjiang/ood_data/inat/val2018.json',
-    #     pipeline=[
-    #         dict(type='LoadImageFromFile'),
-    #         dict(type='Resize', size=480),
-    #         dict(
-    #             type='Normalize',
-    #             mean=[123.675, 116.28, 103.53],
-    #             std=[58.395, 57.12, 57.375],
-    #             to_rgb=True),
-    #         dict(type='ImageToTensor', keys=['img']),
-    #         dict(type='Collect', keys=['img'])
-    #     ]),
     ood_data=[
         dict(
             name='iNaturalist',
@@ -102,40 +87,7 @@ data = dict(
             scale_factor=1,
             aug=aug,
             len_limit=1000 if quick_test else -1,
-        ),
-        dict(
-            name='SUN',
-            type='FolderDataset',
-            path='/data/csxjiang/ood_data/SUN/images',
-            pipeline=pipline,
-            aug=aug,
-            len_limit=1000 if quick_test else -1,
-        ),
-        dict(
-            name='Places',
-            type='FolderDataset',
-            path='/data/csxjiang/ood_data/Places/images',
-            pipeline=pipline,
-            aug=aug,
-            len_limit=1000 if quick_test else -1,
-        ),
-        dict(
-            name='Textures',
-            type='FolderDataset',
-            path='/data/csxjiang/ood_data/Textures/dtd/images_collate',
-            pipeline=pipline,
-            aug=aug,
-            len_limit=1000 if quick_test else -1,
-        ),
-        # dict(
-        # name='SSB_hard',
-        # type='TxtDataset',
-        # path='/data/csxjiang/openood/data/images_largescale',
-        # data_ann='/data/csxjiang/openood/data/benchmark_imglist/imagenet/test_ssb_hard.txt',
-        # pipeline=pipline,
-        # len_limit=5000 if quick_test else -1,
-        # aug=aug,)
-    ],
+        )],
 
 )
 dist_params = dict(backend='nccl')

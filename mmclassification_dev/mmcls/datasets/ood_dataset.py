@@ -21,7 +21,8 @@ from .builder import DATASETS
 from .pipelines import Compose
 
 class OODBaseDataset(Dataset):
-    def __init__(self, name, pipeline, input_size=None, transform='ImageNet', pick_img=None, aug=None, noise_engine=None, len_limit=-1):
+    def __init__(self, name, pipeline, input_size=None, transform='ImageNet',
+                 pick_img=None, aug=None, noise_engine=None, len_limit=-1, scale_factor=1):
         super().__init__()
         self.pipeline = Compose(pipeline)
         self.file_list = []
@@ -37,7 +38,8 @@ class OODBaseDataset(Dataset):
                 tv.transforms.Resize(self.resize_size),
                 # tv.transforms.Resize(248, interpolation=tv.transforms.InterpolationMode.BICUBIC),
                 # tv.transforms.CenterCrop(224),
-                tv.transforms.CenterCrop(self.crop_size),
+                tv.transforms.CenterCrop(int(self.crop_size / scale_factor)),
+                tv.transforms.Resize(self.crop_size),
                 # tv.transforms.Resize((480, 480)),
                 tv.transforms.ToTensor(),
                 tv.transforms.Normalize([123.675/255, 116.28/255, 103.53/255],

@@ -9,7 +9,7 @@
 #bash ./tools/ood_dist_test.sh custom_config/resnet50.py foo 2
 # bash ./tools/ood_dist_test.sh custom_config/resnet50_official.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/meanstd.py foo 2
-bash ./tools/ood_dist_test.sh custom_config/patchsim.py foo 2
+# bash ./tools/ood_dist_test.sh custom_config/patchsim.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/inat_ib/resnet101.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/aug_contrast.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/cifar10.py foo 2
@@ -42,6 +42,7 @@ bash ./tools/ood_dist_test.sh custom_config/patchsim.py foo 2
 
 ## google doc
 #bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2 --tab_name add
+bash ./tools/ood_dist_test_auto.sh custom_config/patch_sim_scale.py foo 2 --tab_name patch_sim_scale
 #bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2 --tab_name iclr_rebuttal_ssb
 #bash ./tools/ood_dist_test_auto.sh custom_config/patchsim_mobile.py foo 2 --tab_name mobile
 #bash ./tools/ood_dist_test_auto.sh custom_config/resnet50.py foo 2 --tab_name pure_feature_sim_loc
