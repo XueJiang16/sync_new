@@ -33,3 +33,21 @@ def prepare_data(filename, transform):
     results['img'] = sample.unsqueeze(0)
     results['type'] = 3
     return results
+
+def prepare_data_zooming(filename, scale_factor=1.0):
+    transform = tv.transforms.Compose([
+        tv.transforms.Resize(256),
+        tv.transforms.CenterCrop(int(224 / scale_factor)),
+        tv.transforms.Resize(224),
+        tv.transforms.ToTensor(),
+        tv.transforms.Normalize([123.675/255, 116.28/255, 103.53/255],
+                                [58.395/255, 57.12/255, 57.375/255]),
+    ])
+    results = dict()
+    sample = Image.open(filename)
+    if sample.mode != 'RGB':
+        sample = sample.convert('RGB')
+    sample = transform(sample)
+    results['img'] = sample.unsqueeze(0)
+    results['type'] = 3
+    return results
