@@ -30,6 +30,6 @@ def prepare_data(filename, transform):
     if sample.mode != 'RGB':
         sample = sample.convert('RGB')
     sample = transform(sample)
-    results['img'] = sample
+    results['img'] = sample.unsqueeze(0)
     results['type'] = 3
     return results
