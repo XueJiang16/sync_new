@@ -125,9 +125,9 @@ class FeatureMapSim(BaseModule):
 
             ##########
             _, features_orig = self.ood_detector.classifier(return_loss=False, softmax=False, post_process=False,
-                                                            th_act=False, require_backbone_features=True, **input)
+                                                            th_act=False, require_features=True, **input)
             _, features_th_act = self.ood_detector.classifier(return_loss=False, softmax=False, post_process=False,
-                                                              th_act=True, require_backbone_features=True, **input)
+                                                              th_act=True, require_features=True, **input)
             # kl_sim = -torch.nn.functional.kl_div(features_orig, features_th_act, reduction='none').mean(1)
 
             input['type'] = type
@@ -207,7 +207,7 @@ class FeatureMapSim(BaseModule):
                 patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(0, 2))  # for ID: .mean(dim=(0, 2))
             elif self.mode is None:
                 # patch_sim=0
-                patch_sim = (features_orig - features_th_act).abs().mean(dim=(-1,-2,-3))
+                patch_sim = (features_orig - features_th_act).abs().mean(dim=(-1,-2))
             ood_scores = patch_sim
         if self.has_ood_detector:
             ood_scores, _ = self.ood_detector(**input)
