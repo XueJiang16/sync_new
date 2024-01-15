@@ -26,6 +26,7 @@ class MSP(BaseModule):
             out_softmax = torch.nn.functional.softmax(outputs, dim=1)
             # out_softmax = outputs
             confs, _ = torch.max(out_softmax, dim=-1)
+            # confs = outputs
         return confs, type
 
 @OOD.register_module()
