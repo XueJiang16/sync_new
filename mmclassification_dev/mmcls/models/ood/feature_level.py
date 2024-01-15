@@ -125,11 +125,10 @@ class FeatureMapSim(BaseModule):
 
             ##########
             _, features_orig = self.ood_detector.classifier(return_loss=False, softmax=False, post_process=False,
-                                                            th_act=False, require_features=True, **input)
+                                                            th_act=False, require_backbone_features=True, **input)
             _, features_th_act = self.ood_detector.classifier(return_loss=False, softmax=False, post_process=False,
-                                                              th_act=True, require_features=True, **input)
+                                                              th_act=True, require_backbone_features=True, **input)
             # kl_sim = -torch.nn.functional.kl_div(features_orig, features_th_act, reduction='none').mean(1)
-            print("orig",features_th_act.shape)
 
             input['type'] = type
             if self.mode in ['cosine', 'euclidean']:
