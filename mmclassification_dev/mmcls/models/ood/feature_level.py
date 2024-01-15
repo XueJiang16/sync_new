@@ -163,10 +163,10 @@ class FeatureMapSim(BaseModule):
                 patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
                 patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
 
-                # # gram matrix
+                # gram matrix
                 # feature_crops = feature_crops / torch.norm(feature_crops, 2, dim=1, keepdim=True)
                 # feature_crops = torch.einsum("nlc,ncd->nld", feature_crops.permute((0,2,1)), feature_crops)
-
+                #
                 # patch_mean = feature_crops.mean(dim=(-1,-2)).unsqueeze(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
                 # patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
 
