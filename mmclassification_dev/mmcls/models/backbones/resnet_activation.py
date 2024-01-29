@@ -417,9 +417,9 @@ class ResLayer(nn.Sequential):
                 # x = torch.nn.functional.relu(x)
                 # x[x < th_act_k] = 0
                 # noises
-                noises = torch.rand_like(x)
+                noises = (torch.rand_like(x)-0.5) / 2.5
                 x = x + noises
-                x = torch.nn.functional.relu(x)
+                # x = torch.nn.functional.relu(x)
             if i == feature_sim_para:
                 return x
         return x
