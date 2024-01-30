@@ -41,7 +41,7 @@
 #bash ./tools/ood_dist_test_auto.sh custom_config/seg_config.py foo 2 --tab_name ade20k
 
 ## google doc
-#bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2 --tab_name add
+#bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2 --tab_name far_add
 #bash ./tools/ood_dist_test_auto.sh custom_config/patch_sim_scale.py foo 2 --tab_name patch_sim_scale
 #bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2 --tab_name iclr_rebuttal_ssb
 #bash ./tools/ood_dist_test_auto.sh custom_config/patchsim_mobile.py foo 2 --tab_name mobile

@@ -20,7 +20,6 @@ model = dict(
     type=method_name,
     debug_mode=True,
     num_classes=1000,
-    # temperature=1,t
     target_file=training_file,
     mode='mean',
     ood_detector=dict(
