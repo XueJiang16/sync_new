@@ -332,10 +332,14 @@ class RandomBlock(BaseModule):
             # before_sum = x.sum(dim=[1, 2, 3])
             # before_count = (x!=0).sum(dim=[1,2,3]).type_as(x)
 
-            out = x - self.k
+
+            # bk th_act
+            # out = x - self.k
             # k = x.mean(dim=(-1,-2)).unsqueeze(-1).unsqueeze(-1)
             # out = x - self.kap(x).unsqueeze(-1).unsqueeze(-1)
-            out = self.non_linear(out)
+            # out = self.non_linear(out)
+
+
             # print("Th_act!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             # after_sum = out.sum(dim=[1, 2, 3])
             # after_count = (out!=0).sum(dim=[1,2,3]).type_as(out)
@@ -346,6 +350,11 @@ class RandomBlock(BaseModule):
             # print("Before: sum={}, count={}. After:sum={}, count={}".
             #       format(before_sum.mean(), before_count.mean(), after_sum.mean(), after_count.mean()))
             # out = out * count_ratio[:, None, None, None]resnet.py
+
+            # mask
+            rand = torch.rand_like(x)
+            mask = rand < self.k
+            x = x * mask
         elif isinstance(th_act, torch.Tensor):
             out = x - th_act.unsqueeze(-1).unsqueeze(-1).unsqueeze(-1)
             out = self.non_linear(out)
