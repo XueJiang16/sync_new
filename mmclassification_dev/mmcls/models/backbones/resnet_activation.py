@@ -419,7 +419,7 @@ class ResLayer(nn.Sequential):
                 # noises
                 noise = (torch.rand_like(x) - 0.5) / 2
                 x = x + noise - th_act_k
-                # x = torch.nn.functional.relu(x)
+                x = torch.nn.functional.relu(x)
                 # random mask
                 # rand = torch.rand_like(x)
                 # mask = rand < th_act_k
