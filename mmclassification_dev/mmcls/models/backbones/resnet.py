@@ -354,7 +354,7 @@ class RandomBlock(BaseModule):
             # mask
             rand = torch.rand_like(x)
             mask = rand < self.k
-            x = x * mask
+            out = x * mask
         elif isinstance(th_act, torch.Tensor):
             out = x - th_act.unsqueeze(-1).unsqueeze(-1).unsqueeze(-1)
             out = self.non_linear(out)
