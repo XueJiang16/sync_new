@@ -45,7 +45,7 @@
 #bash ./tools/ood_dist_test_auto.sh custom_config/patch_sim_scale.py foo 2 --tab_name patch_sim_scale
 #bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2 --tab_name iclr_rebuttal_ssb
 #bash ./tools/ood_dist_test_auto.sh custom_config/patchsim_mobile.py foo 2 --tab_name mobile
-bash ./tools/ood_dist_test_auto.sh custom_config/resnet50.py foo 2 --tab_name far_fa
+bash ./tools/ood_dist_test_auto.sh custom_config/resnet50.py foo 2 --tab_name far_2loc
 #bash ./tools/ood_dist_test_auto.sh custom_config/threshold_act.py foo 2 --tab_name auto2
 #bash ./tools/ood_dist_test_auto.sh custom_config/densenet.py foo 2 --tab_name densenet
 #bash ./tools/ood_dist_test_auto.sh custom_config/cifar_benchmark/feature_sim.py foo 2 --tab_name cifar18_for_rebuttal
