@@ -353,7 +353,7 @@ class RandomBlock(BaseModule):
             # noise
             noise = (torch.rand_like(x) - 0.5) / 2
             x = x + noise - self.k
-            x = torch.nn.functional.relu(x)
+            out = torch.nn.functional.relu(x)
             # mask
             # rand = torch.rand_like(x)
             # mask = rand < self.k
