@@ -351,13 +351,13 @@ class RandomBlock(BaseModule):
             #       format(before_sum.mean(), before_count.mean(), after_sum.mean(), after_count.mean()))
             # out = out * count_ratio[:, None, None, None]resnet.py
             # noise
-            noise = (torch.rand_like(x) - 0.5) / 2
-            x = x + noise - self.k
-            out = torch.nn.functional.relu(x)
+            # noise = (torch.rand_like(x) - 0.5) / 2
+            # x = x + noise - self.k
+            # out = torch.nn.functional.relu(x)
             # mask
-            # rand = torch.rand_like(x)
-            # mask = rand < self.k
-            # out = x * mask
+            rand = torch.rand_like(x)
+            mask = rand < self.k
+            out = x * mask
         elif isinstance(th_act, torch.Tensor):
             out = x - th_act.unsqueeze(-1).unsqueeze(-1).unsqueeze(-1)
             out = self.non_linear(out)
