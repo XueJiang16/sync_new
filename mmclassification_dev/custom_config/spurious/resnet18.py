@@ -3,7 +3,7 @@ import os
 # info=os.path.expanduser('/data/csxjiang/dice_cache/spurious_resnet_p90_feature_stat.pth')
 
 method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch', 'FeatureReweight']
-method_name = method_list[2]
+method_name = method_list[-1]
 model_name = 'resnet18'
 train_dataset = 'Balance'
 custom_name = None
@@ -29,6 +29,7 @@ model = dict(
         type='ImageClassifier',
         # init_cfg=dict(type='Pretrained', checkpoint='/home/csxjiang/jx/sync/Spurious_OOD/checkpoints/waterbird/erm_r_0_9/erm_r_0_9_20230115/ckpt30.pth'),
         init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/spurious_ood/celeba/resnet18_30e.pth'),
+        backbone=dict(
         backbone=dict(
             type='ResNetActivation',
             depth=18,
