@@ -55,6 +55,13 @@ class OODBaseDataset(Dataset):
                 # tv.transforms.Normalize([129.304/255, 124.07/255, 112.434/255],
                 #                         [68.17/255, 65.392/255, 70.418/255]),
             ])
+        elif transform == 'CelebA':
+            self.transform = tv.transforms.Compose([
+            tv.transforms.CenterCrop(178),
+            tv.transforms.Resize((224, 224)),
+            tv.transforms.ToTensor(),
+            tv.transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+        ])
 
         self.noise_engine = noise_engine
         self.len_limit = len_limit
@@ -192,12 +199,12 @@ class FolderDataset(OODBaseDataset):
 
 @DATASETS.register_module()
 class CsvDataset(OODBaseDataset):
-    def __init__(self, name, path, pipeline, mode='test', data_ann=None, test_mode=None, **kwargs):
+    def __init__(self, name, path, pipeline, csv_name='metadata.csv', mode='test', data_ann=None, test_mode=None, **kwargs):
         super().__init__(name, pipeline, **kwargs)
         # self.file_list = glob.glob(os.path.join(path, '*'))
         self.data_prefix = path
         self.metadata_df = pd.read_csv(
-            os.path.join(self.data_prefix, 'metadata.csv'))
+            os.path.join(self.data_prefix, csv_name))
         self.split_dict = {
             'train': 0,
             'val': 1,

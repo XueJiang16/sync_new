@@ -41,7 +41,7 @@
 #bash ./tools/ood_dist_test_auto.sh custom_config/seg_config.py foo 2 --tab_name ade20k
 
 ## google doc
-bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2 --tab_name far_add
+#bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2 --tab_name far_add
 #bash ./tools/ood_dist_test_auto.sh custom_config/patch_sim_scale.py foo 2 --tab_name patch_sim_scale
 #bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2 --tab_name iclr_rebuttal_ssb
 #bash ./tools/ood_dist_test_auto.sh custom_config/patchsim_mobile.py foo 2 --tab_name mobile
@@ -54,7 +54,7 @@ bash ./tools/ood_dist_test_auto.sh custom_config/patchsim.py foo 2 --tab_name fa
 ## spurious
 #bash ./tools/dist_precompute.sh custom_config/spurious/dice_precompute.py /home/csxjiang/jx/sync/Spurious_OOD/checkpoints/waterbird/erm_r_0_9/erm_r_0_9_20230115/ckpt30.pth 2 --metrics accuracy
 #bash ./tools/dist_precompute.sh custom_config/spurious/knn_precompute.py /home/csxjiang/jx/sync/Spurious_OOD/checkpoints/waterbird/erm_r_0_9/erm_r_0_9_20230115/ckpt30.pth 2 --metrics accuracy
-#bash ./tools/ood_dist_test.sh custom_config/spurious/resnet18.py foo 2
+bash ./tools/ood_dist_test.sh custom_config/spurious/resnet18.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/spurious/knn.py foo 2
 #bash ./tools/ood_dist_test_auto.sh custom_config/spurious/resnet18.py foo 2 --tab_name spurous
 
