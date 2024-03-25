@@ -23,8 +23,9 @@ model = dict(
     # temperature=1,
     target_file=training_file,
     mode='mean',
+    fuse_const=1,
     ood_detector=dict(
-        type=method_list[0],
+        type=method_list[2],
         classifier=dict(
         type='ImageClassifier',
         # init_cfg=dict(type='Pretrained', checkpoint='/home/csxjiang/jx/sync/Spurious_OOD/checkpoints/waterbird/erm_r_0_9/erm_r_0_9_20230115/ckpt30.pth'),
@@ -41,6 +42,13 @@ model = dict(
             feature_sim_stage=1,  ## 0:C2 1:C3 2:C4 3:C5
             feature_sim_location=1,  ## No. of conv layer
         ),
+        neck=dict(type='GlobalAveragePooling'),
+        head=dict(
+            type='LinearClsHead',
+            num_classes=2,
+            in_channels=512,
+            loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+            topk=(1, 5))
     )
     )
     )
