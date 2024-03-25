@@ -56,7 +56,7 @@ training_file = None
 
 
 model = dict(
-    type=method_list[0],
+    type=method_list[1],
     debug_mode=False,
     num_classes=2,
     # temperature=1,
