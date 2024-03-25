@@ -56,7 +56,7 @@ training_file = None
 
 
 model = dict(
-    type=method_list[1],
+    type=method_list[2],
     debug_mode=False,
     num_classes=2,
     # temperature=1,
@@ -122,30 +122,30 @@ data = dict(
         transform='CelebA',
     ),
     ood_data=[
-        # dict(
-        #     name='SVHN',
-        #     type='FolderDataset',
-        #     path='/data/csxjiang/cifar_benchmark/svhn/images',
-        #     pipeline=ood_pipeline,
-        #     transform=transform,
-        #     len_limit=2000 if quick_test else -1,
-        # ),
-        # dict(
-        #     name='LSUN',
-        #     type='FolderDataset',
-        #     path='/data/csxjiang/cifar_benchmark/LSUN/test',
-        #     pipeline=ood_pipeline,
-        #     transform=transform,
-        #     len_limit=2000 if quick_test else -1,
-        # ),
-        # dict(
-        #     name='iSUN',
-        #     type='FolderDataset',
-        #     path='/data/csxjiang/cifar_benchmark/iSUN/iSUN_patches',
-        #     pipeline=ood_pipeline,
-        #     transform=transform,
-        #     len_limit = 2000 if quick_test else -1,
-        # ),
+        dict(
+            name='SVHN',
+            type='FolderDataset',
+            path='/data/csxjiang/cifar_benchmark/svhn/images',
+            pipeline=ood_pipeline,
+            transform=transform,
+            len_limit=2000 if quick_test else -1,
+        ),
+        dict(
+            name='LSUN',
+            type='FolderDataset',
+            path='/data/csxjiang/cifar_benchmark/LSUN/test',
+            pipeline=ood_pipeline,
+            transform=transform,
+            len_limit=2000 if quick_test else -1,
+        ),
+        dict(
+            name='iSUN',
+            type='FolderDataset',
+            path='/data/csxjiang/cifar_benchmark/iSUN/iSUN_patches',
+            pipeline=ood_pipeline,
+            transform=transform,
+            len_limit = 2000 if quick_test else -1,
+        ),
         # dict(
         #         name='Placebg',
         #         type='FolderDataset',
@@ -163,7 +163,7 @@ data = dict(
                 pipeline=ood_pipeline,
                 # len_limit=5000 if quick_test else -1,
                 aug=aug,
-            transform='CelebA',
+                transform='CelebA',
 
         ),
         # dict(
