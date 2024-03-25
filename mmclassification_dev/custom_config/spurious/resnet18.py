@@ -26,6 +26,7 @@ model = dict(
     fuse_const=1,
     ood_detector=dict(
         type=method_list[2],
+        num_classes=2,
         classifier=dict(
         type='ImageClassifier',
         # init_cfg=dict(type='Pretrained', checkpoint='/home/csxjiang/jx/sync/Spurious_OOD/checkpoints/waterbird/erm_r_0_9/erm_r_0_9_20230115/ckpt30.pth'),
