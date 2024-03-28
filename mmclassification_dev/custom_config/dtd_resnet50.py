@@ -17,6 +17,7 @@ model = dict(
     debug_mode=True,
     num_classes=64,
     mode='mean',
+    fuse_const=0,
     ood_detector=dict(
         type=method_list[0],
         classifier=dict(
