@@ -3,7 +3,7 @@
 # info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_res50_feature_stat.pth')
 method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch', 'FeatureReweight']
 
-method_name = method_list[2]
+method_name = method_list[-1]
 model_name = 'resnet50'
 train_dataset = 'Balance'
 custom_name = "Official"
@@ -33,17 +33,19 @@ model = dict(
             num_stages=4,
             out_indices=(3,),
             style='pytorch',
-            th_act_k=0,
+            th_act_k=0.1,
             th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
-            th_act_location=5,
+            th_act_location=5, ## No. of conv layer
+            feature_sim_stage=3,  ## 0:C2 1:C3 2:C4 3:C5
+            feature_sim_location=2,  ## No. of conv layer
         ),
-        neck=dict(type='GlobalAveragePooling'),
-        head=dict(
-            type='LinearClsHead',
-            num_classes=64,
-            in_channels=2048,
-            loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-            topk=(1, 5))
+        # neck=dict(type='GlobalAveragePooling'),
+        # head=dict(
+        #     type='LinearClsHead',
+        #     num_classes=64,
+        #     in_channels=2048,
+        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        #     topk=(1, 5))
         # head=dict(
         #     type='DiceHead',
         #     num_classes=1000,
