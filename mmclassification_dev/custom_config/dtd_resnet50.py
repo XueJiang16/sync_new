@@ -14,7 +14,7 @@ else:
 quick_test = False
 model = dict(
     type=method_name,
-    debug_mode=True,
+    debug_mode=False,
     num_classes=64,
     mode='mean',
     fuse_const=0,
