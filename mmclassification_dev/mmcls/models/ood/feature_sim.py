@@ -266,7 +266,10 @@ class FeatureReweight(BaseModule):
         if self.has_ood_detector:
             ood_scores, _ = self.ood_detector(**input)
             ood_scores *= self.fuse_const
-            ood_scores += patch_sim
+            if self.fuse_const ==0:
+                ood_scores = patch_sim
+            else:
+                ood_scores += patch_sim
         else:
             ood_scores = patch_sim
         return ood_scores, type
