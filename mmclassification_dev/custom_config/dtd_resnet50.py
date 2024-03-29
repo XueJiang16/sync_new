@@ -22,7 +22,7 @@ model = dict(
         type=method_list[0],
         classifier=dict(
         type='ImageClassifier',
-        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/textures_ckpt/epoch_36.pth'),
+        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/textures_ckpt/epoch_36_randinit.pth'),
         backbone=dict(
             type='ResNetActivation',
             depth=50,
