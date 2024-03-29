@@ -3,7 +3,7 @@
 # info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_res50_feature_stat.pth')
 method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch', 'FeatureReweight']
 
-method_name = method_list[-1]
+method_name = method_list[0]
 model_name = 'resnet50'
 train_dataset = 'Balance'
 custom_name = "Official"
@@ -12,40 +12,75 @@ if custom_name is not None:
 else:
     readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
 quick_test = False
+# model = dict(
+#     type=method_name,
+#     debug_mode=False,
+#     num_classes=64,
+#     mode='mean',
+#     fuse_const=0,
+#     ood_detector=dict(
+#         type=method_list[0],
+#         classifier=dict(
+#         type='ImageClassifier',
+#         # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/textures_ckpt/epoch_36_randinit.pth'),
+#         init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/textures_ckpt/epoch_36.pth'),
+#         backbone=dict(
+#             type='ResNetActivation',
+#             depth=50,
+#             num_stages=4,
+#             out_indices=(3,),
+#             style='pytorch',
+#             th_act_k=0.2,
+#             th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
+#             th_act_location=5, ## No. of conv layer
+#             feature_sim_stage=3,  ## 0:C2 1:C3 2:C4 3:C5
+#             feature_sim_location=2,  ## No. of conv layer
+#         ),
+#         # neck=dict(type='GlobalAveragePooling'),
+#         # head=dict(
+#         #     type='LinearClsHead',
+#         #     num_classes=64,
+#         #     in_channels=2048,
+#         #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+#         #     topk=(1, 5))
+#     )
+#     )
+# )
 model = dict(
     type=method_name,
+    num_classes=1000,
     debug_mode=False,
-    num_classes=64,
-    mode='mean',
-    fuse_const=0,
-    ood_detector=dict(
-        type=method_list[0],
-        classifier=dict(
+    # temperature=1,
+    # target_noise=2,
+    classifier=dict(
         type='ImageClassifier',
-        # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/textures_ckpt/epoch_36_randinit.pth'),
-        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/textures_ckpt/epoch_36.pth'),
+        # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ood_ckpt_other/LT_{}/epoch_100.pth'.format(train_dataset)),
+        init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ckpt/resnet50_LT_a8/epoch_100.pth'),
+        # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/ood_ckpt_other/resnet101_imagnet10%_100e.pth'),
         backbone=dict(
-            type='ResNetActivation',
+            type='ResNet',
             depth=50,
             num_stages=4,
             out_indices=(3,),
-            style='pytorch',
-            th_act_k=0.2,
-            th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
-            th_act_location=5, ## No. of conv layer
-            feature_sim_stage=3,  ## 0:C2 1:C3 2:C4 3:C5
-            feature_sim_location=2,  ## No. of conv layer
-        ),
-        # neck=dict(type='GlobalAveragePooling'),
-        # head=dict(
-        #     type='LinearClsHead',
-        #     num_classes=64,
+            style='pytorch'),
+        neck=dict(type='GlobalAveragePooling'),
+        head=dict(
+            type='LinearClsHead',
+            num_classes=1000,
+            in_channels=2048,
+            loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+            topk=(1, 5))
+        # head = dict(
+        #     type='DiceHead',
+        #     num_classes=1000,
         #     in_channels=2048,
         #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-        #     topk=(1, 5))
-    )
+        #     topk=(1, 5),
+        #     info=info,
+        #     p=0.7, )
     )
 )
+
 pipline =[
           dict(type='Collect', keys=['img', 'type'])
 ]
