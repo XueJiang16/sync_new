@@ -3,7 +3,7 @@
 # info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_res50_feature_stat.pth')
 method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch', 'FeatureReweight']
 
-method_name = method_list[0]
+method_name = method_list[2]
 model_name = 'resnet50'
 train_dataset = 'Balance'
 custom_name = "Official"
