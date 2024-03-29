@@ -29,6 +29,7 @@ class Energy(BaseModule):
         with torch.no_grad():
             outputs = self.classifier(return_loss=False, softmax=False, post_process=False, **input)
             confs = self.temperature * torch.logsumexp(outputs / self.temperature, dim=1)
+            confs = -confs
         return confs, type
 
 @OOD.register_module()
