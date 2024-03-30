@@ -9,7 +9,7 @@
 #bash ./tools/ood_dist_test.sh custom_config/resnet50.py foo 2
 # bash ./tools/ood_dist_test.sh custom_config/resnet50_official.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/meanstd.py foo 2
-#bash ./tools/ood_dist_test.sh custom_config/patchsim.py foo 2
+bash ./tools/ood_dist_test.sh custom_config/patchsim.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/inat_ib/resnet101.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/aug_contrast.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/cifar10.py foo 2
@@ -56,7 +56,7 @@
 #bash ./tools/dist_precompute.sh custom_config/spurious/knn_precompute.py /home/csxjiang/jx/sync/Spurious_OOD/checkpoints/waterbird/erm_r_0_9/erm_r_0_9_20230115/ckpt30.pth 2 --metrics accuracy
 #bash ./tools/ood_dist_test.sh custom_config/spurious/resnet18.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/spurious/knn.py foo 2
-bash ./tools/ood_dist_test_auto.sh custom_config/spurious/resnet18.py foo 2 --tab_name spurous_celeba_add
+# bash ./tools/ood_dist_test_auto.sh custom_config/spurious/resnet18.py foo 2 --tab_name spurous_celeba_add
 
 ## id acc
 #bash ./tools/dist_test.sh custom_config/id_acc/resnet50_topk.py /data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth 2 --metrics accuracy
