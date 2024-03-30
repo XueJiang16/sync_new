@@ -40,15 +40,15 @@ model = dict(
                 random_block_k=[0.15],
                 random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
             ),
-            # neck=dict(type='GlobalAveragePooling'),
+            neck=dict(type='GlobalAveragePooling'),
             # neck=dict(type='TopKAveragePooling',
             #           k=k_c5),
-            # head=dict(
-            #     type='LinearClsHead',
-            #     num_classes=1000,
-            #     in_channels=2048,
-            #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-            #     topk=(1, 5))
+            head=dict(
+                type='LinearClsHead',
+                num_classes=1000,
+                in_channels=2048,
+                loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+                topk=(1, 5))
             # head=dict(
             #     type='ReactHead',
             #     threshold=2,
