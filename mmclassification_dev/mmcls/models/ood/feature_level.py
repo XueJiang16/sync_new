@@ -205,6 +205,12 @@ class FeatureMapSim(BaseModule):
                 feature_crops = feature_c5.flatten(2)
                 patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C, 1)
                 patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(0, 2))  # for ID: .mean(dim=(0, 2))
+            elif self.mode == 'numerial_anaysis':
+                feature_crops = feature_c5.flatten(2)
+                patch_sim = feature_crops.mean(-1).unsqueeze(-1)
+                var = feature_crops.std(-1)
+                mean = feature_crops.mean(-1)
+                print("mean={}, std={}".format(mean, var))
             elif self.mode is None:
                 patch_sim=0
                 # patch_sim = - (features_orig - features_th_act).abs().mean(dim=(-1)) / features_orig.mean(dim=-1)
