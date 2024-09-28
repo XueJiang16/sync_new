@@ -22,7 +22,7 @@
 #bash ./tools/ood_dist_test.sh custom_config/vit_lt.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/patchsim_mobile.py foo 2
 #bash ./tools/ood_dist_test.sh custom_config/densenet.py foo 2
-bash ./tools/ood_dist_test.sh custom_config/vit.py foo 1
+bash ./tools/ood_dist_test.sh custom_config/vit.py foo 2
 ## Cifar
 #bash ./tools/dist_precompute.sh custom_config/cifar_benchmark/dice_precompute.py /data/csxjiang/ood_ckpt/mmcls_offical/cifar/cifar100_resnet18.pth 2 --metrics accuracy
 #bash ./tools/ood_dist_test.sh custom_config/cifar_benchmark/resnet50.py foo 2
