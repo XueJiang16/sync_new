@@ -156,17 +156,8 @@ class FeatureReweight(BaseModule):
                 #     patch_sim[i] = torch.abs(feature_crops[i,j] - value[i]).mean(dim=-1)
 
 
-                # # gram matrix
-                feature_crops = feature_crops / torch.norm(feature_crops, 2, dim=1, keepdim=True)
-                feature_crops = torch.einsum("nlc,ncd->nld", feature_crops.permute((0,2,1)), feature_crops)
-
-                patch_mean = feature_crops.mean(dim=(-1,-2)).unsqueeze(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
+                patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
                 patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
-
-
-                
-                # patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
-                # patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
                 # patch_sim = torch.clamp((feature_crops - patch_mean), min=0).mean(dim=(-1, -2))
                 # feature_crops = feature_crops-patch_mean
                 # feature_crops[feature_crops < 0] = 0
@@ -208,6 +199,7 @@ class FeatureReweight(BaseModule):
                 patch_sim = torch.tensor(score).to("cuda:{}".format(self.local_rank))
 
             elif self.mode == 'vit':
+                import ipdb;ipdb.set_trace()
                 target_layer = self.ood_detector.classifier.backbone.layers[11]
                 ln = target_layer.ln1
                 qkv = target_layer.attn.qkv
@@ -242,6 +234,17 @@ class FeatureReweight(BaseModule):
                 # feature_crops = feature_tokens
                 # patch_mean = feature_tokens.mean(-1).unsqueeze(-1)
                 patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
+
+
+                # # # gram matrix
+                # feature_crops = feature_crops / torch.norm(feature_crops, 2, dim=1, keepdim=True)
+                # feature_crops = torch.einsum("nlc,ncd->nld", feature_crops.permute((0,2,1)), feature_crops)
+
+
+                # patch_mean = feature_crops.mean(dim=(-1,-2)).unsqueeze(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
+                # patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
+
+
             elif self.mode == 'channel_mean':
                 feature_crops = feature_c5.flatten(2)
                 patch_mean = feature_crops.mean(1).unsqueeze(1)  # (N, C, H*W) -> (N, C)
