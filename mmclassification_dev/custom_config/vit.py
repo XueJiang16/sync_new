@@ -53,7 +53,7 @@ model = dict(
     backbone=dict(
     type='VisionTransformer',
     arch='b',
-    img_size=224,
+    img_size=384,
     patch_size=16,
     # drop_rate=0.1,
     ),
