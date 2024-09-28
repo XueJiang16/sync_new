@@ -37,7 +37,7 @@ model = dict(
         in_channels=768,
         loss=dict(
             type='LabelSmoothLoss', label_smooth_val=0.1,
-            mode='classy_vision'),
+            mode='classy_vision'),)
     ))
 )
 
