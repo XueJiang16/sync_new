@@ -276,7 +276,7 @@ class FeatureReweight(BaseModule):
                 cls_token_q = cls_token_q / torch.norm(cls_token_q, 2, dim=-1, keepdim=True)
                 feature_crops = torch.einsum("nlc,ncd->nld", feature_k, cls_token_q.permute((0,2,1)))
                 patch_mean = feature_crops.mean(dim=(-1,-2))  # (N, C, H*W) -> (N, C)
-                patch_max = feature_cropsa.flatten(1).max(dim=-1)[0]  # (N, C, H*W) -> (N, C)
+                patch_max = feature_crops.flatten(1).max(dim=-1)[0]  # (N, C, H*W) -> (N, C)
                 patch_sim = patch_max / (patch_mean + 1e-6)
 
 
