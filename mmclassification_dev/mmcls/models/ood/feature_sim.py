@@ -235,23 +235,50 @@ class FeatureReweight(BaseModule):
                 # patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
 
 
-                # # # gram matrix
-                feature_crops = feature_c5[:, 1:, :] ## [B, L, C]
-                cls_token = feature_c5[:, :1, :] ## [B, L, C]
-                feature_crops = feature_crops / torch.norm(feature_crops, 2, dim=-1, keepdim=True)
-                cls_token = cls_token / torch.norm(cls_token, 2, dim=-1, keepdim=True)
-                feature_crops = torch.einsum("nlc,ncd->nld", feature_crops, cls_token.permute((0,2,1)))
+                # target_layer = self.ood_detector.classifier.backbone.layers[11]
+                # ln = target_layer.ln1
+                # qkv = target_layer.attn.qkv
+                # x = feature_c5
+                # x = ln(x)  # (B, 576+1, 768)
+                # x = qkv(x)  # (B, 576+1, 2304)
+                # x = x.permute((0, 2, 1))
+                # patch_token = x[:, :, 1:]
 
-                # feature_crops = feature_crops.permute((0,2,1))
-                # patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
-                # patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
-
+                # # # # gram matrix
+                # feature_crops = feature_c5[:, 1:, :] ## [B, L, C]
+                # cls_token = feature_c5[:, :1, :] ## [B, L, C]
                 # feature_crops = feature_crops / torch.norm(feature_crops, 2, dim=-1, keepdim=True)
-                # feature_crops = torch.einsum("nlc,ncd->nld", feature_crops, feature_crops.permute((0,2,1)))
+                # cls_token = cls_token / torch.norm(cls_token, 2, dim=-1, keepdim=True)
+                # feature_crops = torch.einsum("nlc,ncd->nld", feature_crops, cls_token.permute((0,2,1)))
+
+                # # feature_crops = feature_crops.permute((0,2,1))
+                # # patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
+                # # patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
+
+                # # feature_crops = feature_crops / torch.norm(feature_crops, 2, dim=-1, keepdim=True)
+                # # feature_crops = torch.einsum("nlc,ncd->nld", feature_crops, feature_crops.permute((0,2,1)))
 
 
-                patch_mean = feature_crops.mean(dim=(-1,-2)).unsqueeze(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
-                patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
+                # patch_mean = feature_crops.mean(dim=(-1,-2)).unsqueeze(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
+                # patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
+                target_layer = self.ood_detector.classifier.backbone.layers[-1]
+                ln = target_layer.ln1
+                qkv = target_layer.attn.qkv
+                x = feature_c5
+                x = ln(x)  # (B, 576+1, 768)
+                x = qkv(x)  # (B, 576+1, 2304)
+                x = x.permute((0, 2, 1))
+                q = x[:, :768, :]
+                k = x[:, 768:768*2, :]
+                cls_token_q = q[:, :1, :]
+                feature_k = k[:, 1:, :]
+                feature_k = feature_k / torch.norm(feature_k, 2, dim=-1, keepdim=True)
+                cls_token_q = cls_token_q / torch.norm(cls_token_q, 2, dim=-1, keepdim=True)
+                feature_crops = torch.einsum("nlc,ncd->nld", feature_k, cls_token_q.permute((0,2,1)))
+                patch_mean = feature_crops.mean(dim=(-1,-2))  # (N, C, H*W) -> (N, C)
+                patch_max = feature_cropsa.flatten(1).max(dim=-1)[0]  # (N, C, H*W) -> (N, C)
+                patch_sim = patch_max / (patch_mean + 1e-6)
+
 
 
             elif self.mode == 'channel_mean':
