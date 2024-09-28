@@ -199,50 +199,50 @@ class FeatureReweight(BaseModule):
                 patch_sim = torch.tensor(score).to("cuda:{}".format(self.local_rank))
 
             elif self.mode == 'vit':
-                import ipdb;ipdb.set_trace()
-                target_layer = self.ood_detector.classifier.backbone.layers[11]
-                ln = target_layer.ln1
-                qkv = target_layer.attn.qkv
-                x = feature_c5
-                x = ln(x)  # (B, 576+1, 768)
-                x = qkv(x)  # (B, 576+1, 2304)
-                x = x.permute((0, 2, 1))
-                patch_token = x[:, :, 1:]
+                # target_layer = self.ood_detector.classifier.backbone.layers[11]
+                # ln = target_layer.ln1
+                # qkv = target_layer.attn.qkv
+                # x = feature_c5
+                # x = ln(x)  # (B, 576+1, 768)
+                # x = qkv(x)  # (B, 576+1, 2304)
+                # x = x.permute((0, 2, 1))
+                # patch_token = x[:, :, 1:]
 
-                # feature_c5 (B, 768, 24, 24)
-                # feature_tokens = feature_c5.flatten(2)  # (B, 768, 576)
-                feature_tokens = patch_token  # (B, 768, 576)
-                feature_tokens = feature_tokens.permute((0, 2, 1))  # (B, 576, 768)
-                feature_tokens_ = feature_tokens
-                # feature_tokens_ = feature_tokens / feature_tokens.norm(dim=-1).unsqueeze(-1)  # (B, 576, 768N)
-                # cls_token, patch_token = feature_tokens_[:, :, 0].unsqueeze(-1), feature_tokens_[:, :, 1:]
-                # feature_affinity = torch.einsum("bdi,bdj->bij", cls_token, patch_token)
-                feature_affinity = torch.einsum("bid,bjd->bij", feature_tokens_, feature_tokens_)  # (B, 576, 576)
-                # filenames = [x['filename'] for x in input['img_metas']]
-                # output_path = "./feature_affinity_vis"
-                # os.makedirs(output_path, exist_ok=True)
-                # for i in range(len(feature_tokens)):
-                #     img_name = filenames[i]
-                #     img = cv2.imread(img_name)
-                #     # f = feature_affinity[i, 288].reshape((24, 24)).cpu()
-                #     f = feature_affinity[i, 0].reshape((24, 24)).cpu()
-                #     f = (f + 1) / 2
-                #     cam = show_heatmap(img, f)
-                #     cv2.imwrite(os.path.join(output_path, os.path.basename(img_name)), cam)
-                feature_crops = feature_affinity
-                patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
-                # feature_crops = feature_tokens
-                # patch_mean = feature_tokens.mean(-1).unsqueeze(-1)
-                patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
+                # # feature_c5 (B, 768, 24, 24)
+                # # feature_tokens = feature_c5.flatten(2)  # (B, 768, 576)
+                # feature_tokens = patch_token  # (B, 768, 576)
+                # feature_tokens = feature_tokens.permute((0, 2, 1))  # (B, 576, 768)
+                # feature_tokens_ = feature_tokens
+                # # feature_tokens_ = feature_tokens / feature_tokens.norm(dim=-1).unsqueeze(-1)  # (B, 576, 768N)
+                # # cls_token, patch_token = feature_tokens_[:, :, 0].unsqueeze(-1), feature_tokens_[:, :, 1:]
+                # # feature_affinity = torch.einsum("bdi,bdj->bij", cls_token, patch_token)
+                # feature_affinity = torch.einsum("bid,bjd->bij", feature_tokens_, feature_tokens_)  # (B, 576, 576)
+                # # filenames = [x['filename'] for x in input['img_metas']]
+                # # output_path = "./feature_affinity_vis"
+                # # os.makedirs(output_path, exist_ok=True)
+                # # for i in range(len(feature_tokens)):
+                # #     img_name = filenames[i]
+                # #     img = cv2.imread(img_name)
+                # #     # f = feature_affinity[i, 288].reshape((24, 24)).cpu()
+                # #     f = feature_affinity[i, 0].reshape((24, 24)).cpu()
+                # #     f = (f + 1) / 2
+                # #     cam = show_heatmap(img, f)
+                # #     cv2.imwrite(os.path.join(output_path, os.path.basename(img_name)), cam)
+                # feature_crops = feature_affinity
+                # patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
+                # # feature_crops = feature_tokens
+                # # patch_mean = feature_tokens.mean(-1).unsqueeze(-1)
+                # patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
 
 
                 # # # gram matrix
-                # feature_crops = feature_crops / torch.norm(feature_crops, 2, dim=1, keepdim=True)
-                # feature_crops = torch.einsum("nlc,ncd->nld", feature_crops.permute((0,2,1)), feature_crops)
+                feature_crops = feature_c5[:, 1:, :] ## [B, L, C]
+                feature_crops = feature_crops / torch.norm(feature_crops, 2, dim=-1, keepdim=True)
+                feature_crops = torch.einsum("nlc,ncd->nld", feature_crops, feature_crops.permute((0,2,1)))
 
 
-                # patch_mean = feature_crops.mean(dim=(-1,-2)).unsqueeze(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
-                # patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
+                patch_mean = feature_crops.mean(dim=(-1,-2)).unsqueeze(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
+                patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
 
 
             elif self.mode == 'channel_mean':
