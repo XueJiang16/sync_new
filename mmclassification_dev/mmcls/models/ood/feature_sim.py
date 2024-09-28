@@ -237,16 +237,21 @@ class FeatureReweight(BaseModule):
 
                 # # # gram matrix
                 feature_crops = feature_c5[:, 1:, :] ## [B, L, C]
-                feature_crops = feature_crops.permute((0,2,1))
-                patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
-                patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
+                cls_token = feature_c5[:, :1, :] ## [B, L, C]
+                feature_crops = feature_crops / torch.norm(feature_crops, 2, dim=-1, keepdim=True)
+                cls_token = cls_token / torch.norm(cls_token, 2, dim=-1, keepdim=True)
+                feature_crops = torch.einsum("nlc,ncd->nld", feature_crops, cls_token.permute((0,2,1)))
+
+                # feature_crops = feature_crops.permute((0,2,1))
+                # patch_mean = feature_crops.mean(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
+                # patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
 
                 # feature_crops = feature_crops / torch.norm(feature_crops, 2, dim=-1, keepdim=True)
                 # feature_crops = torch.einsum("nlc,ncd->nld", feature_crops, feature_crops.permute((0,2,1)))
 
 
-                # patch_mean = feature_crops.mean(dim=(-1,-2)).unsqueeze(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
-                # patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
+                patch_mean = feature_crops.mean(dim=(-1,-2)).unsqueeze(-1).unsqueeze(-1)  # (N, C, H*W) -> (N, C)
+                patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
 
 
             elif self.mode == 'channel_mean':
