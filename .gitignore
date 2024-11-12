@@ -13,3 +13,4 @@ checkpoints
 mmclassification_dev/vis_cam_features_new/*
 *.jpg
 *.png
+Spurious_OOD/*
