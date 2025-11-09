@@ -62,6 +62,26 @@ class DiceHead(ClsHead):
         mask = contrib > thresh
         self.masked_w = self.fc.weight * mask
 
+     def apply_ash(self, x, percentile=10):
+
+        # Ash-S
+        b, c= x.shape
+        # percentile = 90
+        # calculate the sum of the input per sample
+        s1 = x.sum(dim=[1])
+        n = x.shape[1:].numel()
+        k = n - int(np.round(n * percentile / 100.0))
+        t = x.view((b, c))
+        v, i = torch.topk(t, k, dim=1)
+        t.zero_().scatter_(dim=1, index=i, src=v)
+        # calculate new sum of the input per sample after pruning
+        s2 = x.sum(dim=[1])
+
+        # apply sharpening
+        scale = s1 / s2
+        out = x * torch.exp(scale[:, None])
+        return out
+
     def simple_test(self, x, softmax=True, post_process=True, require_features=False):
         """Inference without augmentation.
 
@@ -89,9 +109,11 @@ class DiceHead(ClsHead):
             if self.require_features or require_features:
                 f = x.detach().clone()
             # cls_score = self.fc(x)
+
             # DICE
             if self.masked_w is None:
                 self.calculate_mask_weight()
+            x = self.apply_ash(x, percentile=90)
             vote = x[:, None, :] * self.masked_w
             if self.fc.bias is not None:
                 cls_score = vote.sum(2) + self.fc.bias
