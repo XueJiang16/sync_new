@@ -73,7 +73,7 @@ model = dict(
 # pipline =[dict(type='Collect', keys=['img'])]
 pipline =[dict(type='Collect', keys=['img', 'type'])]
 data = dict(
-    samples_per_gpu=256 if "ODIN" not in method_name else 16,
+    samples_per_gpu=16 if "ODIN" not in method_name else 16,
     # samples_per_gpu=1,
     workers_per_gpu=4,
     id_data=dict(
