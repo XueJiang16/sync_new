@@ -162,6 +162,8 @@ class ImageClassifier(BaseClassifier):
                     **kwargs):
         """Test without augmentation."""
         if require_backbone_features:
+            import ipdb; ipdb.set_trace()
+
             # assert th_act==False
             x_ = self.extract_feat(img, stage='backbone', th_act=th_act)[-1].detach().clone()
         elif require_backbone_features_idx:
