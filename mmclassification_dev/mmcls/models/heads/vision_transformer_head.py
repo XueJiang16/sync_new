@@ -73,6 +73,7 @@ class VisionTransformerClsHead(ClsHead):
     def pre_logits(self, x):
         if isinstance(x, tuple):
             x = x[-1]
+        import ipdb; ipdb.set_trace()
         _, cls_token = x
         if self.hidden_dim is None:
             return cls_token
