@@ -71,7 +71,7 @@ class VisionTransformerClsHead(ClsHead):
             nn.init.zeros_(self.layers.pre_logits.bias)
 
     def pre_logits(self, x):
-        import ipdb; ipdb.set_trace()
+        # import ipdb; ipdb.set_trace()
 
         if isinstance(x, tuple):
             x = x[-1]
