@@ -30,7 +30,7 @@ model = dict(
     patch_size=16,
     output_cls_token=True,
     # out_indices=-1,
-    out_indices=10,
+    out_indices=[10,-1],
     # drop_rate=0.1,
     ),
     neck=None,
@@ -43,6 +43,39 @@ model = dict(
             mode='classy_vision'),)
     ))
 )
+
+
+## backup
+
+# model = dict(
+#     type=method_name,
+#     num_classes=1000,
+#     mode='vit',
+#     ood_detector=dict(
+#     type=method_list[1],
+#     classifier= dict(
+#     type='ImageClassifier',
+#     init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/vit-base-p16_in21k-pre-3rdparty_ft-64xb64_in1k-384_20210928-98e8652b.pth'),
+#     backbone=dict(
+#     type='VisionTransformer',
+#     arch='b',
+#     img_size=384,
+#     patch_size=16,
+#     output_cls_token=False,
+#     # out_indices=-1,
+#     out_indices=10,
+#     # drop_rate=0.1,
+#     ),
+#     # neck=None,
+#     # head=dict(
+#     #     type='VisionTransformerClsHead',
+#     #     num_classes=1000,
+#     #     in_channels=768,
+#     #     loss=dict(
+#     #         type='LabelSmoothLoss', label_smooth_val=0.1,
+#     #         mode='classy_vision'),)
+#     ))
+# )
 
 # for baseline
 # model = dict(
