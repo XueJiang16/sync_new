@@ -36,7 +36,7 @@ model = dict(
             # th_act_k=0.2,
             # th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
             # th_act_location=5,
-        ),
+        # ),
         neck=dict(type='GlobalAveragePooling'),
         head=dict(
             type='LinearClsHead',
