@@ -67,7 +67,7 @@ model = dict(
 #             type='LabelSmoothLoss', label_smooth_val=0.1,
 #             mode='classy_vision'),
 #     ))
-)
+#)
 
 
 # pipline =[dict(type='Collect', keys=['img'])]
