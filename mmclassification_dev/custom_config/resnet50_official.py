@@ -23,19 +23,19 @@ model = dict(
         type='ImageClassifier',
         init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
         backbone=dict(
-            # type='ResNet',
-            # depth=50,
-            # num_stages=4,
-            # out_indices=(3,),
-            # style='pytorch'),
-            type='ResNetActivation',
+            type='ResNet',
             depth=50,
             num_stages=4,
             out_indices=(3,),
-            style='pytorch',
-            th_act_k=0.2,
-            th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
-            th_act_location=5,
+            style='pytorch'),
+            # type='ResNetActivation',
+            # depth=50,
+            # num_stages=4,
+            # out_indices=(3,),
+            # style='pytorch',
+            # th_act_k=0.2,
+            # th_act_stage=2,  ## 0:C2 1:C3 2:C4 3:C5
+            # th_act_location=5,
         ),
         neck=dict(type='GlobalAveragePooling'),
         head=dict(
@@ -93,43 +93,43 @@ data = dict(
     #         dict(type='Collect', keys=['img'])
     #     ]),
     ood_data=[
-        # dict(
-        #     name='iNaturalist',
-        #     type='FolderDataset',
-        #     path='/data/csxjiang/ood_data/iNaturalist/images',
-        #     pipeline=pipline,
-        #     len_limit=1000 if quick_test else -1,
-        # ),
-        # dict(
-        #     name='SUN',
-        #     type='FolderDataset',
-        #     path='/data/csxjiang/ood_data/SUN/images',
-        #     pipeline=pipline,
-        #     len_limit=1000 if quick_test else -1,
-        # ),
-        # dict(
-        #     name='Places',
-        #     type='FolderDataset',
-        #     path='/data/csxjiang/ood_data/Places/images',
-        #     pipeline=pipline,
-        #     len_limit=1000 if quick_test else -1,
-        # ),
-        # dict(
-        #     name='Textures',
-        #     type='FolderDataset',
-        #     path='/data/csxjiang/ood_data/Textures/dtd/images_collate',
-        #     pipeline=pipline,
-        #     len_limit=1000 if quick_test else -1,
-        # ),
         dict(
-            name='SSB_hard',
-            type='TxtDataset',
-            path='/data/csxjiang/openood/data/images_largescale',
-            data_ann='/data/csxjiang/openood/data/benchmark_imglist/imagenet/test_ssb_hard.txt',
+            name='iNaturalist',
+            type='FolderDataset',
+            path='/data/csxjiang/ood_data/iNaturalist/images',
             pipeline=pipline,
-            len_limit=5000 if quick_test else -1,
-            # aug=aug,
-        )
+            len_limit=1000 if quick_test else -1,
+        ),
+        dict(
+            name='SUN',
+            type='FolderDataset',
+            path='/data/csxjiang/ood_data/SUN/images',
+            pipeline=pipline,
+            len_limit=1000 if quick_test else -1,
+        ),
+        dict(
+            name='Places',
+            type='FolderDataset',
+            path='/data/csxjiang/ood_data/Places/images',
+            pipeline=pipline,
+            len_limit=1000 if quick_test else -1,
+        ),
+        dict(
+            name='Textures',
+            type='FolderDataset',
+            path='/data/csxjiang/ood_data/Textures/dtd/images_collate',
+            pipeline=pipline,
+            len_limit=1000 if quick_test else -1,
+        ),
+        # dict(
+        #     name='SSB_hard',
+        #     type='TxtDataset',
+        #     path='/data/csxjiang/openood/data/images_largescale',
+        #     data_ann='/data/csxjiang/openood/data/benchmark_imglist/imagenet/test_ssb_hard.txt',
+        #     pipeline=pipline,
+        #     len_limit=5000 if quick_test else -1,
+        #     # aug=aug,
+        # )
     ],
 
 )
