@@ -90,11 +90,13 @@ class ReactHead(ClsHead):
         if self.require_features or require_features:
             f = x.detach().clone()
 
-        ##ASH
-        x = self.apply_ash(x, percentile=90)
+       
 
         ## react
         x = x.clip(max=self.thred)
+
+         ##ASH
+        x = self.apply_ash(x, percentile=90)
         cls_score = self.fc(x)
 
         if softmax:
