@@ -96,7 +96,7 @@ class ReactHead(ClsHead):
         x = x.clip(max=self.thred)
 
          ##ASH
-        x = self.apply_ash(x, percentile=90)
+        # x = self.apply_ash(x, percentile=90)
         cls_score = self.fc(x)
 
         if softmax:

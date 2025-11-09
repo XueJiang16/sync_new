@@ -44,21 +44,21 @@ model = dict(
         #     in_channels=2048,
         #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
         #     topk=(1, 5))
-        # head=dict(
-        #     type='DiceHead',
-        #     num_classes=1000,
-        #     in_channels=2048,
-        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-        #     topk=(1, 5),
-        #     info=info,
-        #     p=0.7,)
         head=dict(
-            type='ReactHead',
+            type='DiceHead',
             num_classes=1000,
             in_channels=2048,
-            threshold=1,
             loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-            topk=(1, 5))
+            topk=(1, 5),
+            info=info,
+            p=0.7,)
+        # head=dict(
+        #     type='ReactHead',
+        #     num_classes=1000,
+        #     in_channels=2048,
+        #     threshold=1,
+        #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        #     topk=(1, 5))
     )
 )
 pipline =[
