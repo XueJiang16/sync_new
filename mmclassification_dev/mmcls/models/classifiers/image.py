@@ -164,7 +164,7 @@ class ImageClassifier(BaseClassifier):
         if require_backbone_features:
             # import ipdb; ipdb.set_trace()
             x_ = self.extract_feat(img, stage='backbone', th_act=th_act)
-            if isinstance(x_, list):
+            if isinstance(x_[0], list):
                 x_mid, x_final = x_
                 x_ = x_mid[0].detach().clone()
                 # x_ = self.extract_feat(img, stage='backbone', th_act=th_act)[0][0].detach().clone()
