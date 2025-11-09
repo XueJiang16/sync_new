@@ -202,7 +202,7 @@ class FeatureReweight(BaseModule):
                 target_layer = self.ood_detector.classifier.backbone.layers[11]
                 ln = target_layer.ln1
                 qkv = target_layer.attn.qkv
-                x = feature_c5
+                x = feature_c5.flatten(2).permute((0, 2, 1)) 
                 x = ln(x)  # (B, 576+1, 768)
                 x = qkv(x)  # (B, 576+1, 2304)
                 x = x.permute((0, 2, 1))
