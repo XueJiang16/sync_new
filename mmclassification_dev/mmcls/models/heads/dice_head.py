@@ -62,7 +62,7 @@ class DiceHead(ClsHead):
         mask = contrib > thresh
         self.masked_w = self.fc.weight * mask
 
-     def apply_ash(self, x, percentile=10):
+    def apply_ash(self, x, percentile=10):
 
         # Ash-S
         b, c= x.shape
