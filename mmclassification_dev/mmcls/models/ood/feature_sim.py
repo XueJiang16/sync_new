@@ -210,6 +210,8 @@ class FeatureReweight(BaseModule):
 
                 out_softmax = torch.nn.functional.softmax(outputs, dim=1)
                 msp_scores, _ = torch.max(out_softmax, dim=-1)
+                energy = torch.logsumexp(outputs, dim=1)
+
 
 
 
@@ -239,7 +241,8 @@ class FeatureReweight(BaseModule):
                 # patch_mean = feature_tokens.mean(-1).unsqueeze(-1)
                 patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
 
-                patch_sim = msp_scores + (patch_sim * 0.002) 
+                # patch_sim = msp_scores + (patch_sim * 0.002) 
+                patch = energy + (patch_sim * 0.01) 
 
 
                 # target_layer = self.ood_detector.classifier.backbone.layers[11]
