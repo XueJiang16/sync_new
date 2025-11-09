@@ -1,4 +1,4 @@
-# import os
+import os
 #
 info=os.path.expanduser('/data/csxjiang/dice_cache/imagenet_res50_feature_stat.pth')
 method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch', 'FeatureReweight']
