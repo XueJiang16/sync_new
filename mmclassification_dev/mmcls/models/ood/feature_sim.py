@@ -144,7 +144,7 @@ class FeatureReweight(BaseModule):
             del input['type']
 
         with torch.no_grad():
-            _, feature_c5 = self.ood_detector.classifier(return_loss=False, softmax=False, post_process=False,
+            outputs, feature_c5 = self.ood_detector.classifier(return_loss=False, softmax=False, post_process=False,
                                                          require_backbone_features=True, **input)
             input['type'] = type
             if self.mode == 'mean':
@@ -208,6 +208,11 @@ class FeatureReweight(BaseModule):
                 x = x.permute((0, 2, 1))
                 patch_token = x[:, :, 1:]
 
+                out_softmax = torch.nn.functional.softmax(outputs, dim=1)
+                msp_scores, _ = torch.max(out_softmax, dim=-1)
+
+
+
                 # feature_c5 (B, 768, 24, 24)
                 # feature_tokens = feature_c5.flatten(2)  # (B, 768, 576)
                 feature_tokens = patch_token  # (B, 768, 576)
@@ -233,6 +238,8 @@ class FeatureReweight(BaseModule):
                 # feature_crops = feature_tokens
                 # patch_mean = feature_tokens.mean(-1).unsqueeze(-1)
                 patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
+
+                patch_sim = msp_scores + patch_sim
 
 
                 # target_layer = self.ood_detector.classifier.backbone.layers[11]
