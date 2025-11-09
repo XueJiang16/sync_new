@@ -115,7 +115,7 @@ class DiceHead(ClsHead):
             # DICE
             if self.masked_w is None:
                 self.calculate_mask_weight()
-            x = self.apply_ash(x, percentile=90)
+            # x = self.apply_ash(x, percentile=90)
             vote = x[:, None, :] * self.masked_w
             if self.fc.bias is not None:
                 cls_score = vote.sum(2) + self.fc.bias
