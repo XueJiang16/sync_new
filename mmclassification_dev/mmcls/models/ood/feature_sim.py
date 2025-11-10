@@ -252,7 +252,7 @@ class FeatureReweight(BaseModule):
                 # patch_mean = feature_tokens.mean(-1).unsqueeze(-1)
                 patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
 
-                alpha = adjust_alpha(energy,patch_sim,0.001,0.01,default=0.003)
+                alpha = self.adjust_alpha(energy,patch_sim,0.001,0.01,default=0.003)
 
                 # patch_sim = msp_scores + (patch_sim * 0.002) 
                 patch_sim = energy + (patch_sim * alpha) 
