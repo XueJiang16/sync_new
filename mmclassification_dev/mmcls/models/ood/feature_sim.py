@@ -246,7 +246,8 @@ class FeatureReweight(BaseModule):
                 # 策略2（可选）：平衡两项权重，取消注释即可切换
                 # alpha_candidate = abs(energy) / abs(patch_sim_prev)
                 # 范围约束
-                alpha = max(min(alpha_candidate, 0.01), 0.001)
+                alpha = torch.clamp(alpha_candidate, min=0.001, max=0.01)  # 对张量每个元素截断到 [0.001, 0.01]
+
                 # patch_sim = msp_scores + (patch_sim * 0.002) 
                 patch_sim = energy + (patch_sim * alpha) 
 
