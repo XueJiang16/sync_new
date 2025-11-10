@@ -242,7 +242,7 @@ class FeatureReweight(BaseModule):
                 patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
 
                 # patch_sim = msp_scores + (patch_sim * 0.002) 
-                patch_sim = energy + (patch_sim * 0.007) 
+                patch_sim = energy + (patch_sim * 0.006) 
 
 
                 # target_layer = self.ood_detector.classifier.backbone.layers[11]
