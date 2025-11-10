@@ -135,19 +135,6 @@ class FeatureReweight(BaseModule):
         # single_score = np.abs(forg_mean - gmm_mean) * forg_weight
         # + np.abs(bacg_mean - gmm_mean) * bacg_weight
         return single_score
-    
-    def adjust_alpha(energy, patch_sim_prev, min_alpha=0.1, max_alpha=0.9, eps=1e-6, default=0.5):
-        if (abs(patch_sim_prev) < eps).all():  # 所有元素都接近 0
-            return default  # 默认值
-        # 策略1：控制更新幅度（优先保证新旧值差异小）
-        alpha_candidate = 1.0 - (energy / patch_sim_prev)
-        # 策略2（可选）：平衡两项权重，取消注释即可切换
-        # alpha_candidate = abs(energy) / abs(patch_sim_prev)
-        # 范围约束
-        alpha = max(min(alpha_candidate, max_alpha), min_alpha)
-        return alpha
-
-
 
     def forward(self, **input):
         if "type" in input:
@@ -252,8 +239,14 @@ class FeatureReweight(BaseModule):
                 # patch_mean = feature_tokens.mean(-1).unsqueeze(-1)
                 patch_sim = torch.abs(feature_crops - patch_mean).mean(dim=(-1, -2))  # for ID: .mean(dim=-2)
 
-                alpha = self.adjust_alpha(energy,patch_sim,0.001,0.01,default=0.003)
-
+                if (abs(patch_sim) < 1e-6).all():  # 所有元素都接近 0
+                    alpha=0.003  # 默认值
+                # 策略1：控制更新幅度（优先保证新旧值差异小）
+                alpha_candidate = 1.0 - (energy / patch_sim)
+                # 策略2（可选）：平衡两项权重，取消注释即可切换
+                # alpha_candidate = abs(energy) / abs(patch_sim_prev)
+                # 范围约束
+                alpha = max(min(alpha_candidate, 0.01), 0.001)
                 # patch_sim = msp_scores + (patch_sim * 0.002) 
                 patch_sim = energy + (patch_sim * alpha) 
 
