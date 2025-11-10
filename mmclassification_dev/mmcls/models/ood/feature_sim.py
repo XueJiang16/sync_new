@@ -137,7 +137,7 @@ class FeatureReweight(BaseModule):
         return single_score
     
     def adjust_alpha(energy, patch_sim_prev, min_alpha=0.1, max_alpha=0.9, eps=1e-6, default=0.5):
-        if abs(patch_sim_prev) < eps:  # 避免除以0
+        if (abs(patch_sim_prev) < eps).all():  # 所有元素都接近 0
             return default  # 默认值
         # 策略1：控制更新幅度（优先保证新旧值差异小）
         alpha_candidate = 1.0 - (energy / patch_sim_prev)
