@@ -13,7 +13,7 @@ if custom_name is not None:
 else:
     readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
 
-quick_test = True
+
 noise_engine = None
 
 # ===================== 模型 =====================
@@ -26,7 +26,7 @@ model = dict(
     mode='mean',
     fuse_const=0.1,
     ood_detector=dict(
-        type=method_list[-1],  # ThresholdActivation
+        type=method_list[0],  # ThresholdActivation
         debug_mode=False,
         num_classes=num_classes,
         target_file=None,
