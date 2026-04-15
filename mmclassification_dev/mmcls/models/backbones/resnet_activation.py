@@ -411,7 +411,21 @@ class ResLayer(nn.Sequential):
             # print("Block {}/Stage {}: mean={}, std={}".format(i, stage, x.mean(), x.std()))
             if i == th_act_para:
                 # x = x - th_act_k
-                x = x.clip(max=0.5)
+                # x = x.clip(max=0.5)
+
+                feat_mean = x.mean(dim=[2, 3], keepdim=True)  # [B, C, 1, 1] 特征通道统计量
+                contrib = feat_mean * x                      # 特征自身贡献 = 统计量 * 原始特征（替代FC权重）
+                
+                # 2. 按P分位数生成掩码（核心DICE操作）
+                q_val = 0.9
+                thresh = torch.quantile(contrib.flatten(1), q_val, dim=1, keepdim=True)
+                thresh = thresh.view(x.shape[0], 1, 1, 1)
+                dice_mask = (contrib > thresh).float()       # 高贡献通道掩码
+                
+                # 3. DICE投票：掩码 × 特征（对应原DICE vote = x[:,None,:] * masked_w）
+                x = x * dice_mask  # 关键：C4特征经过DICE思想加权，送入下一层
+                
+
                 x = torch.nn.functional.relu(x)
             if i == feature_sim_para:
                 return x
