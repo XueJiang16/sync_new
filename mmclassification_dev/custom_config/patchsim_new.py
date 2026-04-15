@@ -13,7 +13,7 @@ if custom_name is not None:
 else:
     readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
 
-quick_test = False
+quick_test = True
 noise_engine = None
 
 # ===================== 模型 =====================
@@ -89,6 +89,7 @@ data = dict(
             type='FolderDataset',
             path='/data/csxjiang/ood_data/iNaturalist/images',
             pipeline=ood_pipeline,
+            len_limit=5000 if quick_test else -1,
             transform=transform
         ),
         dict(
@@ -96,6 +97,7 @@ data = dict(
             type='FolderDataset',
             path='/data/csxjiang/ood_data/SUN/images',
             pipeline=ood_pipeline,
+            len_limit=5000 if quick_test else -1,
             transform=transform
         ),
         dict(
@@ -103,6 +105,7 @@ data = dict(
             type='FolderDataset',
             path='/data/csxjiang/ood_data/Places/images',
             pipeline=ood_pipeline,
+            len_limit=5000 if quick_test else -1,
             transform=transform
         ),
         dict(
@@ -110,6 +113,7 @@ data = dict(
             type='FolderDataset',
             path='/data/csxjiang/ood_data/Textures/dtd/images_collate',
             pipeline=ood_pipeline,
+            len_limit=5000 if quick_test else -1,
             transform=transform
         ),
     ],
