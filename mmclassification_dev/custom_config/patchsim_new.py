@@ -100,7 +100,7 @@ data = dict(
             type='FolderDataset',
             path='/data/csxjiang/ood_data/iNaturalist/images',
             pipeline=pipline,
-            scale_factor=1,
+            # scale_factor=1,
             aug=aug,
             len_limit=1000 if quick_test else -1,
         ),
