@@ -24,7 +24,7 @@ model = dict(
     threshold=0.4,
     order=1,
     mode='mean',
-    fuse_const=0.016,
+    fuse_const=0.1,
     ood_detector=dict(
         type=method_list[0], 
         debug_mode=False,
@@ -35,15 +35,18 @@ model = dict(
             # ImageNet 标准 ResNet50 预训练权重
             init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/resnet50_8xb32_in1k_20210831-ea4938fc.pth'),
             backbone=dict(
-                type='ResNet',
+                type='ResNet',  # ImageNet 用标准 ResNet，不是 CIFAR 版
                 depth=50,
                 num_stages=4,
+                # TA 参数
+                th_act_k=0.5,
+                th_act_stage=2,
+                th_act_location=5,
+                # FMS 参数
+                feature_sim_stage=3,
+                feature_sim_location=2,
                 out_indices=(3,),
-                style='pytorch',
-                random_block=[1],
-                random_block_k=[0.4],
-                random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
-            ),
+                style='pytorch'),
             neck=dict(type='GlobalAveragePooling'),
             head=dict(
                 type='LinearClsHead',
