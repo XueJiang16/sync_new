@@ -74,9 +74,13 @@ data = dict(
         type='TxtDataset',
         path='/data/csxjiang/val',
         data_ann='/data/csxjiang/meta/val_labeled.txt',
-        transform=transform,
-        pipeline=ood_pipeline,
-        test_mode=True),
+        # path='/data/csxjiang/ILSVRC/Data/CLS-LOC/train',
+        # data_ann='/data/csxjiang/meta/train_labeled.txt',
+        pipeline=pipline,
+        len_limit=5000 if quick_test else -1,
+        train_label=None,
+        aug=None,
+    ),
 
     # OOD 标准 4 个基准
     ood_data=[
@@ -85,32 +89,28 @@ data = dict(
             type='FolderDataset',
             path='/data/csxjiang/ood_data/iNaturalist/images',
             pipeline=ood_pipeline,
-            transform=transform,
-            test_mode=True
+            transform=transform
         ),
         dict(
             name='SUN',
             type='FolderDataset',
             path='/data/csxjiang/ood_data/SUN/images',
             pipeline=ood_pipeline,
-            transform=transform,
-            test_mode=True
+            transform=transform
         ),
         dict(
             name='Places',
             type='FolderDataset',
             path='/data/csxjiang/ood_data/Places/images',
             pipeline=ood_pipeline,
-            transform=transform,
-            test_mode=True
+            transform=transform
         ),
         dict(
             name='Textures',
             type='FolderDataset',
             path='/data/csxjiang/ood_data/Textures/dtd/images_collate',
             pipeline=ood_pipeline,
-            transform=transform,
-            test_mode=True
+            transform=transform
         ),
     ],
 )
