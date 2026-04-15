@@ -35,7 +35,7 @@ model = dict(
             # ImageNet 标准 ResNet50 预训练权重
             init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/resnet50_8xb32_in1k_20210831-ea4938fc.pth'),
             backbone=dict(
-                type='ResNet',  # ImageNet 用标准 ResNet，不是 CIFAR 版
+                type='ResNetActivation',  # ImageNet 用标准 ResNet，不是 CIFAR 版
                 depth=50,
                 num_stages=4,
                 # TA 参数
