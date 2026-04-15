@@ -39,7 +39,7 @@ model = dict(
                 depth=50,
                 num_stages=4,
                 # TA 参数
-                th_act_k=0.2,
+                th_act_k=0.4,
                 th_act_stage=2,
                 th_act_location=5,
                 # FMS 参数
