@@ -1,74 +1,72 @@
-# 基础参数
 method_list = ['MSP', 'ODIN', 'Energy', 'GradNormBatch', 'ThresholdActivation']
 method_name = 'FeatureMapSim'
+# method_name = 'FeatureReweight'
 model_name = 'resnet50'
-custom_name = "Official"
-train_dataset = 'ImageNet'
-num_classes = 1000
-num_classes_ = 100  # 仅保留变量格式
-
-# 名称生成
+train_dataset = 'Balance'
+custom_name = 'fc_th_act'
 if custom_name is not None:
     readable_name = '{}_{}_{}_{}'.format(method_name, model_name, train_dataset, custom_name)
 else:
     readable_name ='{}_{}_{}'.format(method_name, model_name, train_dataset)
-
-quick_test = True
+quick_test = False
 noise_engine = None
-
-# ===================== 模型 =====================
+# k_c5 = 0.65
 model = dict(
     type=method_name,
     num_crop=3,
     img_size=224,
     threshold=0.4,
     order=1,
+    # k=k_c5,
     mode='mean',
-    fuse_const=0.1,
+    # mode=None,
+    fuse_const=0,
     ood_detector=dict(
-        type=method_list[0], 
+        type=method_list[2],
         debug_mode=False,
-        num_classes=num_classes,
+        num_classes=1000,
+        # temperature=1,
         target_file=None,
         classifier=dict(
             type='ImageClassifier',
-            # ImageNet 标准 ResNet50 预训练权重
-            init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/resnet50_8xb32_in1k_20210831-ea4938fc.pth'),
+            # init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/mmcls_offical/resnet34_8xb32_in1k_20210831-f257d4e6.pth'),
+            init_cfg=dict(type='Pretrained', checkpoint='/data/csxjiang/ood_ckpt/pytorch_official/resnet50_custom.pth'),
             backbone=dict(
-                type='ResNetActivation',  # ImageNet 用标准 ResNet，不是 CIFAR 版
+                type='ResNet',
                 depth=50,
                 num_stages=4,
-                # TA 参数
-                th_act_k=0.5,
-                th_act_stage=2,
-                th_act_location=5,
-                # FMS 参数
-                feature_sim_stage=3,
-                feature_sim_location=2,
                 out_indices=(3,),
-                style='pytorch'),
+                style='pytorch',
+                random_block=[1],
+                random_block_k=[0.15],
+                random_block_location=[2],  # 0:C2 1:C3 2:C4 3:C5
+            ),
             neck=dict(type='GlobalAveragePooling'),
+            # neck=dict(type='TopKAveragePooling',
+            #           k=k_c5),
             head=dict(
                 type='LinearClsHead',
-                num_classes=num_classes,
-                in_channels=2048,  # ResNet50 输出维度
+                num_classes=1000,
+                in_channels=2048,
                 loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
-                topk=(1, 5)),
-        )
+                topk=(1, 5))
+            # head=dict(
+            #     type='ReactHead',
+            #     threshold=2,
+            #     num_classes=1000,
+            #     in_channels=2048,
+            #     loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+            #     topk=(1, 5))
+)
     )
 )
+pipline =[dict(type='Collect', keys=['img', 'type'])]
+# aug = ['fog']
+aug = None
 
-# ===================== 数据管道 =====================
-ood_pipeline = [
-    dict(type='Collect', keys=['img', 'type'])
-]
-transform = "ImageNet"
-
-# ===================== 数据集 =====================
 data = dict(
-    samples_per_gpu=256,
+    samples_per_gpu=256 if method_name is not 'ODIN' else 32,
     workers_per_gpu=4,
-    # ID 数据：ImageNet Val
     id_data=dict(
         name='ImageNet',
         type='TxtDataset',
@@ -76,50 +74,72 @@ data = dict(
         data_ann='/data/csxjiang/meta/val_labeled.txt',
         # path='/data/csxjiang/ILSVRC/Data/CLS-LOC/train',
         # data_ann='/data/csxjiang/meta/train_labeled.txt',
-        pipeline=ood_pipeline,
+        pipeline=pipline,
         len_limit=5000 if quick_test else -1,
         train_label=None,
-        aug=None,
+        aug=aug,
     ),
-
-    # OOD 标准 4 个基准
+    # id_data=dict(
+    #     type='JsonDataset',
+    #     path='/data/csxjiang/',
+    #     data_ann='/data/csxjiang/ood_data/inat/val2018.json',
+    #     pipeline=[
+    #         dict(type='LoadImageFromFile'),
+    #         dict(type='Resize', size=480),
+    #         dict(
+    #             type='Normalize',
+    #             mean=[123.675, 116.28, 103.53],
+    #             std=[58.395, 57.12, 57.375],
+    #             to_rgb=True),
+    #         dict(type='ImageToTensor', keys=['img']),
+    #         dict(type='Collect', keys=['img'])
+    #     ]),
     ood_data=[
         dict(
             name='iNaturalist',
             type='FolderDataset',
             path='/data/csxjiang/ood_data/iNaturalist/images',
-            pipeline=ood_pipeline,
-            len_limit=5000 if quick_test else -1,
-            transform=transform
+            pipeline=pipline,
+            scale_factor=1,
+            aug=aug,
+            len_limit=1000 if quick_test else -1,
         ),
         dict(
             name='SUN',
             type='FolderDataset',
             path='/data/csxjiang/ood_data/SUN/images',
-            pipeline=ood_pipeline,
-            len_limit=5000 if quick_test else -1,
-            transform=transform
+            pipeline=pipline,
+            aug=aug,
+            len_limit=1000 if quick_test else -1,
         ),
         dict(
             name='Places',
             type='FolderDataset',
             path='/data/csxjiang/ood_data/Places/images',
-            pipeline=ood_pipeline,
-            len_limit=5000 if quick_test else -1,
-            transform=transform
+            pipeline=pipline,
+            aug=aug,
+            len_limit=1000 if quick_test else -1,
         ),
         dict(
             name='Textures',
             type='FolderDataset',
             path='/data/csxjiang/ood_data/Textures/dtd/images_collate',
-            pipeline=ood_pipeline,
-            len_limit=5000 if quick_test else -1,
-            transform=transform
+            pipeline=pipline,
+            aug=aug,
+            len_limit=1000 if quick_test else -1,
         ),
+        # dict(
+        # name='SSB_hard',
+        # type='TxtDataset',
+        # path='/data/csxjiang/openood/data/images_largescale',
+        # data_ann='/data/csxjiang/openood/data/benchmark_imglist/imagenet/test_ssb_hard.txt',
+        # pipeline=pipline,
+        # len_limit=5000 if quick_test else -1,
+        # aug=aug,)
     ],
-)
 
-# ===================== 运行配置 =====================
+)
 dist_params = dict(backend='nccl')
 log_level = 'CRITICAL'
-work_dir = './results/imagenet_resnet50_fms'
+# log_level = 'INFO'
+work_dir = './results/0107'

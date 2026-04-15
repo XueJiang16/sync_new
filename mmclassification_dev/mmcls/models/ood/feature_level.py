@@ -200,15 +200,15 @@ class FeatureMapSim(BaseModule):
                 patch_sim=1
             ood_scores = patch_sim
         if self.has_ood_detector:
-            tmp1 = self.ood_detector.classifier.backbone.feature_sim_stage
-            tmp2 = self.ood_detector.classifier.backbone.feature_sim_location
-            self.ood_detector.classifier.backbone.feature_sim_stage=3
-            self.ood_detector.classifier.backbone.feature_sim_location=1
+            # tmp1 = self.ood_detector.classifier.backbone.feature_sim_stage
+            # tmp2 = self.ood_detector.classifier.backbone.feature_sim_location
+            # self.ood_detector.classifier.backbone.feature_sim_stage=3
+            # self.ood_detector.classifier.backbone.feature_sim_location=1
             ood_scores, _ = self.ood_detector(**input)
             ood_scores *= self.fuse_const
             ood_scores += patch_sim
-            self.ood_detector.classifier.backbone.feature_sim_stage = tmp1
-            self.ood_detector.classifier.backbone.feature_sim_location = tmp2
+            # self.ood_detector.classifier.backbone.feature_sim_stage = tmp1
+            # self.ood_detector.classifier.backbone.feature_sim_location = tmp2
             # print("mean:", ood_scores.mean())
             # print("std:", ood_scores.std())
             # exit()
