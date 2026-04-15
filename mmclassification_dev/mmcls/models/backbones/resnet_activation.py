@@ -410,7 +410,8 @@ class ResLayer(nn.Sequential):
             x = layer(x)
             # print("Block {}/Stage {}: mean={}, std={}".format(i, stage, x.mean(), x.std()))
             if i == th_act_para:
-                x = x - th_act_k
+                # x = x - th_act_k
+                x = x.clip(max=0.5)
                 x = torch.nn.functional.relu(x)
             if i == feature_sim_para:
                 return x
